@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+    cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
     database_url: SecretStr | None = None
     postgres_host: str = "localhost"
     postgres_port: int = Field(default=5432, ge=1, le=65535)

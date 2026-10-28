@@ -1,6 +1,6 @@
-# QuickDrop database foundation
+# QuickDrop backend
 
-Python 3.12, SQLAlchemy 2, asyncpg, Alembic and Pydantic Settings. Dependencies are
+Python 3.12, FastAPI, SQLAlchemy 2, asyncpg, Alembic and Pydantic Settings. Dependencies are
 managed by **uv** and pinned in `uv.lock`. `requirements.txt` is an exported
 compatibility file, not the dependency source of truth.
 
@@ -12,6 +12,13 @@ uv run alembic upgrade head
 uv run alembic current
 uv run alembic heads
 uv run alembic check
+uv run python -m app.scripts.seed
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+In another terminal, run `curl http://localhost:8000/health`. Verification:
+
+```sh
 uv run pytest -q
 uv run ruff check app alembic tests
 ```
@@ -34,7 +41,10 @@ No real credentials belong in source control or `alembic.ini`.
   `app.models` registers all tables; relationships avoid implicit async I/O.
 - `alembic/`: schema migrations; the initial revision is `078eb21553bb`.
 - `tests/`: metadata and actual PostgreSQL constraint/concurrency checks.
-- `app/scripts/seed.py`: reserved for the next phase; no seed logic runs yet.
+- `app/main.py` and `app/api/`: async FastAPI app, readiness and read-only routers.
+- `app/repositories/`: rider, trip and historical payout queries, with no policy calculations.
+- `app/schemas/`: Pydantic v2 ORM response schemas; decimals serialize as exact strings.
+- `app/scripts/seed.py`: validated, transactional and idempotent CSV import.
 
 Tables: `riders`, `trips`, `payout_lines`, `ops_users`, `conversations`, `messages`,
 `disputes`, `dispute_items`, `payment_intents`, `ops_queue`, `agent_traces`.
@@ -90,8 +100,57 @@ To refresh the compatibility export after a dependency update:
 uv export --locked --no-dev --format requirements-txt --output-file requirements.txt
 ```
 
-This phase supplies schema and persistence configuration only. CSV/admin seeding,
-HTTP endpoints, policy engine, agents, PaySwift calls and workers are deferred.
+## CSV imports
+
+`uv run python -m app.scripts.seed` resolves the root `data/` directory from the
+module location. From any shell directory you may also use
+`uv run --directory /absolute/path/to/quickdrop-ai/backend python -m app.scripts.seed`.
+Use `--data-dir /path/to/csvs` to select an explicit dataset directory.
+
+The assignment exports have **40 riders, 3,314 trip rows and 3,222 payout lines**.
+Ten trip rows are identical duplicates, so a fresh import inserts 3,304 unique
+trips. The user approved exactly two rider-reference corrections: `R7 -> R007`
+(38 rows) and `r19 -> R019` (26 rows). The deterministic normalization function
+requires the canonical rider to exist in `riders.csv`, rejects ambiguity and
+unknown IDs, and logs each transformed reference with its source file and row.
+It never changes trip IDs or the original CSV files. Conflicting duplicate IDs
+and missing/wrong-owner trip references fail validation.
+
+All three imports share one transaction, ordered riders, trips, payout lines.
+`ON CONFLICT DO NOTHING` targets the source primary key. Repeating the command
+inserts zero records and reports skipped rows; existing records are never
+updated. Failures roll back all inserts and exit nonzero. Summary counts print
+as JSON after commit; transformation logs go to stderr. Historical negative
+penalties and nullable incentive trip references are preserved.
+
+## HTTP API
+
+- `GET /health`: checks PostgreSQL with a three-second timeout, returning 200
+  with `{"status":"healthy","database":"connected"}` or 503 on failure.
+- `GET /ui/riders`: paginated riders.
+- `GET /ui/riders/{rider_id}`: rider detail, or 404.
+- `GET /ui/riders/{rider_id}/trips`: optional `date_from`, `date_to`, `status`.
+- `GET /ui/riders/{rider_id}/payout-lines`: optional `date_from`, `date_to`,
+  `line_type`, `trip_id`.
+
+Collections return `{items,total,limit,offset}`. Default limit is 50, maximum
+100; offset starts at zero. Date bounds are inclusive IST calendar dates. Trip
+queries translate them to half-open timezone-aware UTC timestamp ranges, and
+payout queries compare source calendar dates. Ordering includes stable source
+IDs. Error responses use `{error:{code,message,details?}}` and omit database
+credentials and internal exception details. Decimal values serialize as strings.
+
+CORS allows `http://localhost:3000` and `http://127.0.0.1:3000`. Override
+`CORS_ORIGINS` with a JSON string array if needed. `/docs` exposes the API schema.
+These `/ui` endpoints are read-only development APIs. API startup neither seeds
+data nor runs migrations; shutdown disposes the initialized async connection
+pool. The session dependency closes sessions and rolls back failures; callers
+own commits.
+
+Admin seeding, authentication, policy calculations, agents, PaySwift execution,
+workers and the assignment's `/messages`, `/trace/{rider_id}` and `/ops/pending`
+endpoints are deferred. Compose's API service and `evals/run.py` are also future
+work; start this milestone's API with the Uvicorn command above.
 
 ## Continuous integration
 

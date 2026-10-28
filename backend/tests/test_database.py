@@ -7,7 +7,7 @@ import pytest
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 from conftest import migrate
-from sqlalchemy import func, inspect, select, text
+from sqlalchemy import delete, func, inspect, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.pool import NullPool
@@ -386,6 +386,12 @@ async def test_concurrent_daily_reservation(database_url):
                 )
             ).scalar_one() == 1
     finally:
+        # This test commits to exercise concurrency; clean up only its own test records.
+        async with engine.begin() as conn:
+            await conn.execute(delete(PaymentIntent).where(PaymentIntent.rider_id == rider))
+            await conn.execute(delete(Dispute).where(Dispute.id == dispute))
+            await conn.execute(delete(Conversation).where(Conversation.rider_id == rider))
+            await conn.execute(delete(Rider).where(Rider.rider_id == rider))
         await engine.dispose()
 
 
