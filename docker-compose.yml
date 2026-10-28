@@ -1,6 +1,63 @@
-# Starter file. Add your own services (your app, Postgres) next to payswift. Leave payswift as it is.
+
+name: quickdrop
+
 services:
+  # Existing PaySwift sandbox — unchanged
   payswift:
     build: ./payswift
     ports:
       - "8081:8081"
+
+  # PostgreSQL — persistent application database
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-quickdrop}
+      POSTGRES_USER: ${POSTGRES_USER:-quickdrop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # Redis — caching, Pub/Sub, transient events
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --maxmemory
+      - 128mb
+      - --maxmemory-policy
+      - noeviction
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  default:
+    name: quickdrop-network
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
