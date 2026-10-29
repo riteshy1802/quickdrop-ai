@@ -108,6 +108,38 @@ def scope_requests(extraction, state):
     return requests
 
 
+def expand_investigation_scope(extraction, state):
+    """Count/target evidence widens investigation, never establishes entitlement.
+
+    Only day-scoped generic earnings claims expand. A named missing trip remains
+    trip-scoped. The financial engine alone counts completed trips and paid bonuses.
+    """
+    text = state["text"]
+    count_or_target = re.search(
+        r"\b(?:\d+|twelve)\s*(?:(?:se\s+)?(?:zyada|zyaada|more|plus)\s+)?"
+        r"(?:orders?|trips?|deliveries)\b|\b(?:daily\s+target|bonus|incentive|target)\b"
+        r"|(?:ऑर्डर|ट्रिप|बोनस|इंसेंटिव|टारगेट)",
+        text,
+        re.I,
+    )
+    if not count_or_target or extraction.intent not in {"complaint", "followup"}:
+        return extraction
+    claims = list(extraction.claims)
+    existing = {
+        token for claim in claims if claim.kind == "INCENTIVE" for token in claim.date_tokens
+    }
+    for claim in extraction.claims:
+        if claim.kind != "PAYOUT" or claim.trip_ids:
+            continue
+        dates = claim.date_tokens or literal_dates(text)
+        if dates and not set(dates).issubset(existing):
+            from app.agent.state import Complaint
+
+            claims.append(Complaint(kind="INCENTIVE", date_tokens=dates))
+            existing.update(dates)
+    return extraction.model_copy(update={"claims": claims})
+
+
 class Nodes:
     def __init__(self, tools, extractor=None):
         self.tools = tools
@@ -155,6 +187,14 @@ class Nodes:
                 )
                 raise AgentDeferred from None
         extraction = repair(extraction, state)
+        expanded = expand_investigation_scope(extraction, state)
+        if expanded != extraction:
+            await self.tools.audit(
+                "investigation_scope_expanded",
+                {"reason": "Day earnings complaint includes count or target evidence"},
+                event_type="decision",
+            )
+        extraction = expanded
         # A model classification cannot skip tools for an explicit fare complaint.
         ids = re.findall(r"\bT\d+\b", state["text"], re.I)
         fare_issue = re.search(
