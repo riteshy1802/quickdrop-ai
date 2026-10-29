@@ -16,6 +16,8 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+    app_env: str = "development"
+    enable_local_internal_reads: bool = False
     cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
     database_url: SecretStr | None = None
     postgres_host: str = "localhost"

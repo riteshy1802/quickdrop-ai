@@ -13,7 +13,7 @@ import httpx
 import pytest
 import pytest_asyncio
 from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.pool import NullPool
 
 from app.core import database
@@ -28,21 +28,6 @@ pytestmark = pytest.mark.database
 
 # The two reference mappings explicitly approved for these source exports.
 ALIASES = {"R7": "R007", "r19": "R019"}
-
-
-@pytest_asyncio.fixture
-async def session(connection):
-    async with AsyncSession(
-        bind=connection, join_transaction_mode="create_savepoint", expire_on_commit=False
-    ) as session:
-        yield session
-
-
-@pytest_asyncio.fixture
-async def seeded(session):
-    async with session.begin():
-        counts = await seed_data(session)
-    return counts
 
 
 @pytest_asyncio.fixture

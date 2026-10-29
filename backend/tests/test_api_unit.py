@@ -53,8 +53,7 @@ async def test_http_validation_and_cors_without_database():
                 },
             )
             assert ("access-control-allow-origin" in response.headers) is allowed
-        for path in ["/messages", "/trace/R001", "/ops/pending"]:
-            assert (await client.get(path)).status_code == 404
+        assert (await client.get("/messages")).status_code == 405
 
 
 def test_source_validation_and_default_paths(monkeypatch, tmp_path):

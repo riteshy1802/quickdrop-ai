@@ -9,10 +9,11 @@ from uuid import uuid4
 import asyncpg
 import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
 from app.core.config import BACKEND_DIR, get_settings
+from app.scripts.seed import seed_data
 
 
 def migrate(url, *args):
@@ -77,3 +78,18 @@ async def connection(database_url):
         finally:
             await transaction.rollback()
     await engine.dispose()
+
+
+@pytest_asyncio.fixture
+async def session(connection):
+    async with AsyncSession(
+        bind=connection, join_transaction_mode="create_savepoint", expire_on_commit=False
+    ) as session:
+        yield session
+
+
+@pytest_asyncio.fixture
+async def seeded(session):
+    async with session.begin():
+        counts = await seed_data(session)
+    return counts

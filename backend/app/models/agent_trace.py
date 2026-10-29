@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from app.models.conversation import Conversation
 
 _SENSITIVE = re.compile(
-    r"api.?key|authorization|password|secret|credential|cookie|access.?token|refresh.?token|chain.?of.?thought|hidden.?reasoning",
+    r"api.?key|authorization|password|secret|credential|cookie|token|private.?key|chain.?of.?thought|hidden.?reasoning",
     re.IGNORECASE,
 )
 

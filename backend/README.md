@@ -41,7 +41,7 @@ No real credentials belong in source control or `alembic.ini`.
   `app.models` registers all tables; relationships avoid implicit async I/O.
 - `alembic/`: schema migrations; the initial revision is `078eb21553bb`.
 - `tests/`: metadata and actual PostgreSQL constraint/concurrency checks.
-- `app/main.py` and `app/api/`: async FastAPI app, readiness and read-only routers.
+- `app/main.py` and `app/api/`: async FastAPI app, readiness, messaging and read-only routers.
 - `app/repositories/`: rider, trip and historical payout queries, with no policy calculations.
 - `app/schemas/`: Pydantic v2 ORM response schemas; decimals serialize as exact strings.
 - `app/scripts/seed.py`: validated, transactional and idempotent CSV import.
@@ -147,10 +147,9 @@ data nor runs migrations; shutdown disposes the initialized async connection
 pool. The session dependency closes sessions and rolls back failures; callers
 own commits.
 
-Admin seeding, authentication, policy calculations, agents, PaySwift execution,
-workers and the assignment's `/messages`, `/trace/{rider_id}` and `/ops/pending`
-endpoints are deferred. Compose's API service and `evals/run.py` are also future
-work; start this milestone's API with the Uvicorn command above.
+Admin seeding, authentication, agents, PaySwift execution, and workers are deferred.
+Messaging, traces, and pending Ops contracts are implemented; see Milestone 3 below.
+Compose's API service and `evals/run.py` remain future work.
 
 ## Continuous integration
 
@@ -167,3 +166,31 @@ uses Node.js 22, `npm ci`, lint, type checking and the production build.
 The workflow includes a commented full-application evaluation scaffold. Enable
 it only after FastAPI, its Compose service and `evals/run.py` are implemented,
 including their dependency/environment and data setup. No deployment runs in CI.
+
+## Financial reconciliation (Milestone 2)
+
+The read-only engine in `app/services/financial/` implements official fare,
+incentive, cancellation and seven-day eligibility rules with exact Decimal
+arithmetic and itemized historical/provider payment accounting. See
+[financial-engine.md](docs/financial-engine.md) for usage, evidence requirements,
+policy boundaries and the explicitly approved R031 distance-unit correction. This engine
+never authorizes or executes a payment.
+
+The read-only CSV audit is documented in
+[docs/data-quality-report.md](docs/data-quality-report.md). Regenerate its complete
+JSON report with `uv run python -m app.scripts.audit_data --output docs/data-quality-report.json`.
+Only the verified `T312538` record is normalized for financial calculations; other
+audit findings are reported without new corrections.
+
+## Controlled data synchronization
+
+See [docs/controlled-normalization.md](docs/controlled-normalization.md) for the
+explicit dry-run/apply commands, decision-history protections, source
+classifications, distance-unit investigation and rollback limitations. The
+complete normalization/synchronization report is `reports/data_quality.json`.
+Original CSVs and all historical payout lines remain unchanged.
+
+
+## Core APIs (Milestone 3)
+
+Messaging persistence, conversation lifecycle, audit traces, pending Ops retrieval, and internal read APIs are implemented. Apply `uv run alembic upgrade head` before using them. Internal reads default to disabled; enable only for loopback development with `APP_ENV=development ENABLE_LOCAL_INTERNAL_READS=true`. See [endpoint contracts, retry policy, migration, and verification commands](docs/core-apis.md). No LLM or payment execution is included. Frontend adapters still use mock data.

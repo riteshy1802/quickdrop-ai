@@ -15,13 +15,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import BACKEND_DIR
 from app.core.database import get_engine, get_session_factory
+from app.data_quality.rules import APPROVED_RIDER_ALIASES as APPROVED_RIDER_ALIASES
+from app.data_quality.rules import NormalizationError, canonical_rider_reference
 from app.models import PayoutLine, Rider, Trip
 from app.schemas.payout import PayoutLineResponse
 from app.schemas.rider import RiderResponse
 from app.schemas.trip import TripResponse
 
 logger = logging.getLogger(__name__)
-APPROVED_RIDER_ALIASES = {"R7": "R007", "r19": "R019"}
 
 DEFAULT_DATA_DIR = BACKEND_DIR.parent / "data"
 DATASETS = (
@@ -66,18 +67,11 @@ def read_datasets(data_dir: Path = DEFAULT_DATA_DIR) -> dict[str, list[dict]]:
 
 
 def normalize_rider_reference(rider_id: str, rider_ids: set[str]) -> str:
-    """Only the two explicitly approved source aliases may be normalized."""
-    if rider_id in APPROVED_RIDER_ALIASES:
-        target = APPROVED_RIDER_ALIASES[rider_id]
-        if target not in rider_ids or rider_id in rider_ids:
-            raise SeedError(
-                f"Rider reference {rider_id!r} is ambiguous or its canonical "
-                f"rider {target!r} is missing from riders.csv"
-            )
-        return target
-    if rider_id not in rider_ids:
-        raise SeedError(f"Unknown rider reference {rider_id!r}; no approved mapping exists")
-    return rider_id
+    """Compatibility wrapper over the shared approved alias rules."""
+    try:
+        return canonical_rider_reference(rider_id, rider_ids)
+    except NormalizationError as exc:
+        raise SeedError(str(exc)) from None
 
 
 async def seed_data(

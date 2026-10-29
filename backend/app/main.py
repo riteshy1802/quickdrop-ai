@@ -10,7 +10,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
-from app.api import health, riders
+from app.api import health, messages, ops_pending, riders, trace
+from app.api.ui import conversations, ops
 from app.core.config import get_settings
 from app.core.database import get_engine
 
@@ -79,6 +80,14 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(riders.router)
+    for router in (
+        messages.router,
+        trace.router,
+        ops_pending.router,
+        conversations.router,
+        ops.router,
+    ):
+        app.include_router(router)
     return app
 
 

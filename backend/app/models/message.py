@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, String, Text, text
+from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, String, Text, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, CreatedAt, UUIDPrimaryKey
@@ -35,5 +36,10 @@ class Message(UUIDPrimaryKey, CreatedAt, Base):
         Boolean, nullable=False, default=False, server_default=text("false")
     )
     processing_status: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    received_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    processing_token: Mapped[UUID | None] = mapped_column(nullable=True)
+    processing_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     webhook_reply: Mapped[str | None] = mapped_column(Text, nullable=True)
     conversation: Mapped[Conversation] = relationship(back_populates="messages", lazy="raise")
