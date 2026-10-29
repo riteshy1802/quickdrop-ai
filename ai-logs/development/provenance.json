@@ -1,0 +1,108 @@
+{
+  "export_date": "2026-10-29",
+  "format": "Original Codex JSONL session metadata and raw user/assistant message records, with credential redaction. Tool payloads, hidden reasoning and nonconversation telemetry excluded. No reconstructed exchanges.",
+  "redactions": {
+    "known_secret_replacements": 61,
+    "pattern_replacements": 152
+  },
+  "sessions": [
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T01-04-07-01a18401-6b4a-7182-9f9a-d4c3c5e5ad93.jsonl",
+      "source_sha256": "f1f2f504eb65157bf98c2a471b4f95a745c2f7ac51de80795e6fe2ded5b69cae",
+      "export": "ai-logs/development/rollout-2026-10-29T01-04-07-01a18401-6b4a-7182-9f9a-d4c3c5e5ad93.jsonl",
+      "records": 286,
+      "export_sha256": "a8c94a9b26cb712b87f21f82acc0326b3607d16242002bcff9b47798d5bff773"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T01-03-15-01a18400-9ecd-70c0-be8a-88b802bacded.jsonl",
+      "source_sha256": "48b20a9e76bca629f64b1cad97b08ca0956b86e56d451f6cd74c4bf4920aaae6",
+      "export": "ai-logs/development/rollout-2026-10-29T01-03-15-01a18400-9ecd-70c0-be8a-88b802bacded.jsonl",
+      "records": 338,
+      "export_sha256": "64f3fe62a2f67ef7941d0f5be0d68991bfdeb102dd6407bed92e8f3f3a00279e"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T12-34-22-01a18679-5a3b-7fa0-bf51-750741289987.jsonl",
+      "source_sha256": "b4b0cf3a65d4a59b2e14ecf157fb1eaf7a28f0cff7c78501efa8ae02bdf0a091",
+      "export": "ai-logs/development/rollout-2026-10-29T12-34-22-01a18679-5a3b-7fa0-bf51-750741289987.jsonl",
+      "records": 266,
+      "export_sha256": "83126045382208d8ad04120f9179790c81dd754923af7da5aa277da796ddfd6f"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T03-18-37-01a1847c-8d59-7511-920c-8297aae2c6b5.jsonl",
+      "source_sha256": "09798f5d67cfb8b9be8541a2458c1ba888533ebe9f583bf20cca4a59ac6b29b2",
+      "export": "ai-logs/development/rollout-2026-10-29T03-18-37-01a1847c-8d59-7511-920c-8297aae2c6b5.jsonl",
+      "records": 22,
+      "export_sha256": "8c36f31e7263c83d43f04d71b3482ab290c4667c67b54e93567ce280c7873f0a"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T09-09-27-01a185bd-bf03-7711-8023-f3207d534ffe.jsonl",
+      "source_sha256": "3ca5cba03a152422b3d6abdf2aa2c16718bf12a6c20bea0975c6448066c741e7",
+      "export": "ai-logs/development/rollout-2026-10-29T09-09-27-01a185bd-bf03-7711-8023-f3207d534ffe.jsonl",
+      "records": 146,
+      "export_sha256": "8fe356e404161cd0363133f1dd9177a413f107bbf836f88d2dd453b78b45bc59"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T23-20-17-01a188c8-b53d-7550-b1e3-435681423488.jsonl",
+      "source_sha256": "6c49dcb20be8b074449926922bbd7d0d5fb293851db790d5f871988b953363c1",
+      "export": "ai-logs/development/rollout-2026-10-29T23-20-17-01a188c8-b53d-7550-b1e3-435681423488.jsonl",
+      "records": 26,
+      "export_sha256": "f0a711366ad2da45bbdb7f7e2d9656ccf876b097c5f93de7a1c1784ac99dd8eb"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T02-58-03-01a18469-b92a-7020-aa69-86676dcb915e.jsonl",
+      "source_sha256": "686241dddcb4452e74a131c7d4d0caa993aa6f280ecfd686c47010ab35226ffc",
+      "export": "ai-logs/development/rollout-2026-10-29T02-58-03-01a18469-b92a-7020-aa69-86676dcb915e.jsonl",
+      "records": 58,
+      "export_sha256": "9c37eb5482232ca56140bc2bc5c90d6a0b607a36c35a6679c7688e170a0833a8"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T15-22-42-01a18713-772e-77a1-b57e-1265221e710e.jsonl",
+      "source_sha256": "cd69af93d02b4d116a5d4613de588ff7265af53b7ba20a1efc7a7aa8bae52742",
+      "export": "ai-logs/development/rollout-2026-10-29T15-22-42-01a18713-772e-77a1-b57e-1265221e710e.jsonl",
+      "records": 66,
+      "export_sha256": "f96aed4332fe30448aecc925bfe53c87be464657997c4064a3341035c1faf4b5"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T12-09-07-01a18662-3b11-76a0-ab18-80c5db518595.jsonl",
+      "source_sha256": "9b7300b30169c637d7d85cec94d1d426210f3dcd36bac1d5dbcd09ae4905c1ee",
+      "export": "ai-logs/development/rollout-2026-10-29T12-09-07-01a18662-3b11-76a0-ab18-80c5db518595.jsonl",
+      "records": 36,
+      "export_sha256": "7034875ed12d4ebe4a3d28fd51219229e393b0d0f927e78b8313909c232677ea"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T23-38-37-01a188d9-7edd-73e1-b414-230600175643.jsonl",
+      "source_sha256": "31807181ec5b80bad4c6117a5749ecd362d04e68f4d424e70186dc41a62fdb42",
+      "export": "ai-logs/development/rollout-2026-10-29T23-38-37-01a188d9-7edd-73e1-b414-230600175643.jsonl",
+      "records": 56,
+      "export_sha256": "01de585e5dff2f51b5c4d2e9bd143414735ebbecb77942ec247bdc71e883dee0"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T11-13-36-01a1862f-677b-7751-9f41-d41c90d72dcc.jsonl",
+      "source_sha256": "904962725e6131c6b1f0eaa670bcd8e9f763ff4281b35ef3788c81c979f7d7f0",
+      "export": "ai-logs/development/rollout-2026-10-29T11-13-36-01a1862f-677b-7751-9f41-d41c90d72dcc.jsonl",
+      "records": 72,
+      "export_sha256": "a3754029a463432c6382a9ce242b8570afed946e16a6a38e2f27123ab5da1801"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T15-51-57-01a1872e-3e5b-7600-94c0-dff45e439623.jsonl",
+      "source_sha256": "d043f7d709355ccb303514836ad3f52c82cde0472b4ecad960b70eb807130257",
+      "export": "ai-logs/development/rollout-2026-10-29T15-51-57-01a1872e-3e5b-7600-94c0-dff45e439623.jsonl",
+      "records": 221,
+      "export_sha256": "6b079dde3b5b125a947d15abf021776b5c15a4e6f34c09ebc174f746e6e8bc52"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T03-25-47-01a18483-1af4-78f3-91a9-d9cfe2298bad.jsonl",
+      "source_sha256": "369bb050f282a00e5b5e866cce288a8929607766211369a6dbd5470205038a3f",
+      "export": "ai-logs/development/rollout-2026-10-29T03-25-47-01a18483-1af4-78f3-91a9-d9cfe2298bad.jsonl",
+      "records": 128,
+      "export_sha256": "bb0b79ff963fcf453c6a12fbd33bd208331a8f17da6fed5d6b6bd437e2aad3df"
+    },
+    {
+      "source": "/home/ritesh/.codex/sessions/2026/10/29/rollout-2026-10-29T10-22-01-01a18600-2eb2-7d31-9192-df346d0c2430.jsonl",
+      "source_sha256": "31c14c9d9e25d3ab00410ded968cb118c9ea7b5ac8a2033f1d696ddb61fa6f8d",
+      "export": "ai-logs/development/rollout-2026-10-29T10-22-01-01a18600-2eb2-7d31-9192-df346d0c2430.jsonl",
+      "records": 138,
+      "export_sha256": "9eedffe6dfe922559e6f2019f59c4793f1a496bdd895c9a48594d6116f3f7a8b"
+    }
+  ]
+}
