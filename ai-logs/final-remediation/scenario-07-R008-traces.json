@@ -1,0 +1,148 @@
+[
+  {
+    "at": "2026-10-29T18:23:27.638421Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "order T252921 pe surge chal raha tha, paisa kam aaya",
+      "rider_id": "R008",
+      "message_id": "wamid.Z4CUXUA48JQLVZ",
+      "received_at": "2026-09-22T09:40:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T18:23:27.685381Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.790442Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "SURGE",
+          "trip_ids": [
+            "T252921"
+          ],
+          "date_tokens": []
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v8",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.805745Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.816155Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.838869Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T252921",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "46",
+          "historical": "46",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R008",
+      "outstanding": "0",
+      "received_at": "2026-09-22T04:10:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.853560Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.857098Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "3463fbe1-7c37-4a26-9f65-14828dd057d7"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "no_shortfall",
+          "items": [
+            {
+              "source": "T252921",
+              "expected": "46",
+              "historical": "46"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:29.865787Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Trip T252921:\n\nMaine records check kiye, lekin koi baaki payment nahi mila."
+  }
+]

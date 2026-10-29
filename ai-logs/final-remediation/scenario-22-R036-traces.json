@@ -1,0 +1,150 @@
+[
+  {
+    "at": "2026-10-29T18:24:21.951469Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "18 ko order T990831 ka distance galat laga hai",
+      "rider_id": "R036",
+      "message_id": "wamid.LZ3ZVNKF9QTG8J",
+      "received_at": "2026-09-23T12:00:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T18:24:22.006078Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:23.964709Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [
+            "T990831"
+          ],
+          "date_tokens": [
+            "18"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v8",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:23.979834Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:23.990203Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:24.011191Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T990831",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "52",
+          "historical": "52",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R036",
+      "outstanding": "0",
+      "received_at": "2026-09-23T06:30:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:24.023813Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:24.026806Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "b2795b59-832e-405c-b876-0c0ec6454ddf"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "no_shortfall",
+          "items": [
+            {
+              "source": "T990831",
+              "expected": "52",
+              "historical": "52"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T18:24:24.033474Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Trip T990831:\n\nMaine records check kiye, lekin koi baaki payment nahi mila."
+  }
+]

@@ -1,0 +1,525 @@
+{
+  "scenario_id": 5,
+  "rider_id": "R003",
+  "scenario": "message delivered twice by the vendor",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.5RHB2ELK3YVT37",
+        "text": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+        "received_at": "2026-09-22T09:05:00+05:30",
+        "rider_id": "R003"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 2.4592,
+      "initial_response": {
+        "reply": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai."
+      },
+      "final_reply": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+      "total_agent_seconds": 2.4613,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "rider_id": "R003",
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98",
+            "status": "PAYMENT_PENDING",
+            "verified_amount": "25",
+            "details": {
+              "request": {
+                "rider_id": "R003",
+                "trip_ids": [
+                  "T926334"
+                ],
+                "trip_dates": [],
+                "received_at": "2026-09-22T03:35:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-22T09:05:00+05:30",
+                "incentive_dates": []
+              },
+              "scope_key": "4a253c56f5e446833ebff2735631ec48bf9e7df84697f73981c113fca985b3e5"
+            }
+          }
+        ],
+        "items": [
+          {
+            "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "source_type": "trip",
+            "source_id": "T926334",
+            "expected_amount": "74",
+            "actual_amount": "49",
+            "difference": "25"
+          }
+        ],
+        "intents": [
+          {
+            "id": "c76a45a7-340d-4851-ad2f-914fb72a93fc",
+            "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "rider_id": "R003",
+            "status": "PENDING",
+            "amount": "25",
+            "payment_type": "AUTO",
+            "provider_payout_id": null,
+            "idempotency_key": "quickdrop-dispute:cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "auto_pay_date": "2026-10-29",
+            "authorization": "[REDACTED]",
+            "post_started_at": null,
+            "last_reconciled_at": null,
+            "retry_count": 0,
+            "next_retry_at": null
+          }
+        ],
+        "queues": [],
+        "messages": [
+          {
+            "id": "8402b7cc-c299-42a0-8b72-fc6425958795",
+            "message_id": "wamid.5RHB2ELK3YVT37",
+            "sender_type": "RIDER",
+            "content": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+            "received_at": "2026-09-22T03:35:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "SURGE",
+                    "trip_ids": [
+                      "T926334"
+                    ],
+                    "date_tokens": [
+                      "20 tarikh wala"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-22T09:05:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+          },
+          {
+            "id": "76bda1e8-41ef-41fb-8e34-0f01b5330253",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+          }
+        ]
+      },
+      "worker_errors": []
+    },
+    {
+      "request": {
+        "message_id": "wamid.5RHB2ELK3YVT37",
+        "text": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+        "received_at": "2026-09-22T09:05:00+05:30",
+        "rider_id": "R003"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 0.0053,
+      "initial_response": {
+        "reply": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai."
+      },
+      "final_reply": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+      "total_agent_seconds": 0.0069,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "rider_id": "R003",
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98",
+            "status": "RESOLVED",
+            "verified_amount": "25",
+            "details": {
+              "request": {
+                "rider_id": "R003",
+                "trip_ids": [
+                  "T926334"
+                ],
+                "trip_dates": [],
+                "received_at": "2026-09-22T03:35:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-22T09:05:00+05:30",
+                "incentive_dates": []
+              },
+              "scope_key": "4a253c56f5e446833ebff2735631ec48bf9e7df84697f73981c113fca985b3e5"
+            }
+          }
+        ],
+        "items": [
+          {
+            "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "source_type": "trip",
+            "source_id": "T926334",
+            "expected_amount": "74",
+            "actual_amount": "49",
+            "difference": "25"
+          }
+        ],
+        "intents": [
+          {
+            "id": "c76a45a7-340d-4851-ad2f-914fb72a93fc",
+            "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "rider_id": "R003",
+            "status": "SUCCEEDED",
+            "amount": "25",
+            "payment_type": "AUTO",
+            "provider_payout_id": "pout_cac0635708fc",
+            "idempotency_key": "quickdrop-dispute:cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+            "auto_pay_date": "2026-10-29",
+            "authorization": "[REDACTED]",
+            "post_started_at": "2026-10-29T18:23:13.847000+00:00",
+            "last_reconciled_at": "2026-10-29T18:23:24.623755+00:00",
+            "retry_count": 3,
+            "next_retry_at": null
+          }
+        ],
+        "queues": [],
+        "messages": [
+          {
+            "id": "8402b7cc-c299-42a0-8b72-fc6425958795",
+            "message_id": "wamid.5RHB2ELK3YVT37",
+            "sender_type": "RIDER",
+            "content": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+            "received_at": "2026-09-22T03:35:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "SURGE",
+                    "trip_ids": [
+                      "T926334"
+                    ],
+                    "date_tokens": [
+                      "20 tarikh wala"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-22T09:05:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+          },
+          {
+            "id": "76bda1e8-41ef-41fb-8e34-0f01b5330253",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [
+      {
+        "id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+        "rider_id": "R003",
+        "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98",
+        "status": "RESOLVED",
+        "verified_amount": "25",
+        "details": {
+          "request": {
+            "rider_id": "R003",
+            "trip_ids": [
+              "T926334"
+            ],
+            "trip_dates": [],
+            "received_at": "2026-09-22T03:35:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-22T09:05:00+05:30",
+            "incentive_dates": []
+          },
+          "scope_key": "4a253c56f5e446833ebff2735631ec48bf9e7df84697f73981c113fca985b3e5"
+        }
+      }
+    ],
+    "items": [
+      {
+        "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+        "source_type": "trip",
+        "source_id": "T926334",
+        "expected_amount": "74",
+        "actual_amount": "49",
+        "difference": "25"
+      }
+    ],
+    "intents": [
+      {
+        "id": "c76a45a7-340d-4851-ad2f-914fb72a93fc",
+        "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+        "rider_id": "R003",
+        "status": "SUCCEEDED",
+        "amount": "25",
+        "payment_type": "AUTO",
+        "provider_payout_id": "pout_cac0635708fc",
+        "idempotency_key": "quickdrop-dispute:cae9f815-cb5f-5944-93cc-ef7c9f543e49",
+        "auto_pay_date": "2026-10-29",
+        "authorization": "[REDACTED]",
+        "post_started_at": "2026-10-29T18:23:13.847000+00:00",
+        "last_reconciled_at": "2026-10-29T18:23:24.623755+00:00",
+        "retry_count": 3,
+        "next_retry_at": null
+      }
+    ],
+    "queues": [],
+    "messages": [
+      {
+        "id": "8402b7cc-c299-42a0-8b72-fc6425958795",
+        "message_id": "wamid.5RHB2ELK3YVT37",
+        "sender_type": "RIDER",
+        "content": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+        "received_at": "2026-09-22T03:35:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "SURGE",
+                "trip_ids": [
+                  "T926334"
+                ],
+                "date_tokens": [
+                  "20 tarikh wala"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-22T09:05:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+      },
+      {
+        "id": "76bda1e8-41ef-41fb-8e34-0f01b5330253",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "7bfaed0c-61eb-406a-bd53-1bc88728de98"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [],
+  "provider_ledger": [
+    {
+      "payout_id": "pout_cac0635708fc",
+      "rider_id": "R003",
+      "amount": 25,
+      "reference": "quickdrop:c76a45a7-340d-4851-ad2f-914fb72a93fc",
+      "status": "processed",
+      "created_at": "2026-10-29T18:23:21Z"
+    }
+  ],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 25,
+    "approval": null,
+    "escalation": "no"
+  },
+  "auto_authorized_amount": 25,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [
+    "25"
+  ],
+  "agent_escalation_count": 0,
+  "all_escalation_count": 0,
+  "provider_confirmed_amount": 25,
+  "provider_ledger_amount": 25,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": true,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status",
+    "payswift_authorization_ledger",
+    "payswift_request_started",
+    "payswift_dispatch_ledger",
+    "payswift_request_result",
+    "payswift_request_started",
+    "payswift_request_result",
+    "payswift_request_started",
+    "payswift_request_result"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T18:23:13.583543Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "8402b7cc-c299-42a0-8b72-fc6425958795"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "SURGE",
+            "trip_ids": [
+              "T926334"
+            ],
+            "date_tokens": [
+              "20 tarikh wala"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:13.645708Z",
+      "type": "decision",
+      "name": "check_payment_eligibility",
+      "input": {
+        "message_id": "8402b7cc-c299-42a0-8b72-fc6425958795"
+      },
+      "output": {
+        "ready_for_authorization": "[REDACTED]"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:13.652715Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "8402b7cc-c299-42a0-8b72-fc6425958795"
+      },
+      "output": {
+        "status": "VERIFIED",
+        "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:13.807191Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "cae9f815-cb5f-5944-93cc-ef7c9f543e49"
+      },
+      "output": {
+        "reason": "Full outstanding balance reserved",
+        "status": "AUTHORIZED",
+        "queue_id": null,
+        "intent_id": "c76a45a7-340d-4851-ad2f-914fb72a93fc"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:13.812684Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "8402b7cc-c299-42a0-8b72-fc6425958795"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "authorized",
+            "dates": [
+              "2026-09-20"
+            ],
+            "items": [
+              {
+                "source": "T926334",
+                "expected": "74",
+                "historical": "49"
+              }
+            ],
+            "amount": "25",
+            "expected": "74",
+            "historical": "49",
+            "claim_types": [
+              "trip"
+            ],
+            "approval_reason": "Full outstanding balance reserved",
+            "over_auto_limit": false
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:13.865243Z",
+      "type": "decision",
+      "name": "payment_dispatch_verification",
+      "input": {
+        "intent_id": "c76a45a7-340d-4851-ad2f-914fb72a93fc"
+      },
+      "output": {
+        "verified": true
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "PASS"
+}

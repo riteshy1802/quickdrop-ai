@@ -1,0 +1,18 @@
+{
+  "api": {
+    "status": 200,
+    "body": "{\"status\":\"healthy\",\"database\":\"connected\"}"
+  },
+  "provider": {
+    "status": 200,
+    "body": "{\"status\": \"ok\"}"
+  },
+  "frontend": {
+    "status": 200,
+    "body": "HTML received"
+  },
+  "frontend_api_proxy": {
+    "status": 200,
+    "body": "{\"status\":\"healthy\",\"database\":\"connected\"}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "counts_preserved": true,
+  "before": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "payment_intents": 10
+  },
+  "after": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "payment_intents": 10
+  },
+  "note": "Worker state transitions may continue; no provider restart was performed."
+}

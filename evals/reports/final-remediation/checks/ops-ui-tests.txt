@@ -1,0 +1,13 @@
+
+> quickdrop-ai-frontend@0.1.0 test
+> vitest run --run src/test/ops-approvals.test.tsx
+
+
+ RUN  v4.1.11 /home/ritesh/quickdrop-ai/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  23:51:44
+   Duration  1.47s (transform 147ms, setup 0ms, import 695ms, tests 183ms, environment 458ms)
+

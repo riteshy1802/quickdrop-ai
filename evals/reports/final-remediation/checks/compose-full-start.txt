@@ -1,0 +1,323 @@
+ Image quickdrop-remediation-worker Building 
+ Image quickdrop-remediation-payswift Building 
+ Image quickdrop-remediation-provider-ready Building 
+ Image quickdrop-remediation-api Building 
+ Image quickdrop-remediation-frontend Building 
+ Image quickdrop-remediation-migrate Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.88kB done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 349B done
+#2 DONE 0.0s
+
+#3 [provider-ready internal] load build definition from Dockerfile
+#3 transferring dockerfile: 460B done
+#3 DONE 0.0s
+
+#4 [payswift internal] load build definition from Dockerfile
+#4 transferring dockerfile: 151B done
+#4 DONE 0.0s
+
+#5 [payswift internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.9s
+
+#6 [api internal] load metadata for ghcr.io/astral-sh/uv:0.9.26
+#6 DONE 0.9s
+
+#7 [auth] library/node:pull token for registry-1.docker.io
+#7 DONE 0.0s
+
+#8 [payswift internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [worker internal] load .dockerignore
+#9 transferring context: 104B done
+#9 DONE 0.0s
+
+#10 [payswift internal] load build context
+#10 transferring context: 32B done
+#10 DONE 0.0s
+
+#11 [api uv 1/1] FROM ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b
+#11 resolve ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b 0.0s done
+#11 DONE 0.0s
+
+#12 [worker stage-1 1/8] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#12 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done
+#12 DONE 0.0s
+
+#13 [payswift 2/3] WORKDIR /app
+#13 CACHED
+
+#14 [payswift 3/3] COPY server.pyc .
+#14 CACHED
+
+#15 [payswift] exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:36186470479c7e2ae2299b4d599863dbc739f7c7d62792739a1bbbc16ccadcec done
+#15 exporting config sha256:6c9eb1be29241513ac272538d73c781c7e27f95ce002c89c78d8ddbcc1344225 done
+#15 exporting attestation manifest sha256:eb4ab3dff3c34e61c49754fae63676ac6dcee0f9d2ef3a035d2a99b98e16c840 0.0s done
+#15 exporting manifest list sha256:c4da68c0ba8b896d3a9cea87b5e898a53aa81f4476adacf625dbf00084256c5e 0.0s done
+#15 naming to docker.io/library/quickdrop-remediation-payswift:latest done
+#15 unpacking to docker.io/library/quickdrop-remediation-payswift:latest 0.0s done
+#15 DONE 0.1s
+
+#16 [worker internal] load build context
+#16 transferring context: 642.72kB 0.1s done
+#16 DONE 0.1s
+
+#17 [worker stage-1 2/8] COPY --from=uv /uv /usr/local/bin/uv
+#17 CACHED
+
+#18 [worker stage-1 3/8] WORKDIR /app/backend
+#18 CACHED
+
+#19 [worker stage-1 4/8] COPY pyproject.toml uv.lock ./
+#19 CACHED
+
+#20 [worker stage-1 5/8] RUN uv sync --frozen --no-dev
+#20 CACHED
+
+#21 [worker stage-1 6/8] COPY app ./app
+#21 DONE 0.3s
+
+#22 [api stage-1 7/8] COPY alembic ./alembic
+#22 DONE 0.0s
+
+#23 [payswift] resolving provenance for metadata file
+#23 DONE 0.0s
+
+#24 [provider-ready stage-1 8/8] COPY alembic.ini ./alembic.ini
+#24 DONE 0.0s
+
+#25 [provider-ready] exporting to image
+#25 exporting layers 0.1s done
+#25 exporting manifest sha256:e03fdda811a1b17e5ac11ea7600627dce9ccb12c600394a8ea837188f7f7fee8
+#25 exporting manifest sha256:e03fdda811a1b17e5ac11ea7600627dce9ccb12c600394a8ea837188f7f7fee8 0.0s done
+#25 exporting config sha256:65f595413360876bcc33e325213e68e82510474cb53d916febc299a6255c9177 0.0s done
+#25 exporting attestation manifest sha256:b4fc218cae7f588404213ecc5468602f3783c067a727c455074d52ae73aec2bd 0.1s done
+#25 exporting manifest list sha256:793fa69e510541eb05279a8a5c63fe49a30790ef04be49bc7ff919b54bb71377
+#25 exporting manifest list sha256:793fa69e510541eb05279a8a5c63fe49a30790ef04be49bc7ff919b54bb71377 0.0s done
+#25 naming to docker.io/library/quickdrop-remediation-provider-ready:latest done
+#25 unpacking to docker.io/library/quickdrop-remediation-provider-ready:latest
+#25 unpacking to docker.io/library/quickdrop-remediation-provider-ready:latest 0.1s done
+#25 DONE 0.5s
+
+#26 [worker] exporting to image
+#26 exporting layers 0.1s done
+#26 exporting manifest sha256:62dbed3fe079f2fdea48d812e68b9747aa0d76c46a2fcc0956f7b97f49d3e10f 0.0s done
+#26 exporting config sha256:9abe8782de8babf08db60bca825b283432f19cc18656678a68c19ffcdbbc42b3 0.0s done
+#26 exporting attestation manifest sha256:c268debba62f1796bc26d51764afe6693fbf06d65b3da5069fbc17f6b97c6cdb 0.1s done
+#26 exporting manifest list sha256:0ed41c8b780f7e482bb9be233a45c52d10adceba4c238a2eb3605b7ca6dd7323 0.0s done
+#26 naming to docker.io/library/quickdrop-remediation-worker:latest done
+#26 unpacking to docker.io/library/quickdrop-remediation-worker:latest 0.1s done
+#26 DONE 0.5s
+
+#27 [api] exporting to image
+#27 exporting layers 0.1s done
+#27 exporting manifest sha256:5afc08768191e93d38f72c3fecbb2f4913b85ea951c12998dbb023fa2425e16d 0.0s done
+#27 exporting config sha256:df5f2f1c6721c532b8ca07946b42b930020a1526036da4dc3003f2a19402cfa0 0.0s done
+#27 exporting attestation manifest sha256:27d17d89a6604270b7719438230d2575b663c5a8f0cc3a23f82b86023be070fb 0.1s done
+#27 exporting manifest list sha256:0d73a1b4e2b13e3c181e5a1590fa32e056f594079326c7ec029de144ee633efd 0.0s done
+#27 naming to docker.io/library/quickdrop-remediation-api:latest done
+#27 unpacking to docker.io/library/quickdrop-remediation-api:latest 0.1s done
+#27 DONE 0.5s
+
+#28 [migrate] exporting to image
+#28 exporting layers 0.1s done
+#28 exporting manifest sha256:28e4c3170b3dce10dbd02be27fafdbf1a1cd92b4f18698af95620a4172794709 0.0s done
+#28 exporting config sha256:1fa699861f0fb7cb904746477d6269fa674fe7e5270daaf1a84f85f0e7a089f4 0.0s done
+#28 exporting attestation manifest sha256:c14f31eb3ea0e7761273c7b9d50369747d7a5f60fee8729d9dbebec1adfccfc2 0.1s done
+#28 exporting manifest list sha256:c0ef1f00da1e145f8d5c29b3beac831c63fbdd4f7aa5cea9b433c151823a91c5 0.0s done
+#28 naming to docker.io/library/quickdrop-remediation-migrate:latest done
+#28 unpacking to docker.io/library/quickdrop-remediation-migrate:latest 0.1s done
+#28 DONE 0.5s
+
+#29 [worker] resolving provenance for metadata file
+#29 DONE 0.2s
+
+#30 [api] resolving provenance for metadata file
+#30 DONE 0.2s
+
+#31 [provider-ready] resolving provenance for metadata file
+#31 DONE 0.1s
+
+#32 [migrate] resolving provenance for metadata file
+#32 DONE 0.0s
+
+#33 [frontend internal] load metadata for docker.io/library/node:22-bookworm-slim
+#33 DONE 2.7s
+
+#34 [frontend internal] load .dockerignore
+#34 transferring context: 85B done
+#34 DONE 0.0s
+
+#35 [frontend 1/6] FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#35 resolve docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da 0.0s done
+#35 DONE 0.1s
+
+#36 [frontend internal] load build context
+#36 transferring context: 1.00MB 3.4s done
+#36 DONE 3.8s
+
+#35 [frontend 1/6] FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#35 sha256:d22dd8aef5082b9de7fb037db9c398ee2822c5c81cc5cbb63bb32a46a5decdb1 1.71MB / 1.71MB 0.4s done
+#35 sha256:0bee45faaffff77eee1e3d151cc650b854df28523ea01e5a2dcc0327da8793a9 448B / 448B 0.6s done
+#35 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 49.89MB / 49.89MB 2.6s done
+#35 sha256:709e8267cebf108d59c4e6e386882a5c79c10bbe11ecd02c6ed9ed4efa5b905d 3.31kB / 3.31kB 0.9s done
+#35 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 28.25MB / 28.25MB 2.6s done
+#35 extracting sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc
+#35 extracting sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 1.4s done
+#35 DONE 4.5s
+
+#35 [frontend 1/6] FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#35 extracting sha256:709e8267cebf108d59c4e6e386882a5c79c10bbe11ecd02c6ed9ed4efa5b905d 0.1s done
+#35 DONE 4.6s
+
+#35 [frontend 1/6] FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#35 extracting sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c
+#35 extracting sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 1.1s done
+#35 DONE 5.7s
+
+#35 [frontend 1/6] FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#35 extracting sha256:d22dd8aef5082b9de7fb037db9c398ee2822c5c81cc5cbb63bb32a46a5decdb1 0.0s done
+#35 extracting sha256:0bee45faaffff77eee1e3d151cc650b854df28523ea01e5a2dcc0327da8793a9 done
+#35 DONE 5.8s
+
+#37 [frontend 2/6] WORKDIR /app
+#37 DONE 0.2s
+
+#38 [frontend 3/6] COPY package.json package-lock.json ./
+#38 DONE 0.0s
+
+#39 [frontend 4/6] RUN npm ci --no-audit --no-fund
+#39 1.949 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#39 7.145 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#39 12.48 
+#39 12.48 added 573 packages in 12s
+#39 12.48 npm notice
+#39 12.48 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#39 12.48 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#39 12.48 npm notice To update run: npm install -g npm@12.2.1
+#39 12.48 npm notice
+#39 DONE 13.0s
+
+#40 [frontend 5/6] COPY . .
+#40 DONE 0.4s
+
+#41 [frontend 6/6] RUN npm run build
+#41 0.346 
+#41 0.346 > quickdrop-ai-frontend@0.1.0 build
+#41 0.346 > next build
+#41 0.346 
+#41 0.822 ▲ Next.js 16.4.3 (Turbopack)
+#41 0.876 ✓ Running next.config.ts took 52ms
+#41 0.901 - Cache Components enabled
+#41 0.901 - Partial Prefetching enabled
+#41 0.901 
+#41 0.929   Creating an optimized production build ...
+#41 13.49 ✓ Compiled successfully in 12.6s
+#41 13.49   Running TypeScript ...
+#41 19.75   Finished TypeScript in 6.3s ...
+#41 19.75   Collecting page data using 15 workers ...
+#41 21.69   Generating static pages using 15 workers (0/14) ...
+#41 22.47   Generating static pages using 15 workers (3/14) 
+#41 22.50   Generating static pages using 15 workers (6/14) 
+#41 22.80   Generating static pages using 15 workers (10/14) 
+#41 22.80 ✓ Generating static pages using 15 workers (14/14) in 1110ms
+#41 22.81   Finalizing page optimization ...
+#41 22.83 
+#41 22.84 Route (app)
+#41 22.84 ┌ ○ /
+#41 22.84 ├ ○ /_not-found
+#41 22.84 ├ ○ /icon.svg
+#41 22.84 ├ ○ /ops
+#41 22.84 ├ ○ /ops/approvals
+#41 22.84 ├   /ops/approvals/[id]
+#41 22.84 │ └ ◐ /ops/approvals/[id]
+#41 22.84 ├ ○ /ops/audit
+#41 22.84 ├ ○ /ops/conversations
+#41 22.84 ├   /ops/conversations/[id]
+#41 22.84 │ └ ◐ /ops/conversations/[id]
+#41 22.84 ├ ○ /ops/login
+#41 22.84 ├ ○ /ops/payouts
+#41 22.84 ├   /ops/payouts/[id]
+#41 22.84 │ └ ◐ /ops/payouts/[id]
+#41 22.84 └ ○ /rider
+#41 22.84 
+#41 22.84 
+#41 22.84 ○  (Static)             prerendered as static content
+#41 22.84 ◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+#41 22.84 
+#41 DONE 22.9s
+
+#42 [frontend] exporting to image
+#42 exporting layers
+#42 exporting layers 33.0s done
+#42 exporting manifest sha256:69bbd4f6339919c1afa261dd2d45733115f4d070b3306901123b682466d1930b 0.0s done
+#42 exporting config sha256:689221a7201ad061a741a53a9600bc08508f1f83796727112e238abe0159f4e1 0.0s done
+#42 exporting attestation manifest sha256:682a2331c8345feebd09863b753b878ae4902b316748ed1175304c149ee0d730 0.1s done
+#42 exporting manifest list sha256:61c36a0e354d33180ffcc74f42156b4c9572ae5be3df3528e65eb3fcde87693f
+#42 exporting manifest list sha256:61c36a0e354d33180ffcc74f42156b4c9572ae5be3df3528e65eb3fcde87693f 0.0s done
+#42 naming to docker.io/library/quickdrop-remediation-frontend:latest done
+#42 unpacking to docker.io/library/quickdrop-remediation-frontend:latest
+#42 unpacking to docker.io/library/quickdrop-remediation-frontend:latest 7.9s done
+#42 DONE 41.1s
+
+#43 [frontend] resolving provenance for metadata file
+#43 DONE 0.0s
+ Image quickdrop-remediation-provider-ready Built 
+ Image quickdrop-remediation-api Built 
+ Image quickdrop-remediation-frontend Built 
+ Image quickdrop-remediation-worker Built 
+ Image quickdrop-remediation-migrate Built 
+ Image quickdrop-remediation-payswift Built 
+ Container quickdrop-remediation-redis-1 Running 
+ Container quickdrop-remediation-postgres-1 Running 
+ Container quickdrop-remediation-payswift-1 Recreate 
+ Container quickdrop-remediation-migrate-1 Recreate 
+ Container quickdrop-remediation-migrate-1 Recreated 
+ Container quickdrop-remediation-payswift-1 Recreated 
+ Container quickdrop-remediation-provider-ready-1 Recreate 
+ Container quickdrop-remediation-provider-ready-1 Recreated 
+ Container quickdrop-remediation-api-1 Recreate 
+ Container quickdrop-remediation-worker-1 Recreate 
+ Container quickdrop-remediation-worker-1 Recreated 
+ Container quickdrop-remediation-api-1 Recreated 
+ Container quickdrop-remediation-frontend-1 Creating 
+ Container quickdrop-remediation-frontend-1 Created 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-payswift-1 Starting 
+ Container quickdrop-remediation-payswift-1 Started 
+ Container quickdrop-remediation-provider-ready-1 Starting 
+ Container quickdrop-remediation-provider-ready-1 Started 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-migrate-1 Starting 
+ Container quickdrop-remediation-migrate-1 Started 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-api-1 Starting 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-worker-1 Starting 
+ Container quickdrop-remediation-api-1 Started 
+ Container quickdrop-remediation-api-1 Waiting 
+ Container quickdrop-remediation-worker-1 Started 
+ Container quickdrop-remediation-api-1 Healthy 
+ Container quickdrop-remediation-frontend-1 Starting 
+ Container quickdrop-remediation-frontend-1 Started 

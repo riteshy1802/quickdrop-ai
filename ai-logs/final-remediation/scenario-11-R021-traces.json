@@ -1,0 +1,99 @@
+[
+  {
+    "at": "2026-10-29T18:23:38.894316Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "order T482410 ka payment nahi aaya",
+      "rider_id": "R021",
+      "message_id": "wamid.WSHY22LRQ9ZSY5",
+      "received_at": "2026-09-22T12:30:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T18:23:38.952267Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "44337b5d-951d-46ee-a567-82557c3581c1"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:40.971621Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "44337b5d-951d-46ee-a567-82557c3581c1"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [
+            "T482410"
+          ],
+          "date_tokens": []
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v8",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:41.000089Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "44337b5d-951d-46ee-a567-82557c3581c1"
+    },
+    "output": {
+      "error": "trip_not_owned"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:41.006011Z",
+    "type": "decision",
+    "name": "evidence_conflict",
+    "input": {
+      "message_id": "44337b5d-951d-46ee-a567-82557c3581c1"
+    },
+    "output": {
+      "reason": "Trip not found for trusted rider"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:41.016492Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "44337b5d-951d-46ee-a567-82557c3581c1"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "unmatched_trip",
+          "dates": []
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:41.024587Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Yeh trip is account ke liye verify nahi hui, isliye is par payment approve nahi kar sakta. Trip ID check kar lijiye."
+  }
+]

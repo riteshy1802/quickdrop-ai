@@ -1,0 +1,228 @@
+{
+  "scenario_id": 14,
+  "rider_id": "R025",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.THVZMDYEBZXBPE",
+        "text": "19 tarikh ko 12 orders kiye, incentive missing hai",
+        "received_at": "2026-09-23T09:30:00+05:30",
+        "rider_id": "R025"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 2.1414,
+      "initial_response": {
+        "reply": "Is din 11 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila."
+      },
+      "final_reply": "Is din 11 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+      "total_agent_seconds": 2.1499,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [],
+        "items": [],
+        "intents": [],
+        "queues": [],
+        "messages": [
+          {
+            "id": "03663ed3-8ca1-4f32-9724-aa690721fc9c",
+            "message_id": "wamid.THVZMDYEBZXBPE",
+            "sender_type": "RIDER",
+            "content": "19 tarikh ko 12 orders kiye, incentive missing hai",
+            "received_at": "2026-09-23T04:00:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "INCENTIVE",
+                    "trip_ids": [],
+                    "date_tokens": [
+                      "19 tarikh"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-23T09:30:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "10b98e9e-9c70-4fbc-a8e2-023b756b1192"
+          },
+          {
+            "id": "8fe594ee-e4ec-4bfb-8568-f772b6839965",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Is din 11 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "10b98e9e-9c70-4fbc-a8e2-023b756b1192"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [],
+    "items": [],
+    "intents": [],
+    "queues": [],
+    "messages": [
+      {
+        "id": "03663ed3-8ca1-4f32-9724-aa690721fc9c",
+        "message_id": "wamid.THVZMDYEBZXBPE",
+        "sender_type": "RIDER",
+        "content": "19 tarikh ko 12 orders kiye, incentive missing hai",
+        "received_at": "2026-09-23T04:00:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "INCENTIVE",
+                "trip_ids": [],
+                "date_tokens": [
+                  "19 tarikh"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-23T09:30:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "10b98e9e-9c70-4fbc-a8e2-023b756b1192"
+      },
+      {
+        "id": "8fe594ee-e4ec-4bfb-8568-f772b6839965",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Is din 11 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "10b98e9e-9c70-4fbc-a8e2-023b756b1192"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [],
+  "provider_ledger": [],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 0,
+    "approval": null,
+    "escalation": "no"
+  },
+  "auto_authorized_amount": 0,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [],
+  "agent_escalation_count": 0,
+  "all_escalation_count": 0,
+  "provider_confirmed_amount": 0,
+  "provider_ledger_amount": 0,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": false,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T18:23:48.529454Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "03663ed3-8ca1-4f32-9724-aa690721fc9c"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "INCENTIVE",
+            "trip_ids": [],
+            "date_tokens": [
+              "19 tarikh"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:48.606572Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "03663ed3-8ca1-4f32-9724-aa690721fc9c"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "no_shortfall",
+            "items": [
+              {
+                "source": "2026-09-19",
+                "expected": "0",
+                "historical": "0"
+              }
+            ],
+            "reasons": [
+              "11 completed trips on this IST date"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "NOT APPLICABLE"
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v8",
+    "system_prompt_sha256": "a36738296ed4f0404ccdc14ec07678fd0429041d56176712b3a74e3e6a506c8b",
+    "input": {
+      "text": "19 ko incentive nahi mila",
+      "received_at": "2026-09-22T10:10:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T18:22:49.850739+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.8453
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v8",
+    "system_prompt_sha256": "a36738296ed4f0404ccdc14ec07678fd0429041d56176712b3a74e3e6a506c8b",
+    "input": {
+      "text": "nahi nahi 12 kiye the, dobara check karo",
+      "received_at": "2026-09-22T10:12:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        },
+        {
+          "sender": "AI",
+          "text": "Is din 10 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+          "received_at": "2026-10-29T18:22:51.770764+00:00",
+          "reference_time": null
+        },
+        {
+          "sender": "RIDER",
+          "text": "nahi nahi 12 kiye the, dobara check karo",
+          "received_at": "2026-09-22T04:42:00+00:00",
+          "reference_time": "2026-09-22T10:12:00+05:30"
+        }
+      ],
+      "context": {
+        "language": "hinglish",
+        "extraction": {
+          "claims": [
+            {
+              "kind": "INCENTIVE",
+              "trip_ids": [],
+              "date_tokens": [
+                "19"
+              ]
+            }
+          ],
+          "intent": "complaint",
+          "language": "hinglish",
+          "simplify": false,
+          "correction": false,
+          "help_topic": "general",
+          "help_answer": "",
+          "records_disputed": false,
+          "mentioned_amounts": []
+        }
+      }
+    },
+    "started_at": "2026-10-29T18:22:51.830283+00:00",
+    "failure": "CancelledError",
+    "latency_seconds": 6.9817
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v8",
+    "system_prompt_sha256": "a36738296ed4f0404ccdc14ec07678fd0429041d56176712b3a74e3e6a506c8b",
+    "input": {
+      "text": "nahi nahi 12 kiye the, dobara check karo",
+      "received_at": "2026-09-22T10:12:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        },
+        {
+          "sender": "AI",
+          "text": "Is din 10 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+          "received_at": "2026-10-29T18:22:51.770764+00:00",
+          "reference_time": null
+        },
+        {
+          "sender": "RIDER",
+          "text": "nahi nahi 12 kiye the, dobara check karo",
+          "received_at": "2026-09-22T04:42:00+00:00",
+          "reference_time": "2026-09-22T10:12:00+05:30"
+        }
+      ],
+      "context": {
+        "language": "hinglish",
+        "extraction": {
+          "claims": [
+            {
+              "kind": "INCENTIVE",
+              "trip_ids": [],
+              "date_tokens": [
+                "19"
+              ]
+            }
+          ],
+          "intent": "complaint",
+          "language": "hinglish",
+          "simplify": false,
+          "correction": false,
+          "help_topic": "general",
+          "help_answer": "",
+          "records_disputed": false,
+          "mentioned_amounts": []
+        }
+      }
+    },
+    "started_at": "2026-10-29T18:23:00.911463+00:00",
+    "validated_model_output": {
+      "intent": "followup",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": true,
+      "records_disputed": true
+    },
+    "latency_seconds": 7.6779
+  }
+]

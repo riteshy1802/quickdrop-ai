@@ -1,0 +1,45 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v8",
+    "system_prompt_sha256": "a36738296ed4f0404ccdc14ec07678fd0429041d56176712b3a74e3e6a506c8b",
+    "input": {
+      "text": "20 tarikh ke 2 order ka payment nahi aaya: T795007, T206956",
+      "received_at": "2026-09-23T11:15:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "20 tarikh ke 2 order ka payment nahi aaya: T795007, T206956",
+          "received_at": "2026-09-23T05:45:00+00:00",
+          "reference_time": "2026-09-23T11:15:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T18:24:13.577784+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [
+            "T795007",
+            "T206956"
+          ],
+          "date_tokens": [
+            "20 tarikh"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.9814
+  }
+]

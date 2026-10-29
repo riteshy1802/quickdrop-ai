@@ -1,0 +1,425 @@
+{
+  "scenario_id": 6,
+  "rider_id": "R005",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.U9M9Z3HF69E2M9",
+        "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+        "received_at": "2026-09-22T09:20:00+05:30",
+        "rider_id": "R005"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 1.9619,
+      "initial_response": {
+        "reply": "Maine records check kiye, lekin koi baaki payment nahi mila.\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai."
+      },
+      "final_reply": "Maine records check kiye, lekin koi baaki payment nahi mila.\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+      "total_agent_seconds": 1.9643,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+            "rider_id": "R005",
+            "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd",
+            "status": "PAYMENT_PENDING",
+            "verified_amount": "150",
+            "details": {
+              "request": {
+                "rider_id": "R005",
+                "trip_ids": [],
+                "trip_dates": [],
+                "received_at": "2026-09-22T03:50:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-22T09:20:00+05:30",
+                "incentive_dates": [
+                  "2026-09-21"
+                ]
+              },
+              "scope_key": "faa5b935d958520890b1d393749ea279c87d470e8949c6c9029a9a2ec78745ea"
+            }
+          }
+        ],
+        "items": [
+          {
+            "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+            "source_type": "incentive",
+            "source_id": "2026-09-21",
+            "expected_amount": "150",
+            "actual_amount": "0",
+            "difference": "150"
+          }
+        ],
+        "intents": [
+          {
+            "id": "e30cf676-c60e-4a85-a519-992390be5be1",
+            "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+            "rider_id": "R005",
+            "status": "PENDING",
+            "amount": "150",
+            "payment_type": "AUTO",
+            "provider_payout_id": null,
+            "idempotency_key": "quickdrop-dispute:cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+            "auto_pay_date": "2026-10-29",
+            "authorization": "[REDACTED]",
+            "post_started_at": null,
+            "last_reconciled_at": null,
+            "retry_count": 0,
+            "next_retry_at": null
+          }
+        ],
+        "queues": [],
+        "messages": [
+          {
+            "id": "ecf4ddce-b477-4885-acca-b13b77b9e28a",
+            "message_id": "wamid.U9M9Z3HF69E2M9",
+            "sender_type": "RIDER",
+            "content": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+            "received_at": "2026-09-22T03:50:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "PAYOUT",
+                    "trip_ids": [],
+                    "date_tokens": [
+                      "kal"
+                    ]
+                  },
+                  {
+                    "kind": "INCENTIVE",
+                    "trip_ids": [],
+                    "date_tokens": [
+                      "kal"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-22T09:20:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd"
+          },
+          {
+            "id": "c9bfc12c-7287-431c-8e98-428c69569d2c",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Maine records check kiye, lekin koi baaki payment nahi mila.\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [
+      {
+        "id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+        "rider_id": "R005",
+        "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd",
+        "status": "RESOLVED",
+        "verified_amount": "150",
+        "details": {
+          "request": {
+            "rider_id": "R005",
+            "trip_ids": [],
+            "trip_dates": [],
+            "received_at": "2026-09-22T03:50:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-22T09:20:00+05:30",
+            "incentive_dates": [
+              "2026-09-21"
+            ]
+          },
+          "scope_key": "faa5b935d958520890b1d393749ea279c87d470e8949c6c9029a9a2ec78745ea"
+        }
+      }
+    ],
+    "items": [
+      {
+        "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+        "source_type": "incentive",
+        "source_id": "2026-09-21",
+        "expected_amount": "150",
+        "actual_amount": "0",
+        "difference": "150"
+      }
+    ],
+    "intents": [
+      {
+        "id": "e30cf676-c60e-4a85-a519-992390be5be1",
+        "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+        "rider_id": "R005",
+        "status": "SUCCEEDED",
+        "amount": "150",
+        "payment_type": "AUTO",
+        "provider_payout_id": "pout_81f08b4eb94c",
+        "idempotency_key": "quickdrop-dispute:cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc",
+        "auto_pay_date": "2026-10-29",
+        "authorization": "[REDACTED]",
+        "post_started_at": "2026-10-29T18:23:27.104859+00:00",
+        "last_reconciled_at": null,
+        "retry_count": 1,
+        "next_retry_at": null
+      }
+    ],
+    "queues": [],
+    "messages": [
+      {
+        "id": "ecf4ddce-b477-4885-acca-b13b77b9e28a",
+        "message_id": "wamid.U9M9Z3HF69E2M9",
+        "sender_type": "RIDER",
+        "content": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+        "received_at": "2026-09-22T03:50:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "PAYOUT",
+                "trip_ids": [],
+                "date_tokens": [
+                  "kal"
+                ]
+              },
+              {
+                "kind": "INCENTIVE",
+                "trip_ids": [],
+                "date_tokens": [
+                  "kal"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-22T09:20:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd"
+      },
+      {
+        "id": "c9bfc12c-7287-431c-8e98-428c69569d2c",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Maine records check kiye, lekin koi baaki payment nahi mila.\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "a63a691d-c08a-46fe-af43-3fb5db8f98bd"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [],
+  "provider_ledger": [
+    {
+      "payout_id": "pout_81f08b4eb94c",
+      "rider_id": "R005",
+      "amount": 150,
+      "reference": "quickdrop:e30cf676-c60e-4a85-a519-992390be5be1",
+      "status": "processed",
+      "created_at": "2026-10-29T18:23:27Z"
+    }
+  ],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 150,
+    "approval": null,
+    "escalation": "no"
+  },
+  "auto_authorized_amount": 150,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [
+    "150"
+  ],
+  "agent_escalation_count": 0,
+  "all_escalation_count": 0,
+  "provider_confirmed_amount": 150,
+  "provider_ledger_amount": 150,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": true,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status",
+    "payswift_authorization_ledger",
+    "payswift_request_started",
+    "payswift_dispatch_ledger",
+    "payswift_request_result"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T18:23:26.922752Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "ecf4ddce-b477-4885-acca-b13b77b9e28a"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "PAYOUT",
+            "trip_ids": [],
+            "date_tokens": [
+              "kal"
+            ]
+          },
+          {
+            "kind": "INCENTIVE",
+            "trip_ids": [],
+            "date_tokens": [
+              "kal"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:27.027105Z",
+      "type": "decision",
+      "name": "check_payment_eligibility",
+      "input": {
+        "message_id": "ecf4ddce-b477-4885-acca-b13b77b9e28a"
+      },
+      "output": {
+        "ready_for_authorization": "[REDACTED]"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:27.034554Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "ecf4ddce-b477-4885-acca-b13b77b9e28a"
+      },
+      "output": {
+        "status": "VERIFIED",
+        "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:27.067643Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "cc73aff9-5b9e-54d9-8bd0-4d6c7e6015fc"
+      },
+      "output": {
+        "reason": "Full outstanding balance reserved",
+        "status": "AUTHORIZED",
+        "queue_id": null,
+        "intent_id": "e30cf676-c60e-4a85-a519-992390be5be1"
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:27.072413Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "ecf4ddce-b477-4885-acca-b13b77b9e28a"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "no_shortfall",
+            "items": [],
+            "reasons": []
+          },
+          {
+            "kind": "authorized",
+            "dates": [
+              "2026-09-21"
+            ],
+            "items": [
+              {
+                "source": "2026-09-21",
+                "expected": "150",
+                "historical": "0"
+              }
+            ],
+            "amount": "150",
+            "expected": "150",
+            "historical": "0",
+            "claim_types": [
+              "incentive"
+            ],
+            "approval_reason": "Full outstanding balance reserved",
+            "over_auto_limit": false
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:23:27.127639Z",
+      "type": "decision",
+      "name": "payment_dispatch_verification",
+      "input": {
+        "intent_id": "e30cf676-c60e-4a85-a519-992390be5be1"
+      },
+      "output": {
+        "verified": true
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "PASS"
+}

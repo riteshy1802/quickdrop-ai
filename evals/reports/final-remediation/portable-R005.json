@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "rider_id": "R005",
+      "scenario": "single message",
+      "expected": {
+        "payout": 150,
+        "approval": null,
+        "escalation": "no"
+      },
+      "requests": [
+        {
+          "payload": {
+            "message_id": "wamid.U9M9Z3HF69E2M9",
+            "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+            "received_at": "2026-09-22T09:20:00+05:30",
+            "rider_id": "R005"
+          },
+          "http_status": 200,
+          "initial_reply": "Maine records check kiye, lekin koi baaki payment nahi mila.\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+          "initial_latency_seconds": 3.2822,
+          "initial_final": true,
+          "vendor_received_final": true,
+          "time_to_eventual_seconds": 3.2893
+        }
+      ],
+      "errors": [],
+      "decision": "PASS",
+      "authorization": "PASS",
+      "provider_payment": "PASS",
+      "initial_final_delivery": "PASS",
+      "provider_ledger": [
+        {
+          "payout_id": "pout_3ef2e98eb883",
+          "rider_id": "R005",
+          "amount": 150,
+          "reference": "quickdrop:a48a69d2-4f86-44d7-bfb2-99f8f3e092e3",
+          "status": "processed",
+          "created_at": "2026-10-29T18:23:27Z"
+        }
+      ],
+      "reply_mentions": true,
+      "actual": {
+        "authorized": "150",
+        "approval": "0",
+        "provider_paid": "150",
+        "escalated": false
+      },
+      "status": "PASS",
+      "scenario_id": 6
+    }
+  ]
+}

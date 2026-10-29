@@ -1,0 +1,49 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v8",
+    "system_prompt_sha256": "a36738296ed4f0404ccdc14ec07678fd0429041d56176712b3a74e3e6a506c8b",
+    "input": {
+      "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+      "received_at": "2026-09-22T09:20:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+          "received_at": "2026-09-22T03:50:00+00:00",
+          "reference_time": "2026-09-22T09:20:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T18:23:25.201605+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": [
+            "kal"
+          ]
+        },
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "kal"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.7174
+  }
+]

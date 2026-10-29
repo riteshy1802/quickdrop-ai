@@ -1,0 +1,9 @@
+{
+  "valid_yaml": true,
+  "jobs": [
+    "backend-quality",
+    "frontend-quality",
+    "database-validation"
+  ],
+  "portable_contract_tests_in_ci": true
+}

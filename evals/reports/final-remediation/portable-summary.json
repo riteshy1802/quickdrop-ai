@@ -1,0 +1,57 @@
+{
+  "scenarios": 24,
+  "requests": 30,
+  "decision": {
+    "PASS": 24
+  },
+  "authorization": {
+    "PASS": 21,
+    "NOT APPLICABLE": 3
+  },
+  "provider": {
+    "FAIL": 3,
+    "PASS": 21
+  },
+  "overall": {
+    "FAIL": 3,
+    "PASS": 21
+  },
+  "initial_final_scenarios": 24,
+  "initial_final_requests": 30,
+  "max_initial_seconds": 5.7868,
+  "failures": [
+    {
+      "scenario": 1,
+      "rider": "R003",
+      "actual": {
+        "authorized": "25",
+        "approval": "0",
+        "provider_paid": "0",
+        "escalated": false
+      },
+      "errors": []
+    },
+    {
+      "scenario": 5,
+      "rider": "R003",
+      "actual": {
+        "authorized": "25",
+        "approval": "0",
+        "provider_paid": "0",
+        "escalated": false
+      },
+      "errors": []
+    },
+    {
+      "scenario": 21,
+      "rider": "R035",
+      "actual": {
+        "authorized": "25",
+        "approval": "0",
+        "provider_paid": "0",
+        "escalated": false
+      },
+      "errors": []
+    }
+  ]
+}

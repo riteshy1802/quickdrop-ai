@@ -1,0 +1,1300 @@
+{
+  "R003": [
+    {
+      "at": "2026-10-29T18:34:15.650121Z",
+      "type": "message_in",
+      "name": "receive_message",
+      "input": {
+        "text": "bhai payout galat aaya hai",
+        "rider_id": "R003",
+        "message_id": "wamid.CONV1A",
+        "received_at": "2026-09-22T09:00:00+05:30",
+        "conversation_id": null
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:15.920249Z",
+      "type": "tool_call",
+      "name": "get_rider_profile",
+      "input": {
+        "message_id": "8b95510d-fc0d-487e-a6e0-a1f51a9c2c3b"
+      },
+      "output": {
+        "found": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:17.893514Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "8b95510d-fc0d-487e-a6e0-a1f51a9c2c3b"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "PAYOUT",
+            "trip_ids": [],
+            "date_tokens": []
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:17.907693Z",
+      "type": "decision",
+      "name": "clarification_requested",
+      "input": {
+        "message_id": "8b95510d-fc0d-487e-a6e0-a1f51a9c2c3b"
+      },
+      "output": {
+        "missing": "Trip ID or date is required"
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:17.916227Z",
+      "type": "reply",
+      "name": "send_reply",
+      "input": null,
+      "output": "Main check kar deta hoon. Aap trip ID ya date bata dijiye, taaki sahi payment dekh sakoon."
+    },
+    {
+      "at": "2026-10-29T18:34:17.936069Z",
+      "type": "message_in",
+      "name": "receive_message",
+      "input": {
+        "text": "20 wala",
+        "rider_id": "R003",
+        "message_id": "wamid.CONV1B",
+        "received_at": "2026-09-22T09:02:00+05:30",
+        "conversation_id": null
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:17.966383Z",
+      "type": "tool_call",
+      "name": "get_rider_profile",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "found": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:19.836481Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "PAYOUT",
+            "trip_ids": [],
+            "date_tokens": [
+              "20"
+            ]
+          }
+        ],
+        "intent": "followup",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:19.853468Z",
+      "type": "tool_call",
+      "name": "get_rider_trips",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "count": 9
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:19.865281Z",
+      "type": "tool_call",
+      "name": "get_payout_history",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "count": 9
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.191682Z",
+      "type": "tool_call",
+      "name": "reconcile_dispute",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "items": [
+          {
+            "id": "T164090",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "25",
+            "historical": "25",
+            "outstanding": "0"
+          },
+          {
+            "id": "T516842",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "30",
+            "historical": "30",
+            "outstanding": "0"
+          },
+          {
+            "id": "T612846",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "50",
+            "historical": "50",
+            "outstanding": "0"
+          },
+          {
+            "id": "T662970",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "44",
+            "historical": "44",
+            "outstanding": "0"
+          },
+          {
+            "id": "T754672",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "42",
+            "historical": "42",
+            "outstanding": "0"
+          },
+          {
+            "id": "T781466",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "39",
+            "historical": "39",
+            "outstanding": "0"
+          },
+          {
+            "id": "T867667",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "26",
+            "historical": "26",
+            "outstanding": "0"
+          },
+          {
+            "id": "T886798",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "Historical pay matches policy"
+            ],
+            "expected": "66",
+            "historical": "66",
+            "outstanding": "0"
+          },
+          {
+            "id": "T926334",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "A historical payment shortfall was found"
+            ],
+            "expected": "74",
+            "historical": "49",
+            "outstanding": "25"
+          }
+        ],
+        "status": "VERIFIED",
+        "rider_id": "R003",
+        "outstanding": "25",
+        "received_at": "2026-09-22T03:32:00+00:00",
+        "source_coverage": true,
+        "provider_available": true,
+        "verified_shortfall": "25"
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.214203Z",
+      "type": "tool_call",
+      "name": "get_payment_status",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "payments": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.220158Z",
+      "type": "decision",
+      "name": "check_payment_eligibility",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "ready_for_authorization": "[REDACTED]"
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.227544Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "status": "VERIFIED",
+        "dispute_id": "2255944e-9827-57e6-b997-4f629ae7276e"
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.248559Z",
+      "type": "tool_call",
+      "name": "payswift_authorization_ledger",
+      "input": {
+        "rider_id": "R003"
+      },
+      "output": {
+        "validated_entries": 0
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.267077Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "2255944e-9827-57e6-b997-4f629ae7276e"
+      },
+      "output": {
+        "reason": "Full outstanding balance reserved",
+        "status": "AUTHORIZED",
+        "queue_id": null,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.272271Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "ce511bba-ba00-491e-a4e5-b690d0ae77f6"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "authorized",
+            "dates": [
+              "2026-09-20"
+            ],
+            "items": [
+              {
+                "source": "T926334",
+                "expected": "74",
+                "historical": "49"
+              }
+            ],
+            "amount": "25",
+            "expected": "396",
+            "historical": "371",
+            "claim_types": [
+              "trip"
+            ],
+            "approval_reason": "Full outstanding balance reserved",
+            "over_auto_limit": false
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:20.282790Z",
+      "type": "reply",
+      "name": "send_reply",
+      "input": null,
+      "output": "Trip T926334:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹396 milne chahiye the, lekin ₹371 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai."
+    },
+    {
+      "at": "2026-10-29T18:34:20.301164Z",
+      "type": "message_in",
+      "name": "receive_message",
+      "input": {
+        "text": "thik hai, kab tak aayega?",
+        "rider_id": "R003",
+        "message_id": "wamid.CONV1C",
+        "received_at": "2026-09-22T09:05:00+05:30",
+        "conversation_id": null
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:20.333555Z",
+      "type": "tool_call",
+      "name": "get_rider_profile",
+      "input": {
+        "message_id": "c640ddef-9346-4fd8-bc56-64397117dacb"
+      },
+      "output": {
+        "found": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:21.162305Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 1,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "POST",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:21.197947Z",
+      "type": "tool_call",
+      "name": "payswift_dispatch_ledger",
+      "input": {
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": {
+        "available": true,
+        "validated_entries": 0
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:21.215108Z",
+      "type": "decision",
+      "name": "payment_dispatch_verification",
+      "input": {
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": {
+        "verified": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:21.230033Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 1,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "POST"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "provider_outcome_uncertain",
+        "http_status": 503,
+        "next_retry_at": "2026-10-29T18:34:22.934966+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:22.296725Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "c640ddef-9346-4fd8-bc56-64397117dacb"
+      },
+      "output": {
+        "claims": [],
+        "intent": "status",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:22.325870Z",
+      "type": "tool_call",
+      "name": "get_payment_status",
+      "input": {
+        "message_id": "c640ddef-9346-4fd8-bc56-64397117dacb"
+      },
+      "output": {
+        "payments": [
+          {
+            "id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+            "amount": "25",
+            "status": "UNKNOWN",
+            "sources": [
+              "T164090",
+              "T516842",
+              "T612846",
+              "T662970",
+              "T754672",
+              "T781466",
+              "T867667",
+              "T886798",
+              "T926334"
+            ],
+            "expected": "396",
+            "confirmed": false,
+            "historical": "371",
+            "provider_check": "MISSING"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:22.329961Z",
+      "type": "reply",
+      "name": "send_reply",
+      "input": null,
+      "output": "Aapke ₹25 payment ki final status verify ho rahi hai, taaki duplicate payment na ho. Payment milne ki confirmation abhi nahi hai. Records mein complete hone ka confirmed time nahi hai, isliye main exact waqt ka vaada nahi kar sakta."
+    },
+    {
+      "at": "2026-10-29T18:34:23.245927Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 2,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:23.268545Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 2,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:34:27.620287+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:29.304963Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 3,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:29.326025Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 3,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:34:37.349418+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:37.366421Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 4,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:37.386704Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 4,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:34:55.499904+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:34:57.478883Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 5,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:34:57.497846Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 5,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:35:25.281359+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:07.667838Z",
+      "type": "message_in",
+      "name": "receive_message",
+      "input": {
+        "text": "Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls",
+        "rider_id": "R003",
+        "message_id": "wamid.5RHB2ELK3YVT37",
+        "received_at": "2026-09-22T09:05:00+05:30",
+        "conversation_id": null
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:35:07.702302Z",
+      "type": "tool_call",
+      "name": "get_rider_profile",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "found": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.037024Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "SURGE",
+            "trip_ids": [
+              "T926334"
+            ],
+            "date_tokens": [
+              "20"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.051220Z",
+      "type": "tool_call",
+      "name": "get_rider_trips",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "count": 1
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.059451Z",
+      "type": "tool_call",
+      "name": "get_payout_history",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "count": 1
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.076547Z",
+      "type": "tool_call",
+      "name": "reconcile_dispute",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "items": [
+          {
+            "id": "T926334",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "A historical payment shortfall was found",
+              "A prior payment is reserved, in flight, uncertain, or lacks provider confirmation"
+            ],
+            "expected": "74",
+            "historical": "49",
+            "outstanding": null
+          }
+        ],
+        "status": "NEEDS_RECONCILIATION",
+        "rider_id": "R003",
+        "outstanding": null,
+        "received_at": "2026-09-22T03:35:00+00:00",
+        "source_coverage": true,
+        "provider_available": true,
+        "verified_shortfall": "25"
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.092901Z",
+      "type": "tool_call",
+      "name": "get_payment_status",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "payments": [
+          {
+            "id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+            "amount": "25",
+            "status": "UNKNOWN",
+            "sources": [
+              "T164090",
+              "T516842",
+              "T612846",
+              "T662970",
+              "T754672",
+              "T781466",
+              "T867667",
+              "T886798",
+              "T926334"
+            ],
+            "expected": "396",
+            "confirmed": false,
+            "historical": "371",
+            "provider_check": "MISSING"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.095872Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "621f4ef2-16ef-462e-9d10-de7c3059f4dd"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "status",
+            "payments": [
+              {
+                "id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+                "amount": "25",
+                "status": "UNKNOWN",
+                "sources": [
+                  "T164090",
+                  "T516842",
+                  "T612846",
+                  "T662970",
+                  "T754672",
+                  "T781466",
+                  "T867667",
+                  "T886798",
+                  "T926334"
+                ],
+                "expected": "396",
+                "confirmed": false,
+                "historical": "371",
+                "provider_check": "MISSING"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:35:11.102354Z",
+      "type": "reply",
+      "name": "send_reply",
+      "input": null,
+      "output": "Aapke ₹25 payment ki final status verify ho rahi hai, taaki duplicate payment na ho. Payment milne ki confirmation abhi nahi hai."
+    },
+    {
+      "at": "2026-10-29T18:35:25.668432Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 6,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:35:25.683963Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 6,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:36:33.090381+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:34.322778Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 7,
+        "rider_id": "R003",
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:851d6985-d052-4a2a-9f44-e7ce3a6c3edb"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:34.342117Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 7,
+        "intent_id": "851d6985-d052-4a2a-9f44-e7ce3a6c3edb",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:38:29.420481+00:00",
+        "provider_payout_id": null
+      }
+    }
+  ],
+  "R035": [
+    {
+      "at": "2026-10-29T18:36:36.632913Z",
+      "type": "message_in",
+      "name": "receive_message",
+      "input": {
+        "text": "21 ko 300 rupay kam aaye, order T980582 ka surge nahi mila",
+        "rider_id": "R035",
+        "message_id": "wamid.S8U78LFLMB6UJ3",
+        "received_at": "2026-09-23T11:45:00+05:30",
+        "conversation_id": null
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:36.667099Z",
+      "type": "tool_call",
+      "name": "get_rider_profile",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "found": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.695130Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "SURGE",
+            "trip_ids": [
+              "T980582"
+            ],
+            "date_tokens": [
+              "21"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v8",
+        "records_disputed": false,
+        "mentioned_amounts": [
+          "300"
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.713647Z",
+      "type": "tool_call",
+      "name": "get_rider_trips",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "count": 1
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.721432Z",
+      "type": "tool_call",
+      "name": "get_payout_history",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "count": 1
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.735716Z",
+      "type": "tool_call",
+      "name": "reconcile_dispute",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "items": [
+          {
+            "id": "T980582",
+            "type": "trip",
+            "reasons": [
+              "Trip belongs to the trusted rider",
+              "Claim is within the seven-day IST window",
+              "A historical payment shortfall was found"
+            ],
+            "expected": "74",
+            "historical": "49",
+            "outstanding": "25"
+          }
+        ],
+        "status": "VERIFIED",
+        "rider_id": "R035",
+        "outstanding": "25",
+        "received_at": "2026-09-23T06:15:00+00:00",
+        "source_coverage": true,
+        "provider_available": true,
+        "verified_shortfall": "25"
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.743014Z",
+      "type": "tool_call",
+      "name": "get_payment_status",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "payments": []
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.749530Z",
+      "type": "decision",
+      "name": "check_payment_eligibility",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "ready_for_authorization": "[REDACTED]"
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.754834Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "status": "VERIFIED",
+        "dispute_id": "f25a87b7-05c7-5283-bfa6-88ef37304e44"
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.771039Z",
+      "type": "tool_call",
+      "name": "payswift_authorization_ledger",
+      "input": {
+        "rider_id": "R035"
+      },
+      "output": {
+        "validated_entries": 0
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.781365Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "f25a87b7-05c7-5283-bfa6-88ef37304e44"
+      },
+      "output": {
+        "reason": "Full outstanding balance reserved",
+        "status": "AUTHORIZED",
+        "queue_id": null,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf"
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.787532Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "64948c27-b980-4dec-a221-b66278cc68e2"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "authorized",
+            "dates": [
+              "2026-09-21"
+            ],
+            "items": [
+              {
+                "source": "T980582",
+                "expected": "74",
+                "historical": "49"
+              }
+            ],
+            "amount": "25",
+            "expected": "74",
+            "historical": "49",
+            "claim_types": [
+              "trip"
+            ],
+            "approval_reason": "Full outstanding balance reserved",
+            "over_auto_limit": false
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:38.796916Z",
+      "type": "reply",
+      "name": "send_reply",
+      "input": null,
+      "output": "Trip T980582:\n\nMaine 21 September ke aapke orders check kiye. Records ke hisaab se ₹74 milne chahiye the, lekin ₹49 hi mile hain.\n\nAapke ₹25 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai."
+    },
+    {
+      "at": "2026-10-29T18:36:40.415335Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 1,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "POST",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:40.427069Z",
+      "type": "tool_call",
+      "name": "payswift_dispatch_ledger",
+      "input": {
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": {
+        "available": true,
+        "validated_entries": 0
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:40.432250Z",
+      "type": "decision",
+      "name": "payment_dispatch_verification",
+      "input": {
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": {
+        "verified": true
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:40.440999Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 1,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "POST"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "provider_outcome_uncertain",
+        "http_status": 503,
+        "next_retry_at": "2026-10-29T18:36:42.838057+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:44.464948Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 2,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:44.483779Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 2,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:36:48.609787+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:50.518312Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 3,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:50.537491Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 3,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:36:57.527105+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:36:58.581783Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 4,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:36:58.599521Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 4,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:37:16.047018+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:37:16.685161Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 5,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:37:16.697231Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 5,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:37:44.208058+00:00",
+        "provider_payout_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T18:37:44.819301Z",
+      "type": "tool_call",
+      "name": "payswift_request_started",
+      "input": {
+        "amount": "25",
+        "attempt": 6,
+        "rider_id": "R035",
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE",
+        "reference": "quickdrop:b7a1f757-4377-4027-987d-99541ff21aaf"
+      },
+      "output": null
+    },
+    {
+      "at": "2026-10-29T18:37:44.831727Z",
+      "type": "tool_call",
+      "name": "payswift_request_result",
+      "input": {
+        "attempt": 6,
+        "intent_id": "b7a1f757-4377-4027-987d-99541ff21aaf",
+        "operation": "RECONCILE"
+      },
+      "output": {
+        "status": "UNKNOWN",
+        "outcome": "ledger_entry_missing",
+        "http_status": null,
+        "next_retry_at": "2026-10-29T18:38:42.925152+00:00",
+        "provider_payout_id": null
+      }
+    }
+  ]
+}

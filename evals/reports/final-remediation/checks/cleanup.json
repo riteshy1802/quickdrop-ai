@@ -1,0 +1,10 @@
+{
+  "disposable_containers_remaining": [],
+  "normal_services_still_running": [
+    "quickdrop-postgres-1",
+    "quickdrop-redis-1",
+    "quickdrop-payswift-1"
+  ],
+  "assignment_source_hashes_preserved": true,
+  "original_audit_diff": []
+}

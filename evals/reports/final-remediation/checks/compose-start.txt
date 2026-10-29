@@ -1,0 +1,305 @@
+ Image quickdrop-remediation-provider-ready Building 
+ Image quickdrop-remediation-api Building 
+ Image quickdrop-remediation-migrate Building 
+ Image quickdrop-remediation-payswift Building 
+ Image quickdrop-remediation-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 460B done
+#2 DONE 0.0s
+
+#3 [payswift internal] load build definition from Dockerfile
+#3 transferring dockerfile: 151B done
+#3 DONE 0.0s
+
+#4 [worker internal] load metadata for docker.io/library/python:3.12-slim
+#4 ...
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [migrate internal] load metadata for ghcr.io/astral-sh/uv:0.9.26
+#6 DONE 0.9s
+
+#4 [worker internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.7s
+
+#7 [migrate internal] load .dockerignore
+#7 transferring context: 152B done
+#7 DONE 0.0s
+
+#8 [payswift internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [payswift internal] load build context
+#9 transferring context: 32B done
+#9 DONE 0.0s
+
+#10 [payswift stage-1 1/8] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#10 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done
+#10 DONE 0.0s
+
+#11 [api uv 1/1] FROM ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b
+#11 resolve ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b 0.0s done
+#11 DONE 0.0s
+
+#12 [migrate internal] load build context
+#12 transferring context: 447.08kB 0.0s done
+#12 DONE 0.0s
+
+#13 [payswift 2/3] WORKDIR /app
+#13 CACHED
+
+#14 [payswift 3/3] COPY server.pyc .
+#14 CACHED
+
+#15 [worker stage-1 2/8] COPY --from=uv /uv /usr/local/bin/uv
+#15 CACHED
+
+#16 [worker stage-1 3/8] WORKDIR /app/backend
+#16 CACHED
+
+#17 [provider-ready stage-1 4/8] COPY pyproject.toml uv.lock ./
+#17 DONE 0.0s
+
+#18 [payswift] exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:36186470479c7e2ae2299b4d599863dbc739f7c7d62792739a1bbbc16ccadcec 0.0s done
+#18 exporting config sha256:6c9eb1be29241513ac272538d73c781c7e27f95ce002c89c78d8ddbcc1344225 done
+#18 exporting attestation manifest sha256:1c68222d555fed81f39e704ef079b8ae45d5621d6c4f5d3311cd35a85e3e52d5 0.0s done
+#18 exporting manifest list sha256:39dc4b7fe5736b730f9765a0a42c1662866ea9b9c9bfc7c24a87ff5cbc3c6230 done
+#18 naming to docker.io/library/quickdrop-remediation-payswift:latest
+#18 naming to docker.io/library/quickdrop-remediation-payswift:latest done
+#18 unpacking to docker.io/library/quickdrop-remediation-payswift:latest done
+#18 DONE 0.1s
+
+#19 [payswift] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [provider-ready stage-1 5/8] RUN uv sync --frozen --no-dev
+#20 0.500 Using CPython 3.12.16 interpreter at: /usr/local/bin/python3
+#20 0.500 Creating virtual environment at: .venv
+#20 0.716 Downloading sqlalchemy (3.3MiB)
+#20 0.718 Downloading asyncpg (3.6MiB)
+#20 0.723 Downloading botocore (15.4MiB)
+#20 0.723 Downloading pydantic-core (2.1MiB)
+#20 0.724 Downloading zstandard (5.3MiB)
+#20 5.006  Downloaded pydantic-core
+#20 5.439  Downloaded sqlalchemy
+#20 5.528  Downloaded asyncpg
+#20 5.778  Downloaded zstandard
+#20 6.295  Downloaded botocore
+#20 6.295 Prepared 66 packages in 5.77s
+#20 6.509 Installed 66 packages in 213ms
+#20 7.541 Bytecode compiled 2283 files in 1.03s
+#20 7.541  + alembic==1.20.1
+#20 7.541  + annotated-doc==0.0.5
+#20 7.541  + annotated-types==0.8.0
+#20 7.541  + anyio==4.15.1
+#20 7.541  + argon2-cffi==25.1.0
+#20 7.541  + argon2-cffi-bindings==26.1.0
+#20 7.541  + asyncpg==0.32.0
+#20 7.541  + boto3==1.43.121
+#20 7.541  + botocore==1.43.121
+#20 7.541  + certifi==2026.10.23
+#20 7.542  + cffi==2.1.1
+#20 7.542  + charset-normalizer==3.5.2
+#20 7.542  + click==8.5.0
+#20 7.542  + distro==1.9.0
+#20 7.542  + fastapi==0.162.0
+#20 7.542  + greenlet==3.5.6
+#20 7.542  + groq==0.37.1
+#20 7.542  + h11==0.16.0
+#20 7.542  + httpcore==1.0.9
+#20 7.542  + httpcore2==2.16.0
+#20 7.542  + httpx==0.28.1
+#20 7.542  + httpx2==2.16.0
+#20 7.542  + idna==3.20
+#20 7.542  + itsdangerous==2.2.0
+#20 7.542  + jmespath==1.1.0
+#20 7.542  + jsonpatch==1.38
+#20 7.542  + jsonpointer==3.6
+#20 7.542  + langchain-core==1.7.1
+#20 7.542  + langchain-groq==1.1.3
+#20 7.542  + langchain-protocol==0.0.20
+#20 7.542  + langgraph==1.2.18
+#20 7.542  + langgraph-checkpoint==4.3.1
+#20 7.542  + langgraph-prebuilt==1.1.1
+#20 7.542  + langgraph-sdk==0.4.10
+#20 7.542  + langsmith==0.14.14
+#20 7.542  + mako==1.4.3
+#20 7.543  + markupsafe==3.0.4
+#20 7.543  + opentelemetry-api==1.45.1
+#20 7.543  + orjson==3.13.0
+#20 7.543  + ormsgpack==1.13.0
+#20 7.543  + packaging==26.3
+#20 7.543  + pycparser==3.12
+#20 7.543  + pydantic==2.14.1
+#20 7.543  + pydantic-core==2.50.1
+#20 7.543  + pydantic-settings==2.16.2
+#20 7.543  + python-dateutil==2.9.0.post0
+#20 7.543  + python-dotenv==1.2.4
+#20 7.543  + pyyaml==6.0.3
+#20 7.543  + redis==7.4.1
+#20 7.543  + requests==2.34.2
+#20 7.543  + requests-toolbelt==1.0.0
+#20 7.543  + s3transfer==0.19.3
+#20 7.543  + six==1.17.0
+#20 7.543  + sniffio==1.3.1
+#20 7.543  + sqlalchemy==2.0.55
+#20 7.543  + starlette==1.10.0
+#20 7.543  + tenacity==9.2.1
+#20 7.543  + truststore==0.10.5
+#20 7.543  + typing-extensions==4.16.0
+#20 7.543  + typing-inspection==0.4.4
+#20 7.543  + urllib3==2.8.0
+#20 7.543  + uuid-utils==0.19.0
+#20 7.543  + uvicorn==0.54.0
+#20 7.543  + websockets==17.3
+#20 7.544  + xxhash==4.0.2
+#20 7.544  + zstandard==0.25.0
+#20 DONE 7.7s
+
+#21 [migrate stage-1 6/8] COPY app ./app
+#21 DONE 0.1s
+
+#22 [migrate stage-1 7/8] COPY alembic ./alembic
+#22 DONE 0.0s
+
+#23 [migrate stage-1 8/8] COPY alembic.ini ./alembic.ini
+#23 DONE 0.0s
+
+#24 [api] exporting to image
+#24 exporting layers
+#24 ...
+
+#25 [provider-ready] exporting to image
+#25 exporting layers 7.6s done
+#25 exporting manifest sha256:f5e8554cdf505755d78e6d9ee8416b0625b5df8717ebb94159fe0c0c2a3d3fcc 0.0s done
+#25 exporting config sha256:83e92ce9945c64eaa772a388d28009239f93af0b2baf057765fbcf2951132f67 0.0s done
+#25 exporting attestation manifest sha256:e682d06bdf369b386c38b713112ff97244f27e1870b64298a940614d33312a21 0.0s done
+#25 exporting manifest list sha256:15500f3528f1711245e113e6dcdf40d1d10ac8677aeceaeaa3c7b406334fda3c
+#25 ...
+
+#24 [api] exporting to image
+#24 exporting layers 7.6s done
+#24 exporting manifest sha256:1507276995525de7d0ff6b02a60c46cd34257d44f9cf9471fe28ea87e35022a4 0.0s done
+#24 exporting config sha256:79f3589b8b0cea11ba4a325662d0b1eb733782abb7515d78122326b8962521d2 0.0s done
+#24 exporting attestation manifest sha256:790c274fdb13dc7ed6a145dc1ea9ffa4d9fa7fcdf44603b6baf35d0bcc337cf8 0.0s done
+#24 exporting manifest list sha256:1c25f8765dd7db964b31358b412c7e0f373ae0069055e002ef6c264be5d4e37f
+#24 exporting manifest list sha256:1c25f8765dd7db964b31358b412c7e0f373ae0069055e002ef6c264be5d4e37f 0.0s done
+#24 naming to docker.io/library/quickdrop-remediation-api:latest done
+#24 unpacking to docker.io/library/quickdrop-remediation-api:latest
+#24 ...
+
+#26 [worker] exporting to image
+#26 exporting layers 7.6s done
+#26 exporting manifest sha256:a8892d45cb16f7453eee76a5ac2884721f4b87e590bfd0b3b0b70bcdf0678f43 0.0s done
+#26 exporting config sha256:7177268087a412a2260875f93126adb2ecb5ed73768c27ffc2fa89a990150192 0.0s done
+#26 exporting attestation manifest sha256:31cfe9cf0e4678ca533e11fe83f0b5c42b252c19fc9c52b7e91c22cfe4b0ee7e 0.0s done
+#26 exporting manifest list sha256:26a893786d31ccc73014a46aef8dbce0c81df2ae68af8f805dbdea4bafa1ae9f 0.0s done
+#26 naming to docker.io/library/quickdrop-remediation-worker:latest done
+#26 unpacking to docker.io/library/quickdrop-remediation-worker:latest
+#26 ...
+
+#27 [migrate] exporting to image
+#27 exporting layers 7.6s done
+#27 exporting manifest sha256:44fb728b70d2fbd1313d74f97189fc4a56b754720b0c0359dbc8b8130b93da3d 0.0s done
+#27 exporting config sha256:543152bcfab2c2b8cfe0d10b26dba2c8e806d5be4226a502cf853f27ac901189 0.0s done
+#27 exporting attestation manifest sha256:8093786baafd2bd588239934941ed0887f8335c62f1df99133f5ccc4fb837bda 0.0s done
+#27 exporting manifest list sha256:f28f943b7e6ef84691f5ce7b4048ac9ac2410d2417ad456d84a4ec1b6f9bd2f8 0.0s done
+#27 naming to docker.io/library/quickdrop-remediation-migrate:latest done
+#27 unpacking to docker.io/library/quickdrop-remediation-migrate:latest
+#27 ...
+
+#25 [provider-ready] exporting to image
+#25 exporting manifest list sha256:15500f3528f1711245e113e6dcdf40d1d10ac8677aeceaeaa3c7b406334fda3c 0.0s done
+#25 naming to docker.io/library/quickdrop-remediation-provider-ready:latest done
+#25 unpacking to docker.io/library/quickdrop-remediation-provider-ready:latest
+#25 unpacking to docker.io/library/quickdrop-remediation-provider-ready:latest 3.1s done
+#25 DONE 10.9s
+
+#24 [api] exporting to image
+#24 unpacking to docker.io/library/quickdrop-remediation-api:latest 3.1s done
+#24 DONE 10.9s
+
+#26 [worker] exporting to image
+#26 unpacking to docker.io/library/quickdrop-remediation-worker:latest 3.1s done
+#26 DONE 10.9s
+
+#27 [migrate] exporting to image
+#27 unpacking to docker.io/library/quickdrop-remediation-migrate:latest 3.1s done
+#27 DONE 10.9s
+
+#28 [provider-ready] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [api] resolving provenance for metadata file
+#29 DONE 0.1s
+
+#30 [worker] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [migrate] resolving provenance for metadata file
+#31 DONE 0.0s
+ Image quickdrop-remediation-provider-ready Built 
+ Image quickdrop-remediation-migrate Built 
+ Image quickdrop-remediation-worker Built 
+ Image quickdrop-remediation-api Built 
+ Image quickdrop-remediation-payswift Built 
+ Network quickdrop-remediation_default Creating 
+ Network quickdrop-remediation_default Created 
+ Volume quickdrop-remediation_redis_data Creating 
+ Volume quickdrop-remediation_redis_data Created 
+ Volume quickdrop-remediation_postgres_data Creating 
+ Volume quickdrop-remediation_postgres_data Created 
+ Container quickdrop-remediation-postgres-1 Creating 
+ Container quickdrop-remediation-redis-1 Creating 
+ Container quickdrop-remediation-payswift-1 Creating 
+ Container quickdrop-remediation-postgres-1 Created 
+ Container quickdrop-remediation-payswift-1 Created 
+ Container quickdrop-remediation-migrate-1 Creating 
+ Container quickdrop-remediation-provider-ready-1 Creating 
+ Container quickdrop-remediation-redis-1 Created 
+ Container quickdrop-remediation-migrate-1 Created 
+ Container quickdrop-remediation-provider-ready-1 Created 
+ Container quickdrop-remediation-api-1 Creating 
+ Container quickdrop-remediation-worker-1 Creating 
+ Container quickdrop-remediation-worker-1 Created 
+ Container quickdrop-remediation-api-1 Created 
+ Container quickdrop-remediation-postgres-1 Starting 
+ Container quickdrop-remediation-payswift-1 Starting 
+ Container quickdrop-remediation-redis-1 Starting 
+ Container quickdrop-remediation-redis-1 Started 
+ Container quickdrop-remediation-payswift-1 Started 
+ Container quickdrop-remediation-provider-ready-1 Starting 
+ Container quickdrop-remediation-postgres-1 Started 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Started 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-migrate-1 Starting 
+ Container quickdrop-remediation-migrate-1 Started 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-worker-1 Starting 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-api-1 Starting 
+ Container quickdrop-remediation-worker-1 Started 
+ Container quickdrop-remediation-api-1 Started 

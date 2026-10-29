@@ -1,0 +1,29 @@
+PaySwift sandbox listening on :53947 (chaos=on)
+[payswift] "GET /health HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -
+[payswift] payout_request rider=R003 amount=25 idem=yes
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -
+[payswift] "POST /v1/payouts HTTP/1.1" 504 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53332)
+Traceback (most recent call last):
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/http/server.py", line 436, in handle
+    self.handle_one_request()
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/http/server.py", line 424, in handle_one_request
+    method()
+  File "/src/server.py", line 152, in do_POST
+  File "/src/server.py", line 53, in _send
+  File "/home/ritesh/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R003 HTTP/1.1" 200 -

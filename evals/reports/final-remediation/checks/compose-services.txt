@@ -1,0 +1,8 @@
+postgres
+migrate
+payswift
+provider-ready
+redis
+worker
+api
+frontend
