@@ -83,6 +83,17 @@ export function reduceStream(
       controlVersion: state.controlVersion,
       status: "human_support",
     };
+  // Identify the incoming AI row before a fast query refetch can reveal it in full.
+  if (event.event_type === "message.created" && event.data.sender === "AI" &&
+      event.data.message_id && (!state.runId || state.runId === event.run_id)) {
+    if (state.runId === event.run_id && event.sequence <= state.sequence) return state;
+    return {
+      ...state, runId: event.run_id, sequence: event.sequence,
+      messageId: event.data.message_id,
+      text: state.messageId === event.data.message_id ? state.text : "",
+      complete: false,
+    };
+  }
   if (!event.event_type.startsWith("agent."))
     return state.runId === event.run_id && event.sequence > state.sequence
       ? { ...state, sequence: event.sequence }

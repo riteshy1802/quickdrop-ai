@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type {
@@ -9,6 +9,7 @@ import type {
   Scenario,
 } from "@/types/rider";
 import { ChatMessage } from "./chat-message";
+import { StreamedMessage } from "./streamed-message";
 import { activityLabels, InvestigationActivity } from "./investigation-activity";
 import { MessageComposer } from "./message-composer";
 import { ConversationEmptyState } from "./conversation-empty-state";
@@ -55,6 +56,19 @@ export function ChatThread({
         block: "end",
       });
   }, [messages.length, mutation.isPending, live.stream.text, live.stream.activity.length]);
+  const followTyping = useCallback(() => {
+    if (shouldScroll.current)
+      latest.current?.scrollIntoView({ behavior: "instant", block: "end" });
+  }, []);
+  const streamedId = conversation.handler !== "OPS" && !live.stream.gap
+    ? live.stream.messageId : null;
+  // Keep the same keyed row when the saved message replaces its transient SSE row.
+  const displayedMessages = streamedId && live.stream.text && !messages.some((m) => m.id === streamedId)
+    ? [...messages, {
+        id: streamedId, conversation_id: conversation.id, sender: "AI" as const,
+        text: live.stream.text, created_at: new Date().toISOString(),
+      }]
+    : messages;
   async function send(text: string) {
     if (sendingDisabled) return false;
     const previous = retryRequest.current;
@@ -106,7 +120,7 @@ export function ChatThread({
           }
         }}
       >
-        {messages.length === 0 && !mutation.isPending ? (
+        {displayedMessages.length === 0 && !mutation.isPending ? (
           <ConversationEmptyState onScenario={onScenario} creating={creating} />
         ) : (
           <div
@@ -116,10 +130,10 @@ export function ChatThread({
             aria-live="polite"
             aria-relevant="additions"
           >
-            {messages.map((message, index) => {
+            {displayedMessages.map((message, index) => {
               const group = date(message.created_at),
                 previous =
-                  index > 0 ? date(messages[index - 1].created_at) : null;
+                  index > 0 ? date(displayedMessages[index - 1].created_at) : null;
               return (
                 <Fragment key={message.id}>
                   {group !== previous && (
@@ -132,30 +146,19 @@ export function ChatThread({
                   {message.id === live.stream.messageId && conversation.handler !== "OPS" && (
                     <InvestigationActivity activity={live.stream.activity} complete={live.stream.complete} />
                   )}
-                  {(message.id !== live.stream.messageId || live.stream.complete) && (
-                    <ChatMessage message={message} />
-                  )}
+                  <StreamedMessage
+                    message={message.id === streamedId && !live.stream.complete
+                      ? { ...message, text: live.stream.text } : message}
+                    animate={message.sender === "AI" && message.id === streamedId}
+                    onProgress={message.id === streamedId ? followTyping : undefined}
+                  />
                 </Fragment>
               );
             })}
             {pendingMessage && <ChatMessage message={pendingMessage} />}
-            {conversation.handler !== "OPS" && !messages.some((m) => m.id === live.stream.messageId) && (
+            {conversation.handler !== "OPS" && !displayedMessages.some((m) => m.id === live.stream.messageId) && (
               <InvestigationActivity activity={live.stream.activity} complete={live.stream.complete} />
             )}
-            {conversation.handler !== "OPS" &&
-              live.stream.text &&
-              live.stream.messageId &&
-              (!live.stream.complete || !messages.some((m) => m.id === live.stream.messageId)) && (
-                <ChatMessage
-                  message={{
-                    id: live.stream.messageId,
-                    conversation_id: conversation.id,
-                    sender: "AI",
-                    text: live.stream.text,
-                    created_at: new Date().toISOString(),
-                  }}
-                />
-              )}
             {((live.stream.status && !live.stream.activity.length) ||
               (mutation.isPending && !live.stream.activity.length) ||
               live.connection === "reconnecting") && (

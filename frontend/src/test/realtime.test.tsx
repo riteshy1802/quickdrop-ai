@@ -267,11 +267,12 @@ it("ignores delayed AI events from before a human control change", () => {
 });
 
 it("renders actual progress separately and reconciles an already saved reply once", () => {
+  vi.useFakeTimers();
   const original = HTMLElement.prototype.scrollIntoView;
   HTMLElement.prototype.scrollIntoView = vi.fn();
   vi.stubGlobal(
     "matchMedia",
-    vi.fn(() => ({ matches: false })),
+    vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })),
   );
   const { wrapper } = setup();
   const id = crypto.randomUUID();
@@ -318,11 +319,13 @@ it("renders actual progress separately and reconciles an already saved reply onc
       message_id: id, text: "Existing ",
     })));
     expect(screen.queryByText("Existing reply")).toBeNull();
+    expect(document.querySelector(".rider-message-bubble")?.textContent).not.toContain("Existing");
+    act(() => vi.advanceTimersByTime(128));
     expect(document.querySelector(".rider-message-bubble")?.textContent).toContain("Existing");
     act(() => FakeSource.instances[0].emit(event("agent.message.delta", 3, {
       message_id: id, text: "reply",
     })));
-    expect(screen.getAllByText("Existing reply")).toHaveLength(1);
+    expect(screen.queryByText("Existing reply")).toBeNull();
     act(() =>
       FakeSource.instances[0].emit(
         event("agent.message.completed", 4, {
@@ -331,10 +334,15 @@ it("renders actual progress separately and reconciles an already saved reply onc
         }),
       ),
     );
+    // Completion and an already-cached final reply cannot skip the reveal queue.
+    expect(screen.queryByText("Existing reply")).toBeNull();
+    act(() => vi.advanceTimersByTime(300));
     expect(screen.getAllByText("Existing reply")).toHaveLength(1);
     expect(document.querySelector(".rider-investigation")?.hasAttribute("open")).toBe(false);
     expect(screen.getByText("Checking trips")).toBeTruthy();
   } finally {
+    cleanup();
+    vi.useRealTimers();
     HTMLElement.prototype.scrollIntoView = original;
   }
 });
@@ -345,7 +353,7 @@ it("keeps the composer open after dispute/payment SSE and closes only with the t
   const { useThread, riderKeys } = await import("@/components/rider/use-rider-support");
   const original = HTMLElement.prototype.scrollIntoView;
   HTMLElement.prototype.scrollIntoView = vi.fn();
-  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false })));
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
   const { wrapper, client } = setup();
   let status: "OPEN" | "RESOLVED" = "OPEN";
   let disputeStatus = "PAYMENT_PENDING";
@@ -394,7 +402,7 @@ it("keeps the composer open after dispute/payment SSE and closes only with the t
 });
 
 it("allows HUMAN-mode messages without requiring an SSE connection and blocks unauthorized sends", () => {
-  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false })));
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
   const { wrapper } = setup();
   const thread = { id: conversation, rider_id: "R033", title: "Support", status: "HUMAN_HANDLING" as const,
     handler: "OPS" as const, updated_at: new Date().toISOString(), last_message: "", scenario: null };
@@ -404,4 +412,60 @@ it("allows HUMAN-mode messages without requiring an SSE connection and blocks un
   view.rerender(<ChatThread riderId="R033" conversation={thread} messages={[]}
     onScenario={vi.fn()} creating={false} authorized={false} />);
   expect((screen.getByRole("textbox") as HTMLTextAreaElement).disabled).toBe(true);
+});
+
+
+it("reserves an AI bubble before saved-message refetch without confusing rider messages", () => {
+  const mid = crypto.randomUUID();
+  let state = reduceStream(emptyStream, event("agent.started", 1));
+  state = reduceStream(state, event("message.created", 2, {message_id: mid, sender: "AI"}));
+  expect(state.messageId).toBe(mid);
+  expect(state.text).toBe("");
+  state = reduceStream(state, event("agent.message.delta", 3, {message_id: mid, text: "Hello "}));
+  state = reduceStream(state, event("agent.message.delta", 4, {message_id: mid, text: "world"}));
+  expect(state.text).toBe("Hello world");
+  const rider = reduceStream(emptyStream, event("message.created", 1, {message_id: mid, sender: "RIDER"}));
+  expect(rider.messageId).toBeNull();
+});
+
+
+it("keeps one progressively revealed bubble when a saved reply arrives mid-stream", () => {
+  vi.useFakeTimers();
+  const original = HTMLElement.prototype.scrollIntoView;
+  HTMLElement.prototype.scrollIntoView = vi.fn();
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
+  const {wrapper} = setup();
+  const mid = crypto.randomUUID();
+  const thread = {id: conversation, rider_id: "R003", title: "Support", status: "OPEN" as const,
+    handler: "AI" as const, updated_at: new Date().toISOString(), last_message: "", scenario: null};
+  const rider = {id: crypto.randomUUID(), conversation_id: conversation, sender: "RIDER" as const,
+    text: "Check payment", created_at: new Date().toISOString()};
+  const final = {id: mid, conversation_id: conversation, sender: "AI" as const,
+    text: "Complete answer", created_at: new Date().toISOString()};
+  const props = {riderId: "R003", conversation: thread, onScenario: vi.fn(), creating: false};
+  try {
+    const view = render(<ChatThread {...props} messages={[rider]} />, {wrapper});
+    const source = FakeSource.instances[0];
+    act(() => {
+      source.emit(event("agent.started", 1));
+      source.emit(event("message.created", 2, {message_id: mid, sender: "AI"}));
+      source.emit(event("agent.message.delta", 3, {message_id: mid, text: "Complete "}));
+    });
+    act(() => vi.advanceTimersByTime(64));
+    const bubble = document.querySelectorAll(".rider-message-bubble")[1];
+    expect(bubble.querySelector("p")?.textContent).toBe("Comp");
+    view.rerender(<ChatThread {...props} messages={[rider, final]} />);
+    expect(document.querySelectorAll(".rider-message-bubble")[1]).toBe(bubble);
+    expect(bubble.querySelector("p")?.textContent).toBe("Comp");
+    act(() => {
+      source.emit(event("agent.message.delta", 4, {message_id: mid, text: "answer"}));
+      source.emit(event("agent.message.completed", 5, {message_id: mid, text: final.text}));
+    });
+    expect(screen.queryByText(final.text)).toBeNull();
+    act(() => vi.advanceTimersByTime(1000));
+    expect(screen.getAllByText(final.text)).toHaveLength(1);
+    expect(document.querySelectorAll(".rider-message-bubble")[1]).toBe(bubble);
+  } finally {
+    cleanup(); vi.useRealTimers(); HTMLElement.prototype.scrollIntoView = original;
+  }
 });
