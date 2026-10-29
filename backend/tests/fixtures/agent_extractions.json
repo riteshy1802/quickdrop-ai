@@ -1,0 +1,223 @@
+[
+  [
+    {
+      "kind": "PAYOUT"
+    },
+    {
+      "kind": "PAYOUT",
+      "date_tokens": [
+        "20"
+      ]
+    },
+    "status"
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "date_tokens": [
+        "20"
+      ]
+    },
+    "status"
+  ],
+  [
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "19"
+      ]
+    },
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "19"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT"
+    },
+    "unsafe"
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T926334"
+      ],
+      "date_tokens": [
+        "20"
+      ]
+    },
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T926334"
+      ],
+      "date_tokens": [
+        "20"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "kal"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T252921"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT"
+    }
+  ],
+  [
+    {
+      "kind": "PENALTY",
+      "date_tokens": [
+        "18"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT",
+      "date_tokens": [
+        "19 sept"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT",
+      "trip_ids": [
+        "T482410"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T502951"
+      ],
+      "date_tokens": [
+        "13 sept"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "18"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "19"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T840677"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T312538"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "INCENTIVE",
+      "date_tokens": [
+        "17"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT",
+      "trip_ids": [
+        "T672899"
+      ],
+      "date_tokens": [
+        "19th"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT",
+      "trip_ids": [
+        "T795007",
+        "T206956"
+      ],
+      "date_tokens": [
+        "20"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "PAYOUT",
+      "date_tokens": [
+        "Sep 19"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "SURGE",
+      "trip_ids": [
+        "T980582"
+      ],
+      "date_tokens": [
+        "21"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "RECORD_DISPUTE",
+      "trip_ids": [
+        "T990831"
+      ],
+      "date_tokens": [
+        "18"
+      ]
+    }
+  ],
+  [
+    {
+      "kind": "RECORD_DISPUTE",
+      "trip_ids": [
+        "T849302"
+      ]
+    }
+  ],
+  [
+    "unsafe"
+  ]
+]

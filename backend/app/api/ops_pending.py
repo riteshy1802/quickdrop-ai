@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from app.api.riders import Session
-from app.core.access import require_local_development
 from app.repositories import ops_queue
 from app.schemas.ops import PendingItem
 
-router = APIRouter(tags=["assignment ops"], dependencies=[Depends(require_local_development)])
+router = APIRouter(tags=["assignment ops"])
 
 
 def pending_response(row):

@@ -3,7 +3,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import URL, make_url
 
@@ -16,6 +16,21 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+    ops_admin_email: str | None = None
+    ops_admin_password: SecretStr | None = None
+    ops_cookie_secure: bool = False
+    ops_session_seconds: int = Field(default=28800, ge=60, le=86400)
+    ops_login_attempts: int = Field(default=5, ge=1, le=20)
+    ops_login_window_seconds: int = Field(default=900, ge=60, le=3600)
+    groq_api_key: SecretStr | None = None
+    groq_model: str = "openai/gpt-oss-20b"
+    groq_timeout_seconds: float = Field(default=3, ge=0.1, le=15)
+    agent_foreground_seconds: float = Field(default=5.5, ge=0.1, le=6)
+    agent_job_seconds: float = Field(default=24, ge=1, le=25)
+    agent_max_attempts: int = Field(default=3, ge=1, le=5)
+    payswift_base_url: str = "http://localhost:8081"
+    payment_poll_seconds: float = Field(default=2, ge=0.1, le=60)
+    payment_max_attempts: int = Field(default=8, ge=1, le=20)
     app_env: str = "development"
     enable_local_internal_reads: bool = False
     cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
@@ -27,6 +42,11 @@ class Settings(BaseSettings):
     postgres_password: SecretStr | None = None
     db_pool_size: int = Field(default=5, ge=1, le=30)
     db_max_overflow: int = Field(default=5, ge=0, le=30)
+
+    @field_validator("database_url", "groq_api_key", mode="before")
+    @classmethod
+    def blank_optional_secrets(cls, value):
+        return None if isinstance(value, str) and not value.strip() else value
 
     @property
     def sqlalchemy_url(self) -> URL:

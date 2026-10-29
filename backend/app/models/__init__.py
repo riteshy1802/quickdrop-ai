@@ -7,6 +7,7 @@ from app.models.dispute import Dispute
 from app.models.dispute_item import DisputeItem
 from app.models.message import Message
 from app.models.ops_queue import OpsQueue
+from app.models.ops_session import OpsLoginLimit, OpsSession
 from app.models.ops_user import OpsUser
 from app.models.payment_intent import PaymentIntent
 from app.models.payout_line import PayoutLine
@@ -22,6 +23,8 @@ __all__ = [
     "Message",
     "OpsQueue",
     "OpsUser",
+    "OpsSession",
+    "OpsLoginLimit",
     "PaymentIntent",
     "PayoutLine",
     "Rider",

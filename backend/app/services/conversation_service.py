@@ -65,6 +65,8 @@ def summary(row):
         "updated_at": conversation.updated_at,
         "last_message": last_message or "",
         "scenario": None,
+        "assigned_operator_id": conversation.assigned_operator_id,
+        "control_version": conversation.control_version,
     }
 
 
@@ -73,6 +75,7 @@ def message_response(message):
         "id": message.id,
         "conversation_id": message.conversation_id,
         "sender": message.sender_type,
+        "operator_id": message.operator_id,
         "text": message.content,
         "created_at": message.created_at,
         "received_at": message.received_at,

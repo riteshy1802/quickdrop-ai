@@ -147,7 +147,8 @@ data nor runs migrations; shutdown disposes the initialized async connection
 pool. The session dependency closes sessions and rolls back failures; callers
 own commits.
 
-Admin seeding, authentication, agents, PaySwift execution, and workers are deferred.
+Agent orchestration, administrator seeding, and session-protected Ops workflows are now implemented; see the milestone documents below.
+PaySwift execution and the worker are implemented in Milestone 4.
 Messaging, traces, and pending Ops contracts are implemented; see Milestone 3 below.
 Compose's API service and `evals/run.py` remain future work.
 
@@ -194,3 +195,21 @@ Original CSVs and all historical payout lines remain unchanged.
 ## Core APIs (Milestone 3)
 
 Messaging persistence, conversation lifecycle, audit traces, pending Ops retrieval, and internal read APIs are implemented. Apply `uv run alembic upgrade head` before using them. Internal reads default to disabled; enable only for loopback development with `APP_ENV=development ENABLE_LOCAL_INTERNAL_READS=true`. See [endpoint contracts, retry policy, migration, and verification commands](docs/core-apis.md). No LLM or payment execution is included. Frontend adapters still use mock data.
+
+
+## Payments (Milestone 4)
+
+PaySwift integration, deterministic authorization, and a PostgreSQL outbox worker are implemented. The worker uses fenced leases and GET-only reconciliation after ambiguous outcomes. Run `uv run python -m app.workers.main` after applying migrations. Compose includes a worker service; the PaySwift definition is unchanged. No payment-creation HTTP endpoint or human approval mutation is exposed. See [payment architecture, migration, and developer verification commands](docs/payments.md). Tests and live sandbox verification are deferred to the developer; an opt-in sandbox test is included.
+
+## Dispute agent (Milestone 5)
+
+The existing webhook now runs one LangGraph with Groq extraction, identity-bound investigation tools, deterministic financial decisions, and the existing payment authorization service. Slow requests resume through durable PostgreSQL message jobs in the shared worker. Start both the API and `uv run python -m app.workers.main`; a queued intent is never described as confirmed settlement. See [architecture, configuration, migration, test results, and deferred-delivery limits](docs/agent.md).
+
+## Ops authentication and human intervention
+
+See [Ops API and administrator setup](docs/ops.md) for session authentication,
+financial decisions, escalation handling, private notes, and safe human takeover.
+Apply migrations, configure `OPS_ADMIN_EMAIL` / `OPS_ADMIN_PASSWORD`, then run
+`uv run python -m app.scripts.seed_admin`. All `/ui/ops/*` endpoints require the
+login cookie. Assignment `/messages`, `/trace/{rider_id}`, and `/ops/pending` remain
+public for evaluator compatibility.

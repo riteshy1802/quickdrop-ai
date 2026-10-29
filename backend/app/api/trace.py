@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from app.api.riders import Session, require_rider
-from app.core.access import require_local_development
 from app.schemas.traces import TraceEvent
 from app.services import trace_service
 
-router = APIRouter(tags=["assignment audit"], dependencies=[Depends(require_local_development)])
+router = APIRouter(tags=["assignment audit"])
 
 
 @router.get("/trace/{rider_id}", response_model=list[TraceEvent])

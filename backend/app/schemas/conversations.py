@@ -29,6 +29,8 @@ class ConversationResponse(BaseModel):
     updated_at: datetime
     last_message: str
     scenario: None = None
+    assigned_operator_id: UUID | None = None
+    control_version: int = 0
 
 
 class MessageResponse(BaseModel):
@@ -39,6 +41,7 @@ class MessageResponse(BaseModel):
     created_at: datetime
     received_at: datetime | None
     visibility: Literal["RIDER", "INTERNAL"]
+    operator_id: UUID | None = None
 
 
 class DisputeItemResponse(BaseModel):

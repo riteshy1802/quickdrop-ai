@@ -36,6 +36,8 @@ class CaseResponse(PendingItem):
     claimed_amount: Decimal | None
     verified_amount: Decimal | None
     resolved_at: datetime | None
+    assigned_to: UUID | None = None
+    decision_note: str | None = None
 
 
 class PayoutResponse(BaseModel):

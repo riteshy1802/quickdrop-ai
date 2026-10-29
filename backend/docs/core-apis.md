@@ -1,5 +1,9 @@
 # Core APIs and conversation persistence (Milestone 3)
 
+This is the historical Milestone 3 implementation record. Milestones 5 and 6 replace
+the deterministic handler and temporary Ops access policy. See [Agent](agent.md)
+and [Ops authentication and actions](ops.md) for current behavior.
+
 This milestone adds persistence and read APIs. The deterministic reply handler acknowledges concerns; it does not run reconciliation, authorize money, call an LLM, or contact PaySwift. The financial engine and source CSVs are unchanged. No new dependencies or tables are required.
 
 ## Apply and verify locally
@@ -82,7 +86,7 @@ The simulator's rider_id is not authentication. Existing development data routes
 
 ## Lifecycle and webhook transactions
 
-Conversation service locks the rider row before finding or creating a conversation. The most recently updated conversation whose status is not RESOLVED is active; ties use UUID. If all conversations are resolved, the next distinct webhook starts a new conversation. Existing resolved conversations stay resolved. No human takeover or handback HTTP endpoints exist. The service also provides history, redacted structured context, and explicit lifecycle setters for future callers.
+Conversation service locks the rider row before finding or creating a conversation. The most recently updated conversation whose status is not RESOLVED is active; ties use UUID. If all conversations are resolved, the next distinct webhook starts a new conversation. Existing resolved conversations stay resolved. Human takeover, handback, and resolution endpoints now exist; see [Ops actions](ops.md). The service also provides history, redacted structured context, and explicit lifecycle setters for future callers.
 
 Processing has three phases:
 
@@ -102,7 +106,7 @@ PostgreSQL lock and statement timeouts bound contention. Advisory hash collision
 
 Trace service uses existing agent_traces, supports all five required types, and accepts structured object input/null and JSON-compatible output. Decimal, UUID, and aware datetime values serialize safely. Secret-bearing keys and private reasoning keys are recursively redacted on writes and reads. Non-JSON floats are rejected. Credential values must never be placed in free-form strings; key-based redaction cannot infer every secret in arbitrary text. Trace events use server event times; vendor received_at remains in the input and incoming message. Chronology is stable by created_at and id. No fake tool calls or financial decisions are generated.
 
-Overview totals include disputes, pending approvals, unresolved escalations, active human conversations, and payment exceptions (FAILED/UNKNOWN/NEEDS_REVIEW). Confirmed amounts include only SUCCEEDED intents with provider ID and reconciliation timestamp. This is a read model of stored evidence, not an independent provider reconciliation.
+Overview totals include disputes, pending approvals, unresolved escalations, active human conversations, and payment exceptions (FAILED/UNKNOWN/NEEDS_REVIEW). Confirmed amounts include only SUCCEEDED intents with provider ID and either reconciliation timestamp or the durable dispatch marker added in Milestone 4. This is a read model of stored evidence, not an independent provider reconciliation.
 
 ## Migration and rollback
 

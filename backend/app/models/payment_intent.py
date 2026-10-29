@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
 from sqlalchemy import (
@@ -17,6 +17,7 @@ from sqlalchemy import (
     String,
     text,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, CreatedAt, UpdatedAt, UUIDPrimaryKey
@@ -83,6 +84,10 @@ class PaymentIntent(UUIDPrimaryKey, CreatedAt, UpdatedAt, Base):
     lease_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # Null on legacy intents: workers must not execute unverified legacy jobs.
+    authorization: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    processing_token: Mapped[UUID | None] = mapped_column(nullable=True)
+    post_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_reconciled_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )

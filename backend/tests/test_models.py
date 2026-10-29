@@ -15,6 +15,8 @@ def test_metadata_and_relationships():
         "trips",
         "payout_lines",
         "ops_users",
+        "ops_sessions",
+        "ops_login_limits",
         "conversations",
         "messages",
         "disputes",

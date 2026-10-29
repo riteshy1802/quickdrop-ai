@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Conversation, Dispute, OpsQueue, PaymentIntent
@@ -16,7 +16,10 @@ async def overview(session: AsyncSession):
         .where(
             PaymentIntent.status == "SUCCEEDED",
             PaymentIntent.provider_payout_id.is_not(None),
-            PaymentIntent.last_reconciled_at.is_not(None),
+            or_(
+                PaymentIntent.last_reconciled_at.is_not(None),
+                PaymentIntent.post_started_at.is_not(None),
+            ),
         )
         .scalar_subquery()
     )

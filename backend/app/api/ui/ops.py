@@ -1,12 +1,16 @@
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.api.ops_pending import pending_response
 from app.api.riders import Limit, Offset, Session
 from app.api.ui.conversations import paginated
-from app.core.access import require_local_development
+from app.core.database import get_session_factory
+from app.integrations.payswift import PaySwiftClient, get_payswift_client
 from app.repositories import conversations, disputes, messages, ops, ops_queue
+from app.repositories.payment_jobs import PaymentBusy
 from app.schemas import Page
 from app.schemas.conversations import (
     ConversationResponse,
@@ -24,10 +28,12 @@ from app.schemas.ops import (
 )
 from app.schemas.traces import InternalTrace, TraceType
 from app.services import trace_service
+from app.services.auth_service import require_operator
 from app.services.conversation_service import message_response, summary
+from app.services.payment_worker import reconcile_intent
 
 router = APIRouter(
-    prefix="/ui/ops", tags=["local internal ops"], dependencies=[Depends(require_local_development)]
+    prefix="/ui/ops", tags=["Ops workspace"], dependencies=[Depends(require_operator)]
 )
 
 
@@ -47,6 +53,8 @@ def case_response(row):
         "claimed_amount": dispute.claimed_amount,
         "verified_amount": dispute.verified_amount,
         "resolved_at": queue.resolved_at,
+        "assigned_to": queue.assigned_to,
+        "decision_note": queue.decision_note,
     }
 
 
@@ -185,3 +193,19 @@ async def list_traces(
         limit,
         offset,
     )
+
+
+@router.post("/payouts/{identifier}/reconcile", response_model=PayoutResponse)
+async def reconcile_payout(
+    identifier: UUID,
+    factory: Annotated[async_sessionmaker[AsyncSession], Depends(get_session_factory)],
+    client: Annotated[PaySwiftClient, Depends(get_payswift_client)],
+):
+    try:
+        await reconcile_intent(factory, client, identifier)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail="Payout not found") from exc
+    except PaymentBusy as exc:
+        raise HTTPException(status_code=409, detail="Payout is currently being processed") from exc
+    async with factory() as session:
+        return payout_response(require_row(await ops.get_payout(session, identifier), "Payout"))

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
+from uuid import UUID
 
-from sqlalchemy import CheckConstraint, ForeignKey, Index, String, UniqueConstraint, text
+from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String, UniqueConstraint, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -29,6 +30,12 @@ class Conversation(UUIDPrimaryKey, CreatedAt, UpdatedAt, Base):
         UniqueConstraint("id", "rider_id", name="uq_conversations_id_rider"),
         Index("ix_conversations_rider_updated", "rider_id", "updated_at"),
         Index("ix_conversations_status_updated", "status", "updated_at"),
+    )
+    assigned_operator_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("ops_users.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    control_version: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default="0"
     )
     rider_id: Mapped[str] = mapped_column(
         ForeignKey("riders.rider_id", ondelete="RESTRICT"), nullable=False

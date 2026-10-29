@@ -1,10 +1,21 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
-from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, String, Text, text
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    text,
+)
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, CreatedAt, UUIDPrimaryKey
@@ -24,11 +35,21 @@ class Message(UUIDPrimaryKey, CreatedAt, Base):
             "('RECEIVED','PROCESSING','COMPLETED','FAILED')",
             name="processing_status",
         ),
+        Index(
+            "ix_messages_agent_due",
+            "processing_status",
+            "next_processing_at",
+            "processing_expires_at",
+        ),
         Index("ix_messages_conversation_created", "conversation_id", "created_at", "id"),
     )
     conversation_id: Mapped[UUID] = mapped_column(
         ForeignKey("conversations.id", ondelete="RESTRICT"), nullable=False
     )
+    operator_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("ops_users.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    client_request_id: Mapped[UUID | None] = mapped_column(nullable=True, unique=True)
     message_id: Mapped[str | None] = mapped_column(String(255), nullable=True, unique=True)
     sender_type: Mapped[str] = mapped_column(String(16), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
@@ -39,6 +60,13 @@ class Message(UUIDPrimaryKey, CreatedAt, Base):
     received_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     processing_token: Mapped[UUID | None] = mapped_column(nullable=True)
     processing_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    agent_state: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    agent_attempts: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    next_processing_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
     webhook_reply: Mapped[str | None] = mapped_column(Text, nullable=True)

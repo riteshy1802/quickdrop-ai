@@ -26,12 +26,17 @@ from app.models import (
     Rider,
 )
 from app.services import message_service, trace_service
+from app.services.auth_service import require_operator
 
 pytestmark = pytest.mark.database
 
 
 @pytest_asyncio.fixture
-async def api(database_url):
+async def api(database_url, monkeypatch):
+    async def legacy_handler(factory, claim):
+        return await message_service.deterministic_handler(claim)
+
+    monkeypatch.setattr(message_service, "run_handler", legacy_handler)
     # Separate real connections and commits are essential for webhook concurrency proof.
     engine = create_async_engine(database_url, poolclass=NullPool, hide_parameters=True)
     factory = async_sessionmaker(engine, expire_on_commit=False, autoflush=False)
@@ -49,6 +54,7 @@ async def api(database_url):
     app = create_app()
     app.dependency_overrides[get_session_factory] = lambda: factory
     app.dependency_overrides[require_local_development] = lambda: None
+    app.dependency_overrides[require_operator] = lambda: None
 
     async def dependency():
         async with factory() as session:

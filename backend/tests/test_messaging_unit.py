@@ -60,15 +60,15 @@ async def test_privileged_endpoints_fail_closed_without_database(monkeypatch):
         transport=httpx.ASGITransport(app=create_app()), base_url="http://test"
     ) as client:
         for path in (
-            "/ops/pending",
-            "/trace/R003",
             "/ui/ops/overview",
             "/ui/ops/payouts",
             "/ui/ops/cases",
             "/ui/ops/traces",
             f"/ui/conversations/{uuid4()}?rider_id=R003",
         ):
-            assert (await client.get(path)).status_code == 403
+            assert (await client.get(path)).status_code == (
+                401 if path.startswith("/ui/ops/") else 403
+            )
 
 
 def test_safe_trace_json_and_lifecycle_context():
@@ -92,3 +92,18 @@ def test_safe_trace_json_and_lifecycle_context():
     conversation_service.set_lifecycle(conversation, status="RESOLVED", handling_mode="AI")
     with pytest.raises(ValueError, match="cannot be reopened"):
         conversation_service.set_lifecycle(conversation, status="OPEN", handling_mode="AI")
+
+
+async def test_missing_session_rejects_before_database_initialization():
+    from app.core.database import get_session_factory
+
+    def unavailable():
+        raise AssertionError("Unauthenticated requests must not initialize PostgreSQL")
+
+    app = create_app()
+    app.dependency_overrides[get_session_factory] = unavailable
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        for path in ("/auth/me", "/ui/ops/overview"):
+            assert (await client.get(path)).status_code == 401

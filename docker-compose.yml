@@ -53,6 +53,35 @@ services:
       timeout: 3s
       retries: 10
 
+  # Durable payment worker; apply backend migrations before starting it.
+  worker:
+    build: ./backend
+    command: ["python", "-m", "app.workers.main"]
+    restart: unless-stopped
+    stop_grace_period: 45s
+    env_file:
+      - path: .env
+        required: false
+      - path: backend/.env
+        required: false
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-quickdrop}
+      POSTGRES_USER: ${POSTGRES_USER:-quickdrop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      DATABASE_URL: ""
+      PAYSWIFT_BASE_URL: http://payswift:8081
+      PAYMENT_POLL_SECONDS: ${PAYMENT_POLL_SECONDS:-2}
+      PAYMENT_MAX_ATTEMPTS: ${PAYMENT_MAX_ATTEMPTS:-8}
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      payswift:
+        condition: service_started
+
 networks:
   default:
     name: quickdrop-network

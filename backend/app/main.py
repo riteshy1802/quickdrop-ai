@@ -10,10 +10,11 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
-from app.api import health, messages, ops_pending, riders, trace
-from app.api.ui import conversations, ops
+from app.api import auth, health, messages, ops_pending, riders, trace
+from app.api.ui import conversations, ops, ops_cases, ops_conversations
 from app.core.config import get_settings
 from app.core.database import get_engine
+from app.integrations.payswift import get_payswift_client
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,9 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
+        if get_payswift_client.cache_info().currsize:
+            await get_payswift_client().aclose()
+            get_payswift_client.cache_clear()
         if get_engine.cache_info().currsize:
             await get_engine().dispose()
 
@@ -46,8 +50,8 @@ def create_app() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=get_settings().cors_origins,
-        allow_credentials=False,
-        allow_methods=["GET"],
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
     )
 
@@ -81,6 +85,9 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(riders.router)
     for router in (
+        auth.router,
+        ops_cases.router,
+        ops_conversations.router,
         messages.router,
         trace.router,
         ops_pending.router,
