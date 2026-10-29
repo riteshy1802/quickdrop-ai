@@ -106,7 +106,7 @@ function CaseQueue({ data }: { data: OpsSnapshot }) {
           >
             Review <ArrowUpRight size={12} />
           </Link>
-          {row.original.status === "PENDING" && (
+          {row.original.kind === "ESCALATION" && row.original.status === "PENDING" && (
             <Button
               size="sm"
               variant="ghost"
@@ -179,7 +179,7 @@ export function OpsCaseReview() {
   const { id } = useParams<{ id: string }>();
   return <OpsData>{(data) => <CaseReview id={id} data={data} />}</OpsData>;
 }
-function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
+export function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
   const action = useOpsAction();
   const item = data.cases.find((c) => c.id === id);
   if (!item)
@@ -194,7 +194,8 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
   )!;
   const dispute = thread.disputes.find((d) => d.id === item.dispute_id)!;
   const closed = ["APPROVED", "REJECTED", "RESOLVED"].includes(item.status);
-  const eligible = item.checks.slice(0, 6).every((c) => c.result === "PASSED");
+  // Evidence is advisory; the server always revalidates financial authorization.
+  const failedEvidence = item.checks.some((c) => c.result === "FAILED");
   return (
     <>
       <PageHeading
@@ -347,6 +348,7 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
         </div>
         <div>
           <Panel title="Policy verification">
+            {item.checks.length === 0 && <p>Evidence checks unavailable</p>}
             <ul className="ops-policy-checklist">
               {item.checks.map((check) => (
                 <li key={check.label}>
@@ -380,7 +382,7 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
               </p>
               {!closed && (
                 <>
-                  <Button
+                  {item.kind === "ESCALATION" && <Button
                     variant="outline"
                     disabled={action.isPending}
                     onClick={() =>
@@ -389,14 +391,14 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
                   >
                     <UserRoundCheck size={14} />
                     Assign to me
-                  </Button>
+                  </Button>}
                   {item.kind === "APPROVAL" ? (
                     <>
                       <ConfirmDialog
                         label="Approve payment"
                         title={`Approve ${money(item.amount_rupees)} for ${item.rider_id}?`}
                         description={`Authorize exactly ${money(item.amount_rupees)} for dispute ${item.dispute_id}. This authorizes a pending payment intent. Settlement requires PaySwift confirmation.`}
-                        disabled={action.isPending || !eligible}
+                        disabled={action.isPending || failedEvidence}
                         onConfirm={() =>
                           action.mutateAsync({ type: "approve", id: item.id })
                         }
