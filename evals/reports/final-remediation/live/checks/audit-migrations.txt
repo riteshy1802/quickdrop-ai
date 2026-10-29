@@ -1,0 +1,7 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 078eb21553bb, initial quickdrop schema
+INFO  [alembic.runtime.migration] Running upgrade 078eb21553bb -> 7d2f6419bc30, Add nullable webhook timestamp and recovery lease; preserve existing messages.
+INFO  [alembic.runtime.migration] Running upgrade 7d2f6419bc30 -> 20af73f418ab, Add durable authorization evidence and fenced worker ownership.
+INFO  [alembic.runtime.migration] Running upgrade 20af73f418ab -> 5a6f842e91d0, Durable agent continuation metadata on the existing messages outbox.
+INFO  [alembic.runtime.migration] Running upgrade 5a6f842e91d0 -> ef5a812c731a, ops sessions and human control fencing

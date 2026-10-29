@@ -1,0 +1,15 @@
+{
+  "riders": {
+    "inserted": 40,
+    "skipped": 0
+  },
+  "trips": {
+    "inserted": 3304,
+    "skipped": 10,
+    "remapped_rider_references": 64
+  },
+  "payout_lines": {
+    "inserted": 3222,
+    "skipped": 0
+  }
+}

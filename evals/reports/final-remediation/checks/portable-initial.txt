@@ -1,0 +1,26 @@
+WARNING: financial side effects; use disposable API, database and PaySwift state.
+01 R003 FAIL: decision=NOT VERIFIED authorization=NOT VERIFIED provider=NOT VERIFIED initial=NOT VERIFIED
+  /messages: HTTPError status=503
+02 R027 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+03 R011 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+04 R020 FAIL: decision=PASS authorization=NOT VERIFIED provider=PASS initial=PASS
+05 R003 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+06 R005 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+07 R008 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+08 R013 FAIL: decision=PASS authorization=NOT VERIFIED provider=PASS initial=PASS
+09 R014 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+10 R016 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+11 R021 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+12 R022 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+13 R024 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+14 R025 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+15 R007 FAIL: decision=PASS authorization=PASS provider=FAIL initial=PASS
+16 R031 FAIL: decision=PASS authorization=PASS provider=PASS initial=FAIL
+17 R009 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+18 R026 FAIL: decision=PASS authorization=PASS provider=FAIL initial=PASS
+19 R033 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+20 R034 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+21 R035 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+22 R036 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+23 R028 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS
+24 R037 FAIL: decision=PASS authorization=NOT VERIFIED provider=PASS initial=PASS

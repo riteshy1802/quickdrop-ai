@@ -1,0 +1,6 @@
+ Container quickdrop-remediation-postgres-1 Restarting 
+ Container quickdrop-remediation-api-1 Restarting 
+ Container quickdrop-remediation-worker-1 Restarting 
+ Container quickdrop-remediation-postgres-1 Started 
+ Container quickdrop-remediation-worker-1 Started 
+ Container quickdrop-remediation-api-1 Started 

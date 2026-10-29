@@ -1,0 +1,2 @@
+WARNING: financial side effects; use disposable API, database and PaySwift state.
+06 R005 PASS: decision=PASS authorization=PASS provider=PASS initial=PASS

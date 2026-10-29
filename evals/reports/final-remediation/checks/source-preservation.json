@@ -1,0 +1,10 @@
+{
+  "BRIEF.md": true,
+  "SUBMISSION.md": true,
+  "docs/policy.md": true,
+  "data/conversations.json": true,
+  "data/riders.csv": true,
+  "data/trips.csv": true,
+  "data/payout_lines.csv": true,
+  "payswift/server.pyc": true
+}

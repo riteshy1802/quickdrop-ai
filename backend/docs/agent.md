@@ -21,7 +21,7 @@ Settings:
 
 - GROQ_MODEL=openai/gpt-oss-20b
 - GROQ_TIMEOUT_SECONDS=3
-- AGENT_FOREGROUND_SECONDS=5.5
+- AGENT_FOREGROUND_SECONDS=7
 - AGENT_JOB_SECONDS=24
 - AGENT_MAX_ATTEMPTS=3
 
@@ -54,7 +54,7 @@ POST /messages keeps the assignment body and `{reply}` response. Existing extern
 
 Messages in one conversation execute in stored order. A later turn waits outside transactions while an earlier agent turn is unfinished. Different conversations can progress through multiple worker processes. Ordinary duplicate deliveries do not launch another graph.
 
-The foreground graph budget is 5.5 seconds inside the existing eight-second webhook budget. If the graph or extraction cannot finish, the message remains durably RECEIVED with agent_state, next_processing_at, attempt count, and a cached processing acknowledgment. This acknowledgment is explicitly not a final resolution: processing_status is not COMPLETED. Retries replay the pending acknowledgment without starting another foreground execution. The shared worker claims and resumes due messages; after completion it persists the final AI message and replaces webhook_reply with the final result. A later duplicate then receives the final reply.
+The foreground graph budget is seven seconds inside the existing eight-second webhook budget. If the graph or extraction cannot finish, the message remains durably RECEIVED with agent_state, next_processing_at, attempt count, and a cached processing acknowledgment. This acknowledgment is explicitly not a final resolution: processing_status is not COMPLETED. Retries replay the pending acknowledgment without starting another foreground execution. The shared worker claims and resumes due messages; after completion it persists the final AI message and replaces webhook_reply with the final result. A later duplicate then receives the final reply.
 
 The worker in python -m app.workers.main alternates agent work and payment work. Message claims reuse PostgreSQL advisory/row locks and fenced processing tokens. Crashes leave a recoverable lease; no in-memory task is required for correctness. Normal deferred retries use bounded delays. After the configured extraction attempt budget, a real technical escalation is persisted and the message completes with a truthful support-review response. No result is discarded merely because a provider or model timed out.
 
@@ -199,3 +199,28 @@ when evidence is absent. The operator-provided two-day estimate remains limited 
 pending support approval, not provider completion or bank settlement. These prompt
 instructions guide language understanding; financial eligibility, authorization,
 identity, provider evidence and duplicate prevention remain application-enforced.
+
+
+Day-wide PAYOUT complaints with order-count/target evidence widen to include daily incentive investigation. Counts in rider text never establish eligibility: completed source trips and existing incentive lines are reconciled by the financial engine. Explicit trip-only complaints do not widen.
+
+Webhook limitation: the vendor stops retrying after 2xx and supplies no outbound final-message API. Durable completion and SSE serve the Rider UI but do not deliver a delayed final reply to that vendor. A pending acknowledgment must be reported separately from final original-request delivery.
+
+
+## Conversation lifecycle
+
+Dispute resolution and payment confirmation do not close a support thread. An active
+conversation uses OPEN (or an active workflow status such as PAYMENT_PENDING or
+AWAITING_APPROVAL); after its last payment completes it returns to OPEN. Its history,
+claim references and provider-backed payment status remain available for follow-ups.
+A new issue can be investigated in the same thread, with existing idempotency and
+real-IST-day authorization limits unchanged. HUMAN mode accepts rider messages while
+suppressing LangGraph replies.
+
+The persisted conversation status RESOLVED means explicitly closed, distinct from a
+dispute's RESOLVED status. Only authenticated Ops resolution closes a conversation;
+there is no inactivity timer. Subsequent reconciliation cannot reopen a closed thread.
+The Rider UI offers Start New Conversation for closed threads and keeps their audit
+history unchanged. Previously closed threads are not silently rewritten or reopened.
+Dispute/payment SSE notifications refresh their saved state; only the conversation's
+source_status determines closure in the composer. A disconnected SSE stream alone
+does not prevent sending an authorized message.

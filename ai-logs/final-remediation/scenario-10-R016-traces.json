@@ -1,0 +1,423 @@
+[
+  {
+    "at": "2026-10-29T18:23:35.312588Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "19 sept ke 5 orders ka paisa hi nahi aaya!! jaldi karo",
+      "rider_id": "R016",
+      "message_id": "wamid.C8G6SSQKDS7PJR",
+      "received_at": "2026-09-22T11:30:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T18:23:35.374292Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.411996Z",
+    "type": "decision",
+    "name": "investigation_scope_expanded",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "reason": "Day earnings complaint includes count or target evidence"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.417641Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": [
+            "19 sept"
+          ]
+        },
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19 sept"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v8",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.441276Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "count": 9
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.457668Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "count": 4
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.485258Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T158281",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "No historical payout line was found in the attested complete source scope",
+            "A historical payment shortfall was found"
+          ],
+          "expected": "85",
+          "historical": "0",
+          "outstanding": "85"
+        },
+        {
+          "id": "T245768",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "45",
+          "historical": "45",
+          "outstanding": "0"
+        },
+        {
+          "id": "T406836",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "65",
+          "historical": "65",
+          "outstanding": "0"
+        },
+        {
+          "id": "T481678",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "No historical payout line was found in the attested complete source scope",
+            "A historical payment shortfall was found"
+          ],
+          "expected": "91",
+          "historical": "0",
+          "outstanding": "91"
+        },
+        {
+          "id": "T520773",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "38",
+          "historical": "38",
+          "outstanding": "0"
+        },
+        {
+          "id": "T563729",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "No historical payout line was found in the attested complete source scope",
+            "A historical payment shortfall was found"
+          ],
+          "expected": "85",
+          "historical": "0",
+          "outstanding": "85"
+        },
+        {
+          "id": "T880027",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "26",
+          "historical": "26",
+          "outstanding": "0"
+        },
+        {
+          "id": "T900949",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "No historical payout line was found in the attested complete source scope",
+            "A historical payment shortfall was found"
+          ],
+          "expected": "73",
+          "historical": "0",
+          "outstanding": "73"
+        },
+        {
+          "id": "T967216",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "No historical payout line was found in the attested complete source scope",
+            "A historical payment shortfall was found"
+          ],
+          "expected": "91",
+          "historical": "0",
+          "outstanding": "91"
+        }
+      ],
+      "status": "VERIFIED",
+      "rider_id": "R016",
+      "outstanding": "425",
+      "received_at": "2026-09-22T06:00:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "425"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.505833Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.513182Z",
+    "type": "decision",
+    "name": "check_payment_eligibility",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "ready_for_authorization": "[REDACTED]"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.526370Z",
+    "type": "decision",
+    "name": "dispute_persisted",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "status": "VERIFIED",
+      "dispute_id": "5907fb3f-6047-5483-905f-fd796260d596"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.554294Z",
+    "type": "tool_call",
+    "name": "payswift_authorization_ledger",
+    "input": {
+      "rider_id": "R016"
+    },
+    "output": {
+      "validated_entries": 0
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.572714Z",
+    "type": "decision",
+    "name": "payment_authorization",
+    "input": {
+      "dispute_id": "5907fb3f-6047-5483-905f-fd796260d596"
+    },
+    "output": {
+      "reason": "Full verified balance requires Ops approval: amount or daily auto-pay limit",
+      "status": "APPROVAL_REQUIRED",
+      "queue_id": "5a3f097a-7913-40d5-9410-72979fe01c58",
+      "intent_id": null
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.599008Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "count": 9
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.609733Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "count": 4
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.635276Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "2026-09-19",
+          "type": "incentive",
+          "reasons": [
+            "Claim is within the seven-day IST window",
+            "9 completed trips on this IST date",
+            "No historical payout line was found in the attested complete source scope",
+            "Historical pay matches policy"
+          ],
+          "expected": "0",
+          "historical": "0",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R016",
+      "outstanding": "0",
+      "received_at": "2026-09-22T06:00:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.647931Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.652066Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "805daec9-c5aa-430e-b6f5-9d5734c1b0c0"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "approval",
+          "dates": [
+            "2026-09-19"
+          ],
+          "items": [
+            {
+              "source": "T158281",
+              "expected": "85",
+              "historical": "0"
+            },
+            {
+              "source": "T481678",
+              "expected": "91",
+              "historical": "0"
+            },
+            {
+              "source": "T563729",
+              "expected": "85",
+              "historical": "0"
+            },
+            {
+              "source": "T900949",
+              "expected": "73",
+              "historical": "0"
+            },
+            {
+              "source": "T967216",
+              "expected": "91",
+              "historical": "0"
+            }
+          ],
+          "amount": "425",
+          "expected": "599",
+          "historical": "174",
+          "claim_types": [
+            "trip"
+          ],
+          "approval_reason": "Full verified balance requires Ops approval: amount or daily auto-pay limit",
+          "over_auto_limit": true
+        },
+        {
+          "kind": "no_shortfall",
+          "items": [
+            {
+              "source": "2026-09-19",
+              "expected": "0",
+              "historical": "0"
+            }
+          ],
+          "reasons": [
+            "9 completed trips on this IST date"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:37.659871Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Maine 19 September ke aapke orders check kiye. Records ke hisaab se ₹599 milne chahiye the, lekin ₹174 hi mile hain.\n\n₹425 ka difference confirm hua hai. Yeh amount automatic payment limit se zyada hai, isliye support team ki approval ke liye bhej diya hai. Abhi payment initiate nahi hua hai.\n\nIs din 9 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila."
+  }
+]

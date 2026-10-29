@@ -38,6 +38,8 @@ export interface Conversation {
   rider_id: string;
   title: string;
   status: ConversationStatus;
+  // Persisted thread lifecycle, distinct from payment-derived display status.
+  source_status?: ConversationStatus;
   handler: "AI" | "OPS";
   assigned_operator?: string | null;
   resolved_by?: "AI" | "OPS";

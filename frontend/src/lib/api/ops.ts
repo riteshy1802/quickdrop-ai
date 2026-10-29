@@ -106,6 +106,8 @@ export const opsApi = {
         reviewed_at: c.resolved_at,
         rejection_reason:
           c.status === "REJECTED" ? (c.decision_note ?? undefined) : undefined,
+        // CaseResponse exposes no persisted checklist. The UI must show unavailable,
+        // and approval remains a fresh server-side financial verification.
         checks: [],
       })),
       payouts: payouts.map((p) => {

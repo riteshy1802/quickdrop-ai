@@ -1,0 +1,6 @@
+{
+  "session_files": 14,
+  "valid_jsonl_records": 1859,
+  "known_secret_or_key_matches": 0,
+  "scope": "Current local credentials plus recognizable AWS/Groq access keys; no secret values retained in this result."
+}

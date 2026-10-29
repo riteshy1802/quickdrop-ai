@@ -1,0 +1,16 @@
+{
+  "foreground_graph_budget_seconds": 7,
+  "outer_webhook_budget_seconds": 8,
+  "vendor_deadline_approximately_seconds": 10,
+  "sequential_model_calls_per_fresh_turn": 1,
+  "final_response_composition": "Deterministic templates; no sequential final-generation LLM call",
+  "validated_extraction_median_seconds": 1.9501,
+  "validated_extraction_max_seconds": 7.6779,
+  "non_llm_request_overhead_median_seconds": 0.2206,
+  "overhead_scope": "HTTP total minus extraction wrapper latency for uniquely matched synchronous turns; includes context reads, deterministic tools, trace writes and atomic reply persistence, not individual SQL timings.",
+  "remaining_deferred_scenarios": [
+    3,
+    17
+  ],
+  "no_outbound_vendor_transport_in_assignment": true
+}

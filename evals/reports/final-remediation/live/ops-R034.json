@@ -1,0 +1,225 @@
+{
+  "rider_id": "R034",
+  "checks": {
+    "unauthorized_rejected": true,
+    "login": true,
+    "session_validation": true,
+    "takeover": true,
+    "human_reply": true,
+    "internal_note": true,
+    "private_note_hidden": true,
+    "human_reply_visible": true,
+    "ai_bypassed_in_human_mode": true,
+    "handback_blocked_while_pending": true,
+    "rejection": true,
+    "repeat_rejection_rejected": true,
+    "no_payment_after_rejection": true,
+    "queue_rejected": true,
+    "resolution": true,
+    "logout": true,
+    "session_revoked": true
+  },
+  "after_state": {
+    "disputes": [
+      {
+        "id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "rider_id": "R034",
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60",
+        "status": "REJECTED",
+        "verified_amount": "249",
+        "details": {
+          "request": {
+            "rider_id": "R034",
+            "trip_ids": [],
+            "trip_dates": [
+              "2026-09-19"
+            ],
+            "received_at": "2026-09-23T06:00:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-23T11:30:00+05:30",
+            "incentive_dates": []
+          },
+          "scope_key": "c6efe6f7fe38ad34396022e7fbd3621336ff1cd46690ab1b6c20e02d06225e2c"
+        }
+      }
+    ],
+    "items": [
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T121056",
+        "expected_amount": "73",
+        "actual_amount": "0",
+        "difference": "73"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T149956",
+        "expected_amount": "30",
+        "actual_amount": "30",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T258029",
+        "expected_amount": "53",
+        "actual_amount": "53",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T322156",
+        "expected_amount": "25",
+        "actual_amount": "25",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T409395",
+        "expected_amount": "85",
+        "actual_amount": "0",
+        "difference": "85"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T680542",
+        "expected_amount": "53",
+        "actual_amount": "53",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T811220",
+        "expected_amount": "62",
+        "actual_amount": "62",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T891466",
+        "expected_amount": "48",
+        "actual_amount": "48",
+        "difference": "0"
+      },
+      {
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "source_type": "trip",
+        "source_id": "T954299",
+        "expected_amount": "91",
+        "actual_amount": "0",
+        "difference": "91"
+      }
+    ],
+    "intents": [],
+    "queues": [
+      {
+        "id": "69d1a5f1-0c55-47eb-a1b4-52a31fae2e20",
+        "dispute_id": "d2f18320-aafa-5591-a04e-4537ea59133f",
+        "type": "approval",
+        "status": "REJECTED",
+        "amount": "249",
+        "reason": "Full verified balance requires Ops approval: amount or daily auto-pay limit",
+        "assigned_to": "5ffc062a-3b78-48dd-9d3c-62b4c1141251",
+        "resolved_at": "2026-10-29T18:24:18.823802+00:00"
+      }
+    ],
+    "messages": [
+      {
+        "id": "9fb25c4e-0517-4b24-ae7d-fa3f3e0caec6",
+        "message_id": "wamid.J7UB6BV3XXC9UE",
+        "sender_type": "RIDER",
+        "content": "Sep 19 ko 3 orders ka paisa missing hai payout mein",
+        "received_at": "2026-09-23T06:00:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "PAYOUT",
+                "trip_ids": [],
+                "date_tokens": [
+                  "Sep 19"
+                ]
+              },
+              {
+                "kind": "INCENTIVE",
+                "trip_ids": [],
+                "date_tokens": [
+                  "Sep 19"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-23T11:30:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60"
+      },
+      {
+        "id": "3b5e7858-f237-4b65-994d-a0210635c6bb",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Maine 19 September ke aapke orders check kiye. Records ke hisaab se ₹520 milne chahiye the, lekin ₹271 hi mile hain.\n\n₹249 ka difference confirm hua hai. Yeh amount automatic payment limit se zyada hai, isliye support team ki approval ke liye bhej diya hai. Abhi payment initiate nahi hua hai.\n\nIs din 9 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60"
+      },
+      {
+        "id": "2a41a711-cccc-48bd-a71d-bfb8d8073449",
+        "message_id": null,
+        "sender_type": "OPS",
+        "content": "We are reviewing this claim.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60"
+      },
+      {
+        "id": "66f6fe5b-321f-4a47-990d-7af628107c9e",
+        "message_id": null,
+        "sender_type": "OPS",
+        "content": "Private audit-only note 8e7dce30aafd4d36a81cb3fe34c738a9",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": true,
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60"
+      },
+      {
+        "id": "816b48ca-80ac-4e61-841f-66d1686cba93",
+        "message_id": "audit.human.a32213636b34469ea80318062f97c45a",
+        "sender_type": "RIDER",
+        "content": "Any update?",
+        "received_at": "2026-09-23T06:00:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "reference_time": "2026-09-23T11:30:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "99bb8d75-99ea-4c57-b229-dbcf5d2b0c60"
+      }
+    ]
+  },
+  "provider_ledger": [],
+  "workflow_status": "PASS"
+}

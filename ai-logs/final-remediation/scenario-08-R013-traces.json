@@ -1,0 +1,70 @@
+[
+  {
+    "at": "2026-10-29T18:23:30.253836Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "mera payout galat hai bhai",
+      "rider_id": "R013",
+      "message_id": "wamid.JH6MK3KPPNXHDU",
+      "received_at": "2026-09-22T10:30:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T18:23:30.307180Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "da06f10d-9bf4-4027-945b-1e7c8f5c5424"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:32.146971Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "da06f10d-9bf4-4027-945b-1e7c8f5c5424"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": []
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v8",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:32.162243Z",
+    "type": "decision",
+    "name": "clarification_requested",
+    "input": {
+      "message_id": "da06f10d-9bf4-4027-945b-1e7c8f5c5424"
+    },
+    "output": {
+      "missing": "Trip ID or date is required"
+    }
+  },
+  {
+    "at": "2026-10-29T18:23:32.169983Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Main check kar deta hoon. Aap trip ID ya date bata dijiye, taaki sahi payment dekh sakoon."
+  }
+]

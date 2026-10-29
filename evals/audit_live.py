@@ -38,8 +38,8 @@ from app.services import auth_service, message_service, payment_worker
 from app.services.payment_reconciliation import match_payout, reference_for
 from app.services.trace_service import safe_json
 
-REPORT = ROOT / "evals/reports/final-audit"
-LOGS = ROOT / "ai-logs/final-audit"
+REPORT = Path(os.environ.get("AUDIT_REPORT_DIR", ROOT / "evals/reports/final-audit"))
+LOGS = Path(os.environ.get("AUDIT_LOG_DIR", ROOT / "ai-logs/final-audit"))
 CURRENT = contextvars.ContextVar("audit_scenario", default=None)
 CALLS = {}
 ORIGINAL_EXTRACT = llm.extract

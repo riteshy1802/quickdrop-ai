@@ -1,0 +1,169 @@
+ Container quickdrop-remediation-payswift-1 Running 
+ Container quickdrop-remediation-postgres-1 Running 
+ Container quickdrop-remediation-redis-1 Running 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Starting 
+ Container quickdrop-remediation-provider-ready-1 Started 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-migrate-1 Starting 
+ Container quickdrop-remediation-migrate-1 Started 
+ Image quickdrop-remediation-migrate Building 
+ Image quickdrop-remediation-seed Building 
+ Image quickdrop-remediation-provider-ready Building 
+ Image quickdrop-remediation-payswift Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.90kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 460B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 ...
+
+#4 [internal] load metadata for ghcr.io/astral-sh/uv:0.9.26
+#4 DONE 0.7s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 152B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 6.21kB done
+#6 DONE 0.0s
+
+#7 [uv 1/1] FROM ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b
+#7 resolve ghcr.io/astral-sh/uv:0.9.26@sha256:9a23023be68b2ed09750ae636228e903a54a05ea56ed03a934d00fe9fbeded4b 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-1 1/8] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#8 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done
+#8 DONE 0.0s
+
+#9 [stage-1 7/8] COPY alembic ./alembic
+#9 CACHED
+
+#10 [stage-1 4/8] COPY pyproject.toml uv.lock ./
+#10 CACHED
+
+#11 [stage-1 6/8] COPY app ./app
+#11 CACHED
+
+#12 [stage-1 5/8] RUN uv sync --frozen --no-dev
+#12 CACHED
+
+#13 [stage-1 2/8] COPY --from=uv /uv /usr/local/bin/uv
+#13 CACHED
+
+#14 [stage-1 3/8] WORKDIR /app/backend
+#14 CACHED
+
+#15 [stage-1 8/8] COPY alembic.ini ./alembic.ini
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers done
+#16 exporting manifest sha256:ef5bc1dda2aadfbafbe07eb822b12730b80bd14789796e0bc6e9afd3d6126baa done
+#16 exporting config sha256:08e7fbaf7d66e0a26aba8f16becacf80a1c8375b378108ba156e5a4c255db94a done
+#16 exporting attestation manifest sha256:8357f2c11d7aeb62c9d7ed7df13496c007de673bab63e4450adfba58556e2424 0.0s done
+#16 exporting manifest list sha256:db1ce05c0b08c5e9809592d0ee4dd7f22ff6798f896165640c225a0d3f829b9e done
+#16 naming to docker.io/library/quickdrop-remediation-seed:latest done
+#16 unpacking to docker.io/library/quickdrop-remediation-seed:latest done
+#16 DONE 0.1s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image quickdrop-remediation-seed Built 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-seed-run-9a11e3b08622 Creating 
+ Container quickdrop-remediation-seed-run-9a11e3b08622 Created 
+INFO trips.csv row 49: rider_id R7 -> R007
+INFO trips.csv row 102: rider_id R7 -> R007
+INFO trips.csv row 206: rider_id R7 -> R007
+INFO trips.csv row 249: rider_id R7 -> R007
+INFO trips.csv row 278: rider_id R7 -> R007
+INFO trips.csv row 332: rider_id R7 -> R007
+INFO trips.csv row 374: rider_id R7 -> R007
+INFO trips.csv row 413: rider_id R7 -> R007
+INFO trips.csv row 444: rider_id r19 -> R019
+INFO trips.csv row 454: rider_id R7 -> R007
+INFO trips.csv row 483: rider_id R7 -> R007
+INFO trips.csv row 515: rider_id R7 -> R007
+INFO trips.csv row 532: rider_id R7 -> R007
+INFO trips.csv row 548: rider_id r19 -> R019
+INFO trips.csv row 558: rider_id R7 -> R007
+INFO trips.csv row 561: rider_id r19 -> R019
+INFO trips.csv row 572: rider_id R7 -> R007
+INFO trips.csv row 583: rider_id R7 -> R007
+INFO trips.csv row 662: rider_id r19 -> R019
+INFO trips.csv row 700: rider_id R7 -> R007
+INFO trips.csv row 748: rider_id R7 -> R007
+INFO trips.csv row 757: rider_id r19 -> R019
+INFO trips.csv row 790: rider_id r19 -> R019
+INFO trips.csv row 838: rider_id r19 -> R019
+INFO trips.csv row 1164: rider_id r19 -> R019
+INFO trips.csv row 1207: rider_id r19 -> R019
+INFO trips.csv row 1220: rider_id r19 -> R019
+INFO trips.csv row 1336: rider_id R7 -> R007
+INFO trips.csv row 1338: rider_id r19 -> R019
+INFO trips.csv row 1346: rider_id R7 -> R007
+INFO trips.csv row 1357: rider_id R7 -> R007
+INFO trips.csv row 1454: rider_id R7 -> R007
+INFO trips.csv row 1596: rider_id R7 -> R007
+INFO trips.csv row 1599: rider_id r19 -> R019
+INFO trips.csv row 1654: rider_id R7 -> R007
+INFO trips.csv row 1686: rider_id R7 -> R007
+INFO trips.csv row 1750: rider_id R7 -> R007
+INFO trips.csv row 1771: rider_id R7 -> R007
+INFO trips.csv row 1772: rider_id r19 -> R019
+INFO trips.csv row 1790: rider_id R7 -> R007
+INFO trips.csv row 1851: rider_id r19 -> R019
+INFO trips.csv row 1895: rider_id r19 -> R019
+INFO trips.csv row 1944: rider_id R7 -> R007
+INFO trips.csv row 1989: rider_id R7 -> R007
+INFO trips.csv row 2049: rider_id R7 -> R007
+INFO trips.csv row 2072: rider_id R7 -> R007
+INFO trips.csv row 2280: rider_id R7 -> R007
+INFO trips.csv row 2289: rider_id r19 -> R019
+INFO trips.csv row 2302: rider_id r19 -> R019
+INFO trips.csv row 2327: rider_id r19 -> R019
+INFO trips.csv row 2339: rider_id R7 -> R007
+INFO trips.csv row 2354: rider_id r19 -> R019
+INFO trips.csv row 2392: rider_id r19 -> R019
+INFO trips.csv row 2403: rider_id R7 -> R007
+INFO trips.csv row 2493: rider_id R7 -> R007
+INFO trips.csv row 2670: rider_id R7 -> R007
+INFO trips.csv row 2752: rider_id r19 -> R019
+INFO trips.csv row 2793: rider_id r19 -> R019
+INFO trips.csv row 2806: rider_id R7 -> R007
+INFO trips.csv row 2834: rider_id r19 -> R019
+INFO trips.csv row 2839: rider_id R7 -> R007
+INFO trips.csv row 3147: rider_id r19 -> R019
+INFO trips.csv row 3176: rider_id r19 -> R019
+INFO trips.csv row 3262: rider_id r19 -> R019
+{
+  "riders": {
+    "inserted": 40,
+    "skipped": 0
+  },
+  "trips": {
+    "inserted": 3304,
+    "skipped": 10,
+    "remapped_rider_references": 64
+  },
+  "payout_lines": {
+    "inserted": 3222,
+    "skipped": 0
+  }
+}

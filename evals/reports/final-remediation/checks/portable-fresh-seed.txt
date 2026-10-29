@@ -1,0 +1,98 @@
+ Container quickdrop-remediation-payswift-1 Running 
+ Container quickdrop-remediation-postgres-1 Running 
+ Container quickdrop-remediation-redis-1 Running 
+ Container quickdrop-remediation-provider-ready-1 Starting 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Started 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-migrate-1 Starting 
+ Container quickdrop-remediation-migrate-1 Started 
+ Container quickdrop-remediation-postgres-1 Waiting 
+ Container quickdrop-remediation-migrate-1 Waiting 
+ Container quickdrop-remediation-provider-ready-1 Waiting 
+ Container quickdrop-remediation-redis-1 Waiting 
+ Container quickdrop-remediation-postgres-1 Healthy 
+ Container quickdrop-remediation-redis-1 Healthy 
+ Container quickdrop-remediation-provider-ready-1 Exited 
+ Container quickdrop-remediation-migrate-1 Exited 
+ Container quickdrop-remediation-seed-run-54fb38663488 Creating 
+ Container quickdrop-remediation-seed-run-54fb38663488 Created 
+INFO trips.csv row 49: rider_id R7 -> R007
+INFO trips.csv row 102: rider_id R7 -> R007
+INFO trips.csv row 206: rider_id R7 -> R007
+INFO trips.csv row 249: rider_id R7 -> R007
+INFO trips.csv row 278: rider_id R7 -> R007
+INFO trips.csv row 332: rider_id R7 -> R007
+INFO trips.csv row 374: rider_id R7 -> R007
+INFO trips.csv row 413: rider_id R7 -> R007
+INFO trips.csv row 444: rider_id r19 -> R019
+INFO trips.csv row 454: rider_id R7 -> R007
+INFO trips.csv row 483: rider_id R7 -> R007
+INFO trips.csv row 515: rider_id R7 -> R007
+INFO trips.csv row 532: rider_id R7 -> R007
+INFO trips.csv row 548: rider_id r19 -> R019
+INFO trips.csv row 558: rider_id R7 -> R007
+INFO trips.csv row 561: rider_id r19 -> R019
+INFO trips.csv row 572: rider_id R7 -> R007
+INFO trips.csv row 583: rider_id R7 -> R007
+INFO trips.csv row 662: rider_id r19 -> R019
+INFO trips.csv row 700: rider_id R7 -> R007
+INFO trips.csv row 748: rider_id R7 -> R007
+INFO trips.csv row 757: rider_id r19 -> R019
+INFO trips.csv row 790: rider_id r19 -> R019
+INFO trips.csv row 838: rider_id r19 -> R019
+INFO trips.csv row 1164: rider_id r19 -> R019
+INFO trips.csv row 1207: rider_id r19 -> R019
+INFO trips.csv row 1220: rider_id r19 -> R019
+INFO trips.csv row 1336: rider_id R7 -> R007
+INFO trips.csv row 1338: rider_id r19 -> R019
+INFO trips.csv row 1346: rider_id R7 -> R007
+INFO trips.csv row 1357: rider_id R7 -> R007
+INFO trips.csv row 1454: rider_id R7 -> R007
+INFO trips.csv row 1596: rider_id R7 -> R007
+INFO trips.csv row 1599: rider_id r19 -> R019
+INFO trips.csv row 1654: rider_id R7 -> R007
+INFO trips.csv row 1686: rider_id R7 -> R007
+INFO trips.csv row 1750: rider_id R7 -> R007
+INFO trips.csv row 1771: rider_id R7 -> R007
+INFO trips.csv row 1772: rider_id r19 -> R019
+INFO trips.csv row 1790: rider_id R7 -> R007
+INFO trips.csv row 1851: rider_id r19 -> R019
+INFO trips.csv row 1895: rider_id r19 -> R019
+INFO trips.csv row 1944: rider_id R7 -> R007
+INFO trips.csv row 1989: rider_id R7 -> R007
+INFO trips.csv row 2049: rider_id R7 -> R007
+INFO trips.csv row 2072: rider_id R7 -> R007
+INFO trips.csv row 2280: rider_id R7 -> R007
+INFO trips.csv row 2289: rider_id r19 -> R019
+INFO trips.csv row 2302: rider_id r19 -> R019
+INFO trips.csv row 2327: rider_id r19 -> R019
+INFO trips.csv row 2339: rider_id R7 -> R007
+INFO trips.csv row 2354: rider_id r19 -> R019
+INFO trips.csv row 2392: rider_id r19 -> R019
+INFO trips.csv row 2403: rider_id R7 -> R007
+INFO trips.csv row 2493: rider_id R7 -> R007
+INFO trips.csv row 2670: rider_id R7 -> R007
+INFO trips.csv row 2752: rider_id r19 -> R019
+INFO trips.csv row 2793: rider_id r19 -> R019
+INFO trips.csv row 2806: rider_id R7 -> R007
+INFO trips.csv row 2834: rider_id r19 -> R019
+INFO trips.csv row 2839: rider_id R7 -> R007
+INFO trips.csv row 3147: rider_id r19 -> R019
+INFO trips.csv row 3176: rider_id r19 -> R019
+INFO trips.csv row 3262: rider_id r19 -> R019
+{
+  "riders": {
+    "inserted": 40,
+    "skipped": 0
+  },
+  "trips": {
+    "inserted": 3304,
+    "skipped": 10,
+    "remapped_rider_references": 64
+  },
+  "payout_lines": {
+    "inserted": 3222,
+    "skipped": 0
+  }
+}

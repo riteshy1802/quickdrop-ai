@@ -1,0 +1,43 @@
+
+> quickdrop-ai-frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+✓ Running next.config.ts took 31ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1434ms
+  Running TypeScript ...
+  Finished TypeScript in 5.7s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/14) ...
+  Generating static pages using 15 workers (3/14) 
+  Generating static pages using 15 workers (6/14) 
+  Generating static pages using 15 workers (10/14) 
+✓ Generating static pages using 15 workers (14/14) in 2.1s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /icon.svg
+├ ○ /ops
+├ ○ /ops/approvals
+├   /ops/approvals/[id]
+│ └ ◐ /ops/approvals/[id]
+├ ○ /ops/audit
+├ ○ /ops/conversations
+├   /ops/conversations/[id]
+│ └ ◐ /ops/conversations/[id]
+├ ○ /ops/login
+├ ○ /ops/payouts
+├   /ops/payouts/[id]
+│ └ ◐ /ops/payouts/[id]
+└ ○ /rider
+
+
+○  (Static)             prerendered as static content
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+
