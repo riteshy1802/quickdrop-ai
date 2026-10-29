@@ -558,6 +558,20 @@ async def test_resolution_creates_fresh_thread_for_next_rider_message(ops_api, m
     ).status_code == 200
     assert (await e.http.post(base + "/handoff")).status_code == 409
     monkeypatch.setattr(message_service, "run_handler", AsyncMock(return_value="New conversation"))
+    assert (await e.http.post("/ui/demo/rider", json={"rider_id": e.rider})).status_code == 200
+    started = await e.http.post(f"/ui/riders/{e.rider}/conversations")
+    assert started.status_code == 200 and started.json()["id"] != str(identifier)
+    assert started.json()["source_status"] == "OPEN"
+    async with e.factory() as session:
+        assert (await session.get(Conversation, identifier)).status == "RESOLVED"
+        assert (
+            await session.scalar(
+                select(AgentTrace.id).where(
+                    AgentTrace.conversation_id == identifier, AgentTrace.name == "ops_resolve"
+                )
+            )
+            is not None
+        )
     response = await e.http.post(
         "/messages",
         json={

@@ -108,8 +108,14 @@ async def finish(factory, job, outcome, *, max_attempts, manual=False):
                     )
                     .limit(1)
                 )
-                if conversation.handling_mode == "AI" and pending_case is None:
-                    conversation.status = "RESOLVED"
+                if (
+                    conversation.handling_mode == "AI"
+                    and pending_case is None
+                    and conversation.status != "RESOLVED"
+                ):
+                    # Settlement resolves the dispute, never the support conversation.
+                    # RESOLVED is reserved for explicit authenticated Ops closure.
+                    conversation.status = "OPEN"
         elif intent.status in {"FAILED", "NEEDS_REVIEW"}:
             await escalate(session, dispute, f"Payment requires review: {outcome.code}")
         trace_service.record(

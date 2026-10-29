@@ -204,3 +204,23 @@ identity, provider evidence and duplicate prevention remain application-enforced
 Day-wide PAYOUT complaints with order-count/target evidence widen to include daily incentive investigation. Counts in rider text never establish eligibility: completed source trips and existing incentive lines are reconciled by the financial engine. Explicit trip-only complaints do not widen.
 
 Webhook limitation: the vendor stops retrying after 2xx and supplies no outbound final-message API. Durable completion and SSE serve the Rider UI but do not deliver a delayed final reply to that vendor. A pending acknowledgment must be reported separately from final original-request delivery.
+
+
+## Conversation lifecycle
+
+Dispute resolution and payment confirmation do not close a support thread. An active
+conversation uses OPEN (or an active workflow status such as PAYMENT_PENDING or
+AWAITING_APPROVAL); after its last payment completes it returns to OPEN. Its history,
+claim references and provider-backed payment status remain available for follow-ups.
+A new issue can be investigated in the same thread, with existing idempotency and
+real-IST-day authorization limits unchanged. HUMAN mode accepts rider messages while
+suppressing LangGraph replies.
+
+The persisted conversation status RESOLVED means explicitly closed, distinct from a
+dispute's RESOLVED status. Only authenticated Ops resolution closes a conversation;
+there is no inactivity timer. Subsequent reconciliation cannot reopen a closed thread.
+The Rider UI offers Start New Conversation for closed threads and keeps their audit
+history unchanged. Previously closed threads are not silently rewritten or reopened.
+Dispute/payment SSE notifications refresh their saved state; only the conversation's
+source_status determines closure in the composer. A disconnected SSE stream alone
+does not prevent sending an authorized message.

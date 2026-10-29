@@ -25,16 +25,23 @@ export function ChatThread({
   messages,
   onScenario,
   creating,
+  authorized = true,
+  onNewConversation,
 }: {
   riderId: string;
   conversation: Conversation;
   messages: Message[];
   onScenario: (scenario: Scenario) => void;
   creating: boolean;
+  authorized?: boolean;
+  onNewConversation?: () => void;
 }) {
   const mutation = useSendMessage(riderId, conversation.id);
   const retryRequest = useRef<PostMessageRequest | null>(null);
   const live = useConversationEvents(conversation.id, riderId);
+  const closed = (conversation.source_status ?? conversation.status) === "RESOLVED";
+  const agentBusy = conversation.handler !== "OPS" && !!live.stream.runId && !live.stream.complete;
+  const sendingDisabled = closed || !authorized || mutation.isPending || agentBusy;
   const log = useRef<HTMLDivElement>(null);
   const latest = useRef<HTMLDivElement>(null);
   const [away, setAway] = useState(false);
@@ -49,6 +56,7 @@ export function ChatThread({
       });
   }, [messages.length, mutation.isPending, live.stream.text, live.stream.activity.length]);
   async function send(text: string) {
+    if (sendingDisabled) return false;
     const previous = retryRequest.current;
     const request: PostMessageRequest =
       previous?.text === text
@@ -188,11 +196,18 @@ export function ChatThread({
           Latest messages
         </Button>
       )}
-      <MessageComposer
-        pending={mutation.isPending || live.connection === "connecting"}
+      {closed ? (
+        <div className="rider-composer-wrap">
+          <p>This conversation is closed. Start a new conversation to continue.</p>
+          <Button disabled={creating || !authorized || !onNewConversation} onClick={onNewConversation}>
+            Start New Conversation
+          </Button>
+        </div>
+      ) : <MessageComposer
+        pending={sendingDisabled}
         error={mutation.error?.message ?? null}
         onSend={send}
-      />
+      />}
     </>
   );
 }

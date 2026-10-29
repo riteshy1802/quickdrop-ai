@@ -1,5 +1,5 @@
 import { ChatThread } from "@/components/rider/chat-thread";
-import { act, cleanup, render, screen, renderHook, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -337,4 +337,71 @@ it("renders actual progress separately and reconciles an already saved reply onc
   } finally {
     HTMLElement.prototype.scrollIntoView = original;
   }
+});
+
+
+it("keeps the composer open after dispute/payment SSE and closes only with the thread", async () => {
+  const { riderApi } = await import("@/lib/api/rider");
+  const { useThread, riderKeys } = await import("@/components/rider/use-rider-support");
+  const original = HTMLElement.prototype.scrollIntoView;
+  HTMLElement.prototype.scrollIntoView = vi.fn();
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false })));
+  const { wrapper, client } = setup();
+  let status: "OPEN" | "RESOLVED" = "OPEN";
+  let disputeStatus = "PAYMENT_PENDING";
+  const loadConversation = vi.spyOn(riderApi, "getConversation").mockImplementation(async () => ({
+    id: conversation, rider_id: "R033", title: "Both trips", status, source_status: status,
+    handler: "AI", updated_at: new Date().toISOString(), last_message: "Payment update", scenario: null,
+  }));
+  const loadMessages = vi.spyOn(riderApi, "getMessages").mockResolvedValue([{
+    id: crypto.randomUUID(), conversation_id: conversation, sender: "AI", text: "Payment update", created_at: new Date().toISOString(),
+  }]);
+  const loadDisputes = vi.spyOn(riderApi, "getDisputes").mockImplementation(async () => [{
+    id: "dispute", conversation_id: conversation, type: "PAYOUT", relevant_date: "2026-09-20",
+    status: disputeStatus, policy: "VERIFIED", explanation: "Both trips", expected_rupees: 176,
+    historical_rupees: 0, verified_difference_rupees: 176, approved_adjustment_rupees: 176,
+    items: [], payment: null,
+  }]);
+  const start = vi.fn();
+  function Thread() {
+    const query = useThread("R033", conversation);
+    if (!query.data) return null;
+    return <><p data-testid="dispute-status">{query.data.disputes[0].status}</p>
+      <ChatThread riderId="R033" conversation={query.data.conversation} messages={query.data.messages}
+        onScenario={vi.fn()} creating={false} onNewConversation={start} /></>;
+  }
+  try {
+    render(<Thread />, { wrapper });
+    await waitFor(() => expect(screen.getByRole("textbox")).toBeTruthy());
+    const source = FakeSource.instances[0];
+    expect((screen.getByRole("textbox") as HTMLTextAreaElement).disabled).toBe(false);
+    disputeStatus = "RESOLVED";
+    act(() => source.emit({ ...event("dispute.updated", 1, { status: "RESOLVED" }), rider_id: "R033" }));
+    await waitFor(() => expect(screen.getByTestId("dispute-status").textContent).toBe("RESOLVED"));
+    expect((screen.getByRole("textbox") as HTMLTextAreaElement).disabled).toBe(false);
+    act(() => source.emit({ ...event("payment.status_changed", 2, { status: "SUCCEEDED" }), rider_id: "R033" }));
+    await waitFor(() => expect(loadConversation.mock.calls.length).toBeGreaterThan(2));
+    expect(client.getQueryData<{conversation: {status: string}}>(riderKeys.thread("R033", conversation))?.conversation.status).toBe("OPEN");
+    status = "RESOLVED";
+    act(() => source.emit({ ...event("conversation.updated", 3, { status: "RESOLVED" }), rider_id: "R033" }));
+    await waitFor(() => expect(screen.queryByRole("textbox")).toBeNull());
+    fireEvent.click(screen.getByRole("button", {name: "Start New Conversation"}));
+    expect(start).toHaveBeenCalledTimes(1);
+  } finally {
+    loadConversation.mockRestore(); loadMessages.mockRestore(); loadDisputes.mockRestore();
+    HTMLElement.prototype.scrollIntoView = original;
+  }
+});
+
+it("allows HUMAN-mode messages without requiring an SSE connection and blocks unauthorized sends", () => {
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false })));
+  const { wrapper } = setup();
+  const thread = { id: conversation, rider_id: "R033", title: "Support", status: "HUMAN_HANDLING" as const,
+    handler: "OPS" as const, updated_at: new Date().toISOString(), last_message: "", scenario: null };
+  const view = render(<ChatThread riderId="R033" conversation={thread} messages={[]}
+    onScenario={vi.fn()} creating={false} />, {wrapper});
+  expect((screen.getByRole("textbox") as HTMLTextAreaElement).disabled).toBe(false);
+  view.rerender(<ChatThread riderId="R033" conversation={thread} messages={[]}
+    onScenario={vi.fn()} creating={false} authorized={false} />);
+  expect((screen.getByRole("textbox") as HTMLTextAreaElement).disabled).toBe(true);
 });

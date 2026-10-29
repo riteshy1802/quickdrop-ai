@@ -1,5 +1,7 @@
 """Same-claim confirmation and duplicate handling without real transfers."""
 
+from datetime import UTC, datetime
+
 import httpx
 import pytest
 from sqlalchemy import func, select
@@ -22,7 +24,7 @@ async def test_paid_repeat_and_confirmation_followup_have_distinct_answers_and_d
     duplicate, repeated, _, _ = await turn(
         "R007", "T840677 ka surge missing hai bhai", extracted(ids=("T840677",))
     )
-    assert repeated.conversation_id != first.conversation_id
+    assert repeated.conversation_id == first.conversation_id
     assert "pehle hi ho chuka" in duplicate and "dobara nahi" in duplicate
     assert "34" in duplicate and "T840677" in duplicate and "sandbox" in duplicate
     clarified, _, _, _ = await turn(
@@ -130,9 +132,16 @@ async def test_unscoped_duplicate_in_new_thread_does_not_guess_latest_payment(ag
     factory, turn, client = agent_setup
     await turn("R007", "T840677 surge missing", extracted(ids=("T840677",)))
     assert await process_one(factory, client)
-    reply, _, _, _ = await turn(
+    # A genuinely new thread is explicit; successful payment no longer closes the old one.
+    from app.models import Conversation
+
+    async with factory() as session, session.begin():
+        fresh = Conversation(rider_id="R007", status="OPEN", updated_at=datetime.now(UTC))
+        session.add(fresh)
+    reply, claimed, _, _ = await turn(
         "R007", "ek aur adjustment request daalo bhai", {"intent": "other", "language": "en"}
     )
+    assert claimed.conversation_id == fresh.id
     assert "Kis trip ya date" in reply and "₹34" not in reply
     async with factory() as session:
         assert await session.scalar(select(func.count()).select_from(PaymentIntent)) == 1

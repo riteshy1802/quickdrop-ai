@@ -61,7 +61,9 @@ function Workspace({
   const desktop = useDesktopDetails();
   const context = useRiderContext(rider.id);
   const conversations = useConversations(rider.id, context.isSuccess);
-  const activeId = selected ?? conversations.data?.[0]?.id;
+  const activeId = selected ?? conversations.data?.find(
+    (conversation) => (conversation.source_status ?? conversation.status) !== "RESOLVED",
+  )?.id ?? conversations.data?.[0]?.id;
   const thread = useThread(rider.id, activeId, context.isSuccess);
   const create = useCreateConversation(rider.id);
   async function start(scenario: Scenario | null = null) {
@@ -160,6 +162,8 @@ function Workspace({
           <ChatThread
             key={activeId}
             riderId={rider.id}
+            authorized={context.isSuccess}
+            onNewConversation={() => void start()}
             conversation={thread.data.conversation}
             messages={thread.data.messages}
             onScenario={(scenario) => void start(scenario)}
