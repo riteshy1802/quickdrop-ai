@@ -53,10 +53,27 @@ services:
       timeout: 3s
       retries: 10
 
-  # Durable payment worker; apply backend migrations before starting it.
-  worker:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      BACKEND_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # Shared image and container-only connection settings.
+  api: &backend
     build: ./backend
-    command: ["python", "-m", "app.workers.main"]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 12
     restart: unless-stopped
     stop_grace_period: 45s
     env_file:
@@ -80,14 +97,54 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      payswift:
-        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+      provider-ready:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
 
+  migrate:
+    <<: *backend
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    ports: []
+    healthcheck:
+      disable: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  provider-ready:
+    <<: *backend
+    command: ["python", "-m", "app.scripts.wait_provider"]
+    restart: "no"
+    ports: []
+    healthcheck:
+      disable: true
+    depends_on:
+      payswift:
+        condition: service_started
+
+  worker:
+    <<: *backend
+    command: ["python", "-m", "app.workers.main"]
+    ports: []
+    healthcheck:
+      disable: true
+
+  # Explicit, repeatable import. Never runs automatically against persistent data.
+  seed:
+    <<: *backend
+    command: ["python", "-m", "app.scripts.seed"]
+    restart: "no"
+    profiles: ["setup"]
+    ports: []
+    healthcheck:
+      disable: true
+
 networks:
   default:
-    name: quickdrop-network
     driver: bridge
 
 volumes:
