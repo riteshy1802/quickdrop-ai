@@ -51,6 +51,7 @@ def submit(base, payload):
                 {"status": exc.status, "reply": None, "seconds": round(time.monotonic() - start, 4)}
             )
             if exc.status not in {None, 429, 502, 503, 504} or number == 3:
+                exc.attempts = attempts
                 raise
             time.sleep(1)
         else:
@@ -175,7 +176,19 @@ def evaluate(base, scenario, provider=None, wait=35, allow_existing=False):
             payload = {key: turn[key] for key in ("message_id", "text", "received_at")}
             payload["rider_id"] = rider
             start = time.monotonic()
-            reply, attempts = submit(base, payload)
+            try:
+                reply, attempts = submit(base, payload)
+            except EvaluationError as exc:
+                result["requests"].append(
+                    {
+                        "payload": payload,
+                        "http_attempts": getattr(exc, "attempts", []),
+                        "http_status": exc.status,
+                        "initial_final": False,
+                        "vendor_received_final": False,
+                    }
+                )
+                raise
             elapsed = attempts[0]["seconds"]
             if (
                 not isinstance(reply, dict)
@@ -231,12 +244,12 @@ def evaluate(base, scenario, provider=None, wait=35, allow_existing=False):
             output = row["output"]
             if isinstance(output, dict) and isinstance(output.get("outcomes"), list):
                 outcomes.extend(output["outcomes"])
-        amounts = {
+        amounts = [
             Decimal(str(item["amount"]))
             for item in outcomes
             if item.get("kind") == "authorized" and "amount" in item
-        }
-        # Deduplicate replayed outcomes; actual provider ledger is checked separately.
+        ]
+        # Every reported authorization counts. Equal amounts must not conceal duplicates.
         authorized = sum(amounts, Decimal(0))
         if outcomes or any(
             row["type"] == "decision"
