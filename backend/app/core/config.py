@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     bedrock_timeout_seconds: float = Field(default=10, ge=0.1, le=20)
     groq_model: str = "openai/gpt-oss-20b"
     groq_timeout_seconds: float = Field(default=3, ge=0.1, le=15)
-    agent_foreground_seconds: float = Field(default=5.5, ge=0.1, le=6)
+    agent_foreground_seconds: float = Field(default=7, ge=0.1, le=7)
     agent_job_seconds: float = Field(default=24, ge=1, le=25)
     agent_max_attempts: int = Field(default=3, ge=1, le=5)
     payswift_base_url: str = "http://localhost:8081"
