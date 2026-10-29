@@ -19,6 +19,20 @@ class Extraction(BaseModel):
     intent: Literal["complaint", "followup", "status", "help", "other", "unsafe"]
     language: Literal["en", "hi", "hinglish"]
     claims: list[Complaint] = Field(default_factory=list, max_length=6)
+    details_unavailable: bool = Field(
+        default=False,
+        description=(
+            "True when the rider cannot supply the pending requested details; not a new claim."
+        ),
+    )
+    clarification_answer: str = Field(
+        default="",
+        max_length=600,
+        description=(
+            "Natural acknowledgment and one helpful question for missing scope. "
+            "Use pending_clarification and the latest reply; no financial outcome claims."
+        ),
+    )
     mentioned_amounts: list[str] = Field(default_factory=list, max_length=6)
     help_topic: Literal[
         "general", "fare", "surge", "incentive", "penalty", "window", "approval", "payment"

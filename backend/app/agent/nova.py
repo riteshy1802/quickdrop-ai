@@ -26,11 +26,17 @@ def tool_schema():
             result["items"] = inline(node["items"])
         return result
 
-    return {
+    schema = {
         key: value
         for key, value in inline(raw).items()
         if key in {"type", "properties", "required"}
     }
+    # Require an explicit answer from the live model; Pydantic defaults still allow
+    # old persisted extraction checkpoints to resume without a data migration.
+    schema["required"] = list(
+        dict.fromkeys(schema["required"] + ["details_unavailable", "clarification_answer"])
+    )
+    return schema
 
 
 class NovaExtractor:
@@ -77,7 +83,9 @@ class NovaExtractor:
                                 "description": (
                                     "Classify the current rider request and extract claim scope "
                                     "or an educational topic. Only general non-account "
-                                    "education may include help_answer."
+                                    "education may include help_answer. Always include "
+                                    "details_unavailable and clarification_answer; respond to "
+                                    "the latest turn and pending question."
                                 ),
                                 "inputSchema": {"json": tool_schema()},
                             }

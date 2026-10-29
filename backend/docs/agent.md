@@ -224,3 +224,13 @@ history unchanged. Previously closed threads are not silently rewritten or reope
 Dispute/payment SSE notifications refresh their saved state; only the conversation's
 source_status determines closure in the composer. A disconnected SSE stream alone
 does not prevent sending an authorized message.
+
+
+Clarification is turn-aware: the agent stores the outstanding question in conversation
+context. If the rider says they cannot supply details, it acknowledges that response,
+explains the limitation and offers an approximate-day alternative instead of replaying
+the same question. The existing extraction call may draft a short acknowledgment or
+question in clarification_answer; financial/state assertions are rejected from that
+field. Verified financial decisions still use the existing outcome renderers. Pending
+clarification clears when grounded scope becomes usable, including a no-shortfall result.
+Missing details alone create no dispute, approval, escalation or payment intent.

@@ -4,6 +4,7 @@ import re
 from collections import defaultdict
 
 from app.agent import llm
+from app.agent.clarification import clarification_reply, lacks_details, pending_details
 from app.agent.dates import grounded, literal_dates, matches_trip_date, resolve_date
 from app.agent.education import educational_reply
 from app.agent.replies import TEXT, outcome_reply, status_reply
@@ -237,14 +238,40 @@ class Nodes:
             extraction = extraction.model_copy(update={"intent": "status", "claims": []})
         # Script and current rider wording determine the response language, not a model guess.
         extraction = extraction.model_copy(update={"language": hint})
+        pending = pending_details(state)
+        unavailable = (
+            pending
+            and not ids
+            and not dates
+            and extraction.intent != "unsafe"
+            and (extraction.details_unavailable or lacks_details(state["text"]))
+        )
+        if unavailable:
+            # Missing details are neither evidence disputes nor a new financial claim.
+            extraction = extraction.model_copy(
+                update={
+                    "intent": "followup",
+                    "claims": [],
+                    "details_unavailable": True,
+                    "records_disputed": False,
+                }
+            )
         if extraction.model_dump(mode="json") != state.get("saved"):
             await self.tools.checkpoint(extraction)
+        if unavailable:
+            await self.tools.mark_clarification(missing=pending["missing"])
+            await self.tools.audit(
+                "clarification_requested",
+                {"missing": pending["missing"], "details_unavailable": True},
+                event_type="decision",
+            )
+            return {"extraction": extraction, "decision": "clarify", "missing": pending["missing"]}
         if extraction.intent in {"unsafe", "other", "status", "help"}:
             return {"extraction": extraction, "decision": extraction.intent}
         try:
             scope_requests(extraction, state)
         except ValueError as exc:
-            await self.tools.mark_clarification()
+            await self.tools.mark_clarification(missing=[str(exc)])
             await self.tools.audit(
                 "clarification_requested", {"missing": str(exc)}, event_type="decision"
             )
@@ -255,6 +282,8 @@ class Nodes:
                     "decision": "invalid_scope",
                 }
             return {"extraction": extraction, "decision": "clarify", "missing": [str(exc)]}
+        if pending:
+            await self.tools.clear_clarification()
         return {"extraction": extraction}
 
     async def investigate(self, state):
@@ -439,7 +468,9 @@ class Nodes:
         language = state["extraction"].language
         decision = state.get("decision")
         focus = question_focus(state["text"])
-        if decision == "help":
+        if decision == "clarify":
+            reply = clarification_reply(state)
+        elif decision == "help":
             reply = educational_reply(state)
         elif decision == "status":
             payments = []

@@ -51,6 +51,8 @@ async def test_nova_converse_extracts_only_validated_tool_payload(monkeypatch):
     schema = request["toolConfig"]["tools"][0]["toolSpec"]["inputSchema"]["json"]
     assert set(schema) == {"type", "properties", "required"}
     assert "$ref" not in str(schema)
+    assert {"details_unavailable", "clarification_answer"} <= set(schema["required"])
+    assert "description" in schema["properties"]["clarification_answer"]
 
 
 def test_amazon_selection_does_not_require_groq_credentials(monkeypatch):

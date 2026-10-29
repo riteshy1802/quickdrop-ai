@@ -528,8 +528,27 @@ class AgentTools:
             )
         return "Your concern is queued for support review. No payment outcome is confirmed yet."
 
-    async def mark_clarification(self):
+    async def clear_clarification(self):
+        async with self.factory() as session, session.begin():
+            _, conversation = await self.require_owned(session)
+            context = dict(conversation.context)
+            agent = dict(context.get("agent", {}))
+            had_pending = agent.pop("pending_clarification", None) is not None
+            awaiting = conversation.status == "AWAITING_INFORMATION"
+            if awaiting:
+                conversation.status = "OPEN"
+            if had_pending or awaiting:
+                context["agent"] = agent
+                conversation_service.set_context(conversation, context)
+
+    async def mark_clarification(self, missing=None):
         async with self.factory() as session, session.begin():
             _, conversation = await self.require_owned(session)
             if conversation.status in {"OPEN", "AWAITING_INFORMATION"}:
                 conversation.status = "AWAITING_INFORMATION"
+            if missing:
+                context = dict(conversation.context)
+                agent = dict(context.get("agent", {}))
+                agent["pending_clarification"] = {"missing": list(missing)}
+                context["agent"] = agent
+                conversation_service.set_context(conversation, context)
