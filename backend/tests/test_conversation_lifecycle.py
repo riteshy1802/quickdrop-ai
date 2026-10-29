@@ -1,6 +1,6 @@
 """A settled financial dispute does not close rider support or create another payment."""
 
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock
 from uuid import uuid4
 
 import httpx
@@ -13,7 +13,7 @@ from test_payments_database import provider as provider
 from app.agent import llm
 from app.agent.state import Extraction
 from app.agent.tools import investigation
-from app.core.database import get_session_factory
+from app.core.database import get_db_session, get_session_factory
 from app.main import create_app
 from app.models import Conversation, Dispute, Message, OpsQueue, PaymentIntent
 from app.realtime import publisher
@@ -61,6 +61,18 @@ async def test_r033_paid_dispute_accepts_same_thread_status_followup(agent_setup
     monkeypatch.setattr(investigation, "get_payswift_client", lambda: client)
     app = create_app()
     app.dependency_overrides[get_session_factory] = lambda: factory
+
+    async def isolated_session():
+        async with factory() as session:
+            yield session
+
+    # Rider selection uses Session, whereas /messages uses the factory dependency.
+    # Both must see the same uncommitted fixture data, never the default database.
+    app.dependency_overrides[get_db_session] = isolated_session
+    monkeypatch.setattr(
+        "app.core.database.get_session_factory",
+        Mock(side_effect=AssertionError("HTTP test accessed the default database")),
+    )
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app), base_url="http://test"
     ) as http:
