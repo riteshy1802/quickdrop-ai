@@ -1,0 +1,179 @@
+[
+  {
+    "at": "2026-10-29T17:39:09.931151Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "13 sept ko order T502951 ka surge nahi mila",
+      "rider_id": "R022",
+      "message_id": "wamid.D8VFF49EJAXFEP",
+      "received_at": "2026-09-23T09:00:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T17:39:09.991144Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.827794Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "SURGE",
+          "trip_ids": [
+            "T502951"
+          ],
+          "date_tokens": [
+            "13 sept"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v6",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.848737Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.868456Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.903282Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T502951",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider; Claim must concern one of the seven completed IST dates before received_at"
+          ],
+          "expected": null,
+          "historical": null,
+          "outstanding": null
+        }
+      ],
+      "status": "INELIGIBLE",
+      "rider_id": "R022",
+      "outstanding": null,
+      "received_at": "2026-09-23T03:30:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.923763Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.936204Z",
+    "type": "decision",
+    "name": "dispute_persisted",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "status": "INVESTIGATING",
+      "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.959580Z",
+    "type": "decision",
+    "name": "payment_authorization",
+    "input": {
+      "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+    },
+    "output": {
+      "reason": "Claim is outside the seven-day eligibility window",
+      "status": "ESCALATED",
+      "queue_id": "60128df0-5b07-4b9d-9551-3d5effe0f827",
+      "intent_id": null
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.959768Z",
+    "type": "decision",
+    "name": "agent_escalation",
+    "input": {
+      "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+    },
+    "output": {
+      "reason": "Claim is outside the seven-day eligibility window",
+      "queue_id": "60128df0-5b07-4b9d-9551-3d5effe0f827"
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:11.986593Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "review",
+          "reason": "outside_window"
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T17:39:12.001399Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Yeh claim automatic payment ke liye valid nahi hai, kyunki trip saat din ki eligibility window ke bahar hai.\n\nMaine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai."
+  }
+]

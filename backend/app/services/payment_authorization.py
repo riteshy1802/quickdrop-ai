@@ -22,6 +22,9 @@ class EvidenceUnavailable(ValueError):
     pass
 
 
+AUTO_PAY_LIMIT = Decimal(200)
+
+
 def item_snapshot(items):
     return sorted(
         [
@@ -316,8 +319,8 @@ async def authorize_in_session(
         p.reference in auto_ids and p.created_at.astimezone(IST).date() == day for p in ledger
     )
     needs_ops = (
-        amount > Decimal(200)
-        or dispute.verified_amount > Decimal(200)
+        amount > AUTO_PAY_LIMIT
+        or dispute.verified_amount > AUTO_PAY_LIMIT
         or daily_reserved
         or daily_observed
         or prior_auto_inflight
@@ -328,14 +331,21 @@ async def authorize_in_session(
             dispute,
             AuthorizationResult("BLOCKED", "Ops approval evidence or amount invalid"),
         )
+    approval_reason = (
+        "Daily automatic payment allowance already used or reserved"
+        if (daily_reserved or daily_observed or prior_auto_inflight)
+        and amount <= AUTO_PAY_LIMIT
+        and dispute.verified_amount <= AUTO_PAY_LIMIT
+        else "Full verified balance requires Ops approval: amount or daily auto-pay limit"
+    )
     if approved is not None and approved.status in {"PENDING", "IN_REVIEW"}:
-        return await approval_queue(session, dispute, amount, "Existing Ops review must complete")
+        return await approval_queue(session, dispute, amount, approval_reason)
     if needs_ops and not ops_authorized:
         return await approval_queue(
             session,
             dispute,
             amount,
-            "Full verified balance requires Ops approval: amount or daily auto-pay limit",
+            approval_reason,
         )
     identifier = uuid4()
     allocations = [

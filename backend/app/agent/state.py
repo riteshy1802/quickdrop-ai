@@ -13,13 +13,18 @@ class Complaint(BaseModel):
 
 
 class Extraction(BaseModel):
-    """Untrusted language understanding only. No identity or payment authorization fields."""
+    """Untrusted request understanding and general education, never financial authority."""
 
     model_config = ConfigDict(extra="forbid")
-    intent: Literal["complaint", "followup", "status", "other", "unsafe"]
+    intent: Literal["complaint", "followup", "status", "help", "other", "unsafe"]
     language: Literal["en", "hi", "hinglish"]
     claims: list[Complaint] = Field(default_factory=list, max_length=6)
     mentioned_amounts: list[str] = Field(default_factory=list, max_length=6)
+    help_topic: Literal[
+        "general", "fare", "surge", "incentive", "penalty", "window", "approval", "payment"
+    ] = "general"
+    help_answer: str = Field(default="", max_length=1200)
+    simplify: bool = False
     correction: bool = False
     records_disputed: bool = False
 

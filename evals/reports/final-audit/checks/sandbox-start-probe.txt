@@ -1,0 +1,2 @@
+PaySwift sandbox listening on :18091 (chaos=on)
+[payswift] "GET /health HTTP/1.1" 200 -

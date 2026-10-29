@@ -1,0 +1,358 @@
+{
+  "scenario_id": 22,
+  "rider_id": "R036",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.LZ3ZVNKF9QTG8J",
+        "text": "18 ko order T990831 ka distance galat laga hai",
+        "received_at": "2026-09-23T12:00:00+05:30",
+        "rider_id": "R036"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 1.8992,
+      "initial_response": {
+        "reply": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai."
+      },
+      "final_reply": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+      "total_agent_seconds": 1.9012,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "3a908c52-9c44-5468-a133-d861634bf51d",
+            "rider_id": "R036",
+            "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5",
+            "status": "ESCALATED",
+            "verified_amount": "0",
+            "details": {
+              "request": {
+                "rider_id": "R036",
+                "trip_ids": [
+                  "T990831"
+                ],
+                "trip_dates": [],
+                "received_at": "2026-09-23T06:30:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-23T12:00:00+05:30",
+                "incentive_dates": []
+              },
+              "scope_key": "8943d3967ce9c9bfb711d7e25930c6bf0a7d4269618663faf53be6c29a6a8497"
+            }
+          }
+        ],
+        "items": [
+          {
+            "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d",
+            "source_type": "trip",
+            "source_id": "T990831",
+            "expected_amount": "52",
+            "actual_amount": "52",
+            "difference": "0"
+          }
+        ],
+        "intents": [],
+        "queues": [
+          {
+            "id": "13062e43-f161-4f03-936e-e6ce3554d509",
+            "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d",
+            "type": "escalation",
+            "status": "PENDING",
+            "amount": null,
+            "reason": "Source records, eligibility, or provider history need review",
+            "assigned_to": null,
+            "resolved_at": null
+          }
+        ],
+        "messages": [
+          {
+            "id": "10e9bbd9-2d15-44fb-b17e-f812355b6900",
+            "message_id": "wamid.LZ3ZVNKF9QTG8J",
+            "sender_type": "RIDER",
+            "content": "18 ko order T990831 ka distance galat laga hai",
+            "received_at": "2026-09-23T06:30:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "RECORD_DISPUTE",
+                    "trip_ids": [
+                      "T990831"
+                    ],
+                    "date_tokens": [
+                      "18"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": true,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-23T12:00:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5"
+          },
+          {
+            "id": "f51ad83d-990c-44cc-acde-0d995f91e9b8",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [
+      {
+        "id": "3a908c52-9c44-5468-a133-d861634bf51d",
+        "rider_id": "R036",
+        "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5",
+        "status": "ESCALATED",
+        "verified_amount": "0",
+        "details": {
+          "request": {
+            "rider_id": "R036",
+            "trip_ids": [
+              "T990831"
+            ],
+            "trip_dates": [],
+            "received_at": "2026-09-23T06:30:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-23T12:00:00+05:30",
+            "incentive_dates": []
+          },
+          "scope_key": "8943d3967ce9c9bfb711d7e25930c6bf0a7d4269618663faf53be6c29a6a8497"
+        }
+      }
+    ],
+    "items": [
+      {
+        "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d",
+        "source_type": "trip",
+        "source_id": "T990831",
+        "expected_amount": "52",
+        "actual_amount": "52",
+        "difference": "0"
+      }
+    ],
+    "intents": [],
+    "queues": [
+      {
+        "id": "13062e43-f161-4f03-936e-e6ce3554d509",
+        "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d",
+        "type": "escalation",
+        "status": "PENDING",
+        "amount": null,
+        "reason": "Source records, eligibility, or provider history need review",
+        "assigned_to": null,
+        "resolved_at": null
+      }
+    ],
+    "messages": [
+      {
+        "id": "10e9bbd9-2d15-44fb-b17e-f812355b6900",
+        "message_id": "wamid.LZ3ZVNKF9QTG8J",
+        "sender_type": "RIDER",
+        "content": "18 ko order T990831 ka distance galat laga hai",
+        "received_at": "2026-09-23T06:30:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "RECORD_DISPUTE",
+                "trip_ids": [
+                  "T990831"
+                ],
+                "date_tokens": [
+                  "18"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": true,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-23T12:00:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5"
+      },
+      {
+        "id": "f51ad83d-990c-44cc-acde-0d995f91e9b8",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "5aa37875-cb31-44fd-8d47-d835143c21b5"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [
+    {
+      "id": "13062e43-f161-4f03-936e-e6ce3554d509",
+      "rider_id": "R036",
+      "type": "escalation",
+      "amount": null,
+      "reason": "Source records, eligibility, or provider history need review",
+      "created_at": "2026-10-29T17:40:37.928871Z"
+    }
+  ],
+  "provider_ledger": [],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 0,
+    "approval": null,
+    "escalation": "optional"
+  },
+  "auto_authorized_amount": 0,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [
+    "0"
+  ],
+  "agent_escalation_count": 1,
+  "all_escalation_count": 1,
+  "provider_confirmed_amount": 0,
+  "provider_ledger_amount": 0,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": false,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T17:40:37.847988Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "RECORD_DISPUTE",
+            "trip_ids": [
+              "T990831"
+            ],
+            "date_tokens": [
+              "18"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v6",
+        "records_disputed": true,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T17:40:37.919304Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+      },
+      "output": {
+        "status": "INVESTIGATING",
+        "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+      }
+    },
+    {
+      "at": "2026-10-29T17:40:37.933300Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+      },
+      "output": {
+        "reason": "Source records, eligibility, or provider history need review",
+        "status": "ESCALATED",
+        "queue_id": "13062e43-f161-4f03-936e-e6ce3554d509",
+        "intent_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T17:40:37.933414Z",
+      "type": "decision",
+      "name": "agent_escalation",
+      "input": {
+        "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+      },
+      "output": {
+        "reason": "Source records, eligibility, or provider history need review",
+        "queue_id": "13062e43-f161-4f03-936e-e6ce3554d509"
+      }
+    },
+    {
+      "at": "2026-10-29T17:40:37.944791Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "review",
+            "reason": "NO_SHORTFALL"
+          }
+        ]
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "NOT APPLICABLE"
+}

@@ -1,0 +1,6 @@
+{
+  "scope": "current tracked working tree, pattern scan only; not a complete Git-history secret audit",
+  "suspect_paths": [],
+  "tracked_env_files": [],
+  "payswift_tracked_diff": true
+}

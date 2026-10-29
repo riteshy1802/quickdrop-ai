@@ -1,0 +1,15 @@
+
+> quickdrop-ai-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ritesh/quickdrop-ai/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  26 passed (26)
+   Start at  23:02:56
+   Duration  1.85s (transform 391ms, setup 0ms, import 1.45s, tests 406ms, environment 1.08s)
+
+
+EXIT_CODE=0

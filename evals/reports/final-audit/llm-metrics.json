@@ -1,0 +1,9 @@
+{
+  "invocations": 38,
+  "validated_responses": 27,
+  "foreground_cancellations": 9,
+  "extraction_unavailable": 2,
+  "mean_invocation_seconds": 3.533,
+  "max_invocation_seconds": 10.0087,
+  "latency_scope": "wrapper-observed wall time; cancellation does not prove a synchronous SDK request was cancelled upstream"
+}

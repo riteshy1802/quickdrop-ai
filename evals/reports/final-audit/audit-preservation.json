@@ -1,0 +1,113 @@
+{
+  "source_sha256_unchanged": {
+    "BRIEF.md": true,
+    "SUBMISSION.md": true,
+    "docs/policy.md": true,
+    "data/conversations.json": true,
+    "data/riders.csv": true,
+    "data/trips.csv": true,
+    "data/payout_lines.csv": true,
+    "payswift/server.pyc": true
+  },
+  "scenario_requests_identical": [
+    {
+      "scenario": 1,
+      "pass": true
+    },
+    {
+      "scenario": 2,
+      "pass": true
+    },
+    {
+      "scenario": 3,
+      "pass": true
+    },
+    {
+      "scenario": 4,
+      "pass": true
+    },
+    {
+      "scenario": 5,
+      "pass": true
+    },
+    {
+      "scenario": 6,
+      "pass": true
+    },
+    {
+      "scenario": 7,
+      "pass": true
+    },
+    {
+      "scenario": 8,
+      "pass": true
+    },
+    {
+      "scenario": 9,
+      "pass": true
+    },
+    {
+      "scenario": 10,
+      "pass": true
+    },
+    {
+      "scenario": 11,
+      "pass": true
+    },
+    {
+      "scenario": 12,
+      "pass": true
+    },
+    {
+      "scenario": 13,
+      "pass": true
+    },
+    {
+      "scenario": 14,
+      "pass": true
+    },
+    {
+      "scenario": 15,
+      "pass": true
+    },
+    {
+      "scenario": 16,
+      "pass": true
+    },
+    {
+      "scenario": 17,
+      "pass": true
+    },
+    {
+      "scenario": 18,
+      "pass": true
+    },
+    {
+      "scenario": 19,
+      "pass": true
+    },
+    {
+      "scenario": 20,
+      "pass": true
+    },
+    {
+      "scenario": 21,
+      "pass": true
+    },
+    {
+      "scenario": 22,
+      "pass": true
+    },
+    {
+      "scenario": 23,
+      "pass": true
+    },
+    {
+      "scenario": 24,
+      "pass": true
+    }
+  ],
+  "all_source_hashes_unchanged": true,
+  "all_official_inputs_identical": true,
+  "no_production_financial_mutations": "Audit DB and ledger isolation enforced by harness; audit writes only generated DBs/providers; development processes remained running."
+}

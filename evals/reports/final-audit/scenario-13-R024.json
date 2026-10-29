@@ -1,0 +1,407 @@
+{
+  "scenario_id": 13,
+  "rider_id": "R024",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.M7AJK6GKFBX2CU",
+        "text": "18 ko 12 order complete kiye the, incentive nahi aaya",
+        "received_at": "2026-09-23T09:15:00+05:30",
+        "rider_id": "R024"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 5.5648,
+      "initial_response": {
+        "reply": "Your message is saved. Verification is still pending; no payment outcome is confirmed."
+      },
+      "final_reply": "Maine 18 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+      "total_agent_seconds": 13.8644,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+            "rider_id": "R024",
+            "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37",
+            "status": "PAYMENT_PENDING",
+            "verified_amount": "150",
+            "details": {
+              "request": {
+                "rider_id": "R024",
+                "trip_ids": [],
+                "trip_dates": [],
+                "received_at": "2026-09-23T03:45:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-23T09:15:00+05:30",
+                "incentive_dates": [
+                  "2026-09-18"
+                ]
+              },
+              "scope_key": "db4b5f5f0aaf07cad3bf778dc4a45e964217885b727c88509bf88b5e85eb56a6"
+            }
+          }
+        ],
+        "items": [
+          {
+            "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+            "source_type": "incentive",
+            "source_id": "2026-09-18",
+            "expected_amount": "150",
+            "actual_amount": "0",
+            "difference": "150"
+          }
+        ],
+        "intents": [
+          {
+            "id": "dcb44aa6-1da2-4652-bcae-dbba42124914",
+            "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+            "rider_id": "R024",
+            "status": "PENDING",
+            "amount": "150",
+            "payment_type": "AUTO",
+            "provider_payout_id": null,
+            "idempotency_key": "quickdrop-dispute:8abaab13-08ea-530e-acb2-d34d73badf80",
+            "auto_pay_date": "2026-10-29",
+            "authorization": "[REDACTED]",
+            "post_started_at": null,
+            "last_reconciled_at": null,
+            "retry_count": 0,
+            "next_retry_at": null
+          }
+        ],
+        "queues": [],
+        "messages": [
+          {
+            "id": "d9e2b72b-256d-4b31-b96e-65d0799623f7",
+            "message_id": "wamid.M7AJK6GKFBX2CU",
+            "sender_type": "RIDER",
+            "content": "18 ko 12 order complete kiye the, incentive nahi aaya",
+            "received_at": "2026-09-23T03:45:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "INCENTIVE",
+                    "trip_ids": [],
+                    "date_tokens": [
+                      "18"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-23T09:15:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37"
+          },
+          {
+            "id": "1e3802fc-e06c-4afd-ab70-3c4e5daca799",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Maine 18 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [
+      {
+        "id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+        "rider_id": "R024",
+        "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37",
+        "status": "RESOLVED",
+        "verified_amount": "150",
+        "details": {
+          "request": {
+            "rider_id": "R024",
+            "trip_ids": [],
+            "trip_dates": [],
+            "received_at": "2026-09-23T03:45:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-23T09:15:00+05:30",
+            "incentive_dates": [
+              "2026-09-18"
+            ]
+          },
+          "scope_key": "db4b5f5f0aaf07cad3bf778dc4a45e964217885b727c88509bf88b5e85eb56a6"
+        }
+      }
+    ],
+    "items": [
+      {
+        "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+        "source_type": "incentive",
+        "source_id": "2026-09-18",
+        "expected_amount": "150",
+        "actual_amount": "0",
+        "difference": "150"
+      }
+    ],
+    "intents": [
+      {
+        "id": "dcb44aa6-1da2-4652-bcae-dbba42124914",
+        "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80",
+        "rider_id": "R024",
+        "status": "SUCCEEDED",
+        "amount": "150",
+        "payment_type": "AUTO",
+        "provider_payout_id": "pout_6768273b9ce8",
+        "idempotency_key": "quickdrop-dispute:8abaab13-08ea-530e-acb2-d34d73badf80",
+        "auto_pay_date": "2026-10-29",
+        "authorization": "[REDACTED]",
+        "post_started_at": "2026-10-29T17:39:26.368069+00:00",
+        "last_reconciled_at": null,
+        "retry_count": 1,
+        "next_retry_at": null
+      }
+    ],
+    "queues": [],
+    "messages": [
+      {
+        "id": "d9e2b72b-256d-4b31-b96e-65d0799623f7",
+        "message_id": "wamid.M7AJK6GKFBX2CU",
+        "sender_type": "RIDER",
+        "content": "18 ko 12 order complete kiye the, incentive nahi aaya",
+        "received_at": "2026-09-23T03:45:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "INCENTIVE",
+                "trip_ids": [],
+                "date_tokens": [
+                  "18"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-23T09:15:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37"
+      },
+      {
+        "id": "1e3802fc-e06c-4afd-ab70-3c4e5daca799",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Maine 18 September ke aapke orders check kiye. Records ke hisaab se ₹150 milne chahiye the, lekin ₹0 hi mile hain.\n\nAapke ₹150 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "78071dd7-f010-4f67-8815-d49f9a122f37"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [],
+  "provider_ledger": [
+    {
+      "payout_id": "pout_6768273b9ce8",
+      "rider_id": "R024",
+      "amount": 150,
+      "reference": "quickdrop:dcb44aa6-1da2-4652-bcae-dbba42124914",
+      "status": "processed",
+      "created_at": "2026-10-29T17:39:26Z"
+    }
+  ],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 150,
+    "approval": null,
+    "escalation": "no"
+  },
+  "auto_authorized_amount": 150,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [
+    "150"
+  ],
+  "agent_escalation_count": 0,
+  "all_escalation_count": 0,
+  "provider_confirmed_amount": 150,
+  "provider_ledger_amount": 150,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": true,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status",
+    "payswift_authorization_ledger",
+    "payswift_request_started",
+    "payswift_dispatch_ledger",
+    "payswift_request_result"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T17:39:18.048549Z",
+      "type": "decision",
+      "name": "agent_deferred",
+      "input": {
+        "message_id": "d9e2b72b-256d-4b31-b96e-65d0799623f7"
+      },
+      "output": {
+        "resume_at": "2026-10-29T17:39:20.048536+00:00"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:25.960577Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "d9e2b72b-256d-4b31-b96e-65d0799623f7"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "INCENTIVE",
+            "trip_ids": [],
+            "date_tokens": [
+              "18"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v6",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:26.037152Z",
+      "type": "decision",
+      "name": "check_payment_eligibility",
+      "input": {
+        "message_id": "d9e2b72b-256d-4b31-b96e-65d0799623f7"
+      },
+      "output": {
+        "ready_for_authorization": "[REDACTED]"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:26.050349Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "d9e2b72b-256d-4b31-b96e-65d0799623f7"
+      },
+      "output": {
+        "status": "VERIFIED",
+        "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:26.113504Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "8abaab13-08ea-530e-acb2-d34d73badf80"
+      },
+      "output": {
+        "reason": "Full outstanding balance reserved",
+        "status": "AUTHORIZED",
+        "queue_id": null,
+        "intent_id": "dcb44aa6-1da2-4652-bcae-dbba42124914"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:26.122439Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "d9e2b72b-256d-4b31-b96e-65d0799623f7"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "authorized",
+            "dates": [
+              "2026-09-18"
+            ],
+            "items": [
+              {
+                "source": "2026-09-18",
+                "expected": "150",
+                "historical": "0"
+              }
+            ],
+            "amount": "150",
+            "expected": "150",
+            "historical": "0",
+            "claim_types": [
+              "incentive"
+            ],
+            "approval_reason": "Full outstanding balance reserved",
+            "over_auto_limit": false
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:26.396698Z",
+      "type": "decision",
+      "name": "payment_dispatch_verification",
+      "input": {
+        "intent_id": "dcb44aa6-1da2-4652-bcae-dbba42124914"
+      },
+      "output": {
+        "verified": true
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 2,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "FAIL",
+  "end_to_end_status": "FAIL",
+  "worker_execution_status": "PASS"
+}

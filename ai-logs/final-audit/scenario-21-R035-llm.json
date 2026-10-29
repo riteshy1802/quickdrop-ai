@@ -1,0 +1,68 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "21 ko 300 rupay kam aaye, order T980582 ka surge nahi mila",
+      "received_at": "2026-09-23T11:45:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "21 ko 300 rupay kam aaye, order T980582 ka surge nahi mila",
+          "received_at": "2026-09-23T06:15:00+00:00",
+          "reference_time": "2026-09-23T11:45:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:40:26.096295+00:00",
+    "failure": "CancelledError",
+    "latency_seconds": 5.2787
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "21 ko 300 rupay kam aaye, order T980582 ka surge nahi mila",
+      "received_at": "2026-09-23T11:45:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "21 ko 300 rupay kam aaye, order T980582 ka surge nahi mila",
+          "received_at": "2026-09-23T06:15:00+00:00",
+          "reference_time": "2026-09-23T11:45:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:40:33.506036+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "SURGE",
+          "trip_ids": [
+            "T980582"
+          ],
+          "date_tokens": [
+            "21"
+          ]
+        }
+      ],
+      "mentioned_amounts": [
+        "300"
+      ],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.6854
+  }
+]

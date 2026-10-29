@@ -1,0 +1,42 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "18 tarikh ko cancel ka penalty 2 baar kata, maine ek hi order cancel kiya tha",
+      "received_at": "2026-09-22T11:00:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "18 tarikh ko cancel ka penalty 2 baar kata, maine ek hi order cancel kiya tha",
+          "received_at": "2026-09-22T05:30:00+00:00",
+          "reference_time": "2026-09-22T11:00:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:38:58.548798+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PENALTY",
+          "trip_ids": [],
+          "date_tokens": [
+            "18 tarikh"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 2.3188
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+      "received_at": "2026-09-22T09:20:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+          "received_at": "2026-09-22T03:50:00+00:00",
+          "reference_time": "2026-09-22T09:20:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:38:21.578880+00:00",
+    "failure": "CancelledError",
+    "latency_seconds": 5.4714
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+      "received_at": "2026-09-22T09:20:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+          "received_at": "2026-09-22T03:50:00+00:00",
+          "reference_time": "2026-09-22T09:20:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:38:29.164472+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": [
+            "kal"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 2.211
+  }
+]

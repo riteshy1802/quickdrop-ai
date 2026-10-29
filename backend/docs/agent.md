@@ -121,3 +121,81 @@ PostgreSQL. Check infrastructure health and the configured PostgreSQL host/port.
 Groq failures log only the exception class, HTTP status and a recognized machine error
 code. Provider error messages, failed generations, prompts and rider contents are not
 logged. A repeated HTTP 400 can therefore be diagnosed without exposing private input.
+
+## Grounded corrections and rider summaries
+
+Extraction prompt v2 treats the latest explicit scope as authoritative. A supplied
+trip ID or date can answer an earlier clarification. The deterministic repair layer
+removes invalid dates carried from history, replaces corrected dates, and drops
+obsolete claims outside the newly supplied scope before checkpointing extraction.
+It never invents a complaint kind when neither the current extraction nor prior
+structured context supplies one. Literal dates, ownership, source coverage, amounts,
+and payment authorization still require the existing deterministic checks.
+
+Invalid calendar dates, unknown account trip IDs, conflicting recorded dates, and
+missing supporting records have distinct localized responses. They do not become
+financial approvals. An explicitly disputed record can still require human review.
+A supplied date is sufficient for an ordinary payout investigation, even when the
+model incorrectly classifies that dated payout complaint as an unrelated message.
+Identifier-only follow-ups inherit the conversation language; new English prose
+switches to English, and Hindi/Hinglish prose retains its language.
+
+Main replies summarize verified expected pay, recorded historical pay, outstanding
+amount, and the actual authorization/payment state. A single trip may be identified;
+multi-trip calculations remain in dispute items and investigation details. Approval
+responses explicitly state that payment has not been initiated. They do not promise
+outbound notifications. Source counts and amounts asserted by riders are never used
+as financial evidence. No existing records, source files, or payment-worker policy
+are changed by these presentation and extraction rules.
+
+Duplicate requests and timing questions use distinct rider responses. Same-case
+follow-ups read the existing scoped payment/approval status instead of requesting
+another authorization. Confirmed sandbox payments are identified as already paid;
+unresolved approvals or payments do not receive a second adjustment. A timing
+question reports the current blocker and explicitly avoids promising an ETA that
+is absent from the records. Ambiguous requests in a new conversation require a
+trip/date rather than guessing the rider's most recent payment. Record disputes
+and new explicit scopes retain their existing investigation path. Prompt v3 also
+requires respectful handling without accusing a rider of fraud or promising an
+unsupported approval, payment, completion time, or notification.
+
+## Educational questions
+
+Prompt v4 adds a `help` intent for policy education and general factual questions.
+Fare, surge, incentive, cancellation, date-window, approval and payment-state
+explanations use localized application-owned policy text. Fare and bonus example
+amounts come from the financial calculator; the approval threshold shares the
+existing authorization constant. Examples are clearly distinguished from the
+rider's own money. This path does not reconcile or authorize a claim.
+
+A simpler follow-up uses an example rather than repeating the same explanation.
+The last answer is checked to avoid an immediate verbatim repetition. General
+knowledge answers are bounded, model-generated educational text, not verified
+account evidence or a source of new company policy. They may not declare payments
+paid or approved. Prompts require uncertainty when facts are unknown, no invented
+current facts, no private credentials, and respectful language without jargon.
+Actual scoped missing-fare complaints still enter investigation if misclassified
+as help. Account status continues to use the existing scoped payment lookup.
+
+The rider activity display remains collapsible and separate from message bubbles,
+with short operation labels, no surrounding card, and smaller muted text. A second
+copy of the active progress label is not shown below the activity list. Only public
+operation progress is displayed, never private model reasoning.
+
+## Prompt contract v6
+
+Groq and Bedrock Nova share one versioned system prompt in `app/agent/prompts.py`.
+The schema description and Nova tool description cover both request understanding
+and educational questions. The prompt distinguishes the latest requested scope
+from financial evidence, preserves date provenance, removes corrected entities,
+and routes existing-claim duplicates and timing questions to status checks.
+Greetings consistently use `help/general`. Unpaid order counts alone no longer
+conflict with the rule requiring actual bonus intent for incentive classification.
+Ambiguous bonus intent requires a focused clarification rather than a guess.
+
+The contract requires plain language, contextual teaching, no immediate verbatim
+repetition, no invented progress or personal financial facts, and explicit uncertainty
+when evidence is absent. The operator-provided two-day estimate remains limited to
+pending support approval, not provider completion or bank settlement. These prompt
+instructions guide language understanding; financial eligibility, authorization,
+identity, provider evidence and duplicate prevention remain application-enforced.

@@ -1,0 +1,6 @@
+
+> quickdrop-ai-frontend@0.1.0 lint
+> eslint
+
+
+EXIT_CODE=0

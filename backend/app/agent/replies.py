@@ -57,8 +57,27 @@ TEXT = {
 }
 
 
-def status_reply(payments, language, *, duplicate=False, direct=False):
+def status_reply(payments, language, *, duplicate=False, direct=False, focus="status"):
+    duplicate = duplicate or focus == "duplicate"
     if not payments:
+        if focus in {"duplicate", "timing"}:
+            return {
+                "en": (
+                    "I could not identify an existing adjustment in this conversation. "
+                    "Which trip or date do you mean? I need to verify that claim "
+                    "before discussing another payment or its timing."
+                ),
+                "hinglish": (
+                    "Is conversation mein existing adjustment identify nahi hua. Kis "
+                    "trip ya date ki baat kar rahe hain? Doosra payment ya uska waqt "
+                    "batane se pehle us claim ka status verify karna zaroori hai."
+                ),
+                "hi": (
+                    "इस बातचीत में मौजूदा समायोजन की पहचान नहीं हुई। आप किस ट्रिप या "
+                    "तारीख की बात कर रहे हैं? दूसरे भुगतान या उसके समय पर जवाब देने से "
+                    "पहले उस दावे की स्थिति जाँचना जरूरी है।"
+                ),
+            }[language]
         return TEXT[language]["empty_status"]
     chunks = []
     for payment in payments[:4]:
@@ -183,6 +202,24 @@ def status_reply(payments, language, *, duplicate=False, direct=False):
                     }[language]
                 )
         else:
+            if duplicate:
+                chunks.append(
+                    {
+                        "en": (
+                            "I checked the existing claim. I will not create a second "
+                            "adjustment for the same amount while this one is unresolved."
+                        ),
+                        "hinglish": (
+                            "Maine existing claim ka status check kiya. Jab tak yeh resolve "
+                            "nahi hota, same amount ke liye doosri adjustment request nahi "
+                            "banaunga."
+                        ),
+                        "hi": (
+                            "मैंने मौजूदा दावे की स्थिति जाँची। जब तक यह हल नहीं होता, उसी "
+                            "राशि के लिए दूसरा समायोजन अनुरोध नहीं बनाऊँगा।"
+                        ),
+                    }[language]
+                )
             messages = {
                 "en": {
                     "NEEDS_REVIEW": (
@@ -197,7 +234,7 @@ def status_reply(payments, language, *, duplicate=False, direct=False):
                     ),
                     "AWAITING_APPROVAL": (
                         f"Your ₹{amount} adjustment needs support approval before payment. "
-                        f"Payment is not confirmed yet."
+                        f"Payment has not been initiated."
                     ),
                     "FAILED": (
                         f"Your ₹{amount} payment could not be completed. Support needs to "
@@ -222,7 +259,7 @@ def status_reply(payments, language, *, duplicate=False, direct=False):
                     ),
                     "AWAITING_APPROVAL": (
                         f"Aapka ₹{amount} adjustment payment se pehle support approval ke "
-                        f"liye gaya hai. Payment abhi confirm nahi hai."
+                        f"liye gaya hai. Abhi payment initiate nahi hua hai."
                     ),
                     "FAILED": (
                         f"Aapka ₹{amount} payment complete nahi ho saka. Support team ko isse"
@@ -245,7 +282,7 @@ def status_reply(payments, language, *, duplicate=False, direct=False):
                     ),
                     "AWAITING_APPROVAL": (
                         f"आपके ₹{amount} के समायोजन को भुगतान से पहले सहायता टीम की मंजूरी "
-                        f"चाहिए। भुगतान अभी पुष्ट नहीं है।"
+                        f"चाहिए। अभी भुगतान शुरू नहीं हुआ है।"
                     ),
                     "FAILED": (
                         f"आपका ₹{amount} का भुगतान पूरा नहीं हो सका। सहायता टीम को जाँच करनी "
@@ -258,18 +295,64 @@ def status_reply(payments, language, *, duplicate=False, direct=False):
             }
             label = "NEEDS_REVIEW" if status == "SUCCEEDED" else status
             chunks.append(messages[language].get(label, messages[language]["pending"]))
+            if focus == "timing":
+                if status == "AWAITING_APPROVAL":
+                    chunks.append(
+                        {
+                            "en": (
+                                "Approval is estimated to take up to 2 days and may happen sooner. "
+                                "This is an estimate, not a guaranteed deadline. Payment has not "
+                                "been initiated; approval is needed before it can start."
+                            ),
+                            "hinglish": (
+                                "Approval mein aam taur par 2 din tak lag sakte hain, lekin jaldi "
+                                "bhi ho sakta hai. Yeh estimate hai, exact waqt ki guarantee nahi. "
+                                "Pehle approval chahiye; abhi payment initiate nahi hua hai."
+                            ),
+                            "hi": (
+                                "मंजूरी में अनुमानित तौर पर 2 दिन तक लग सकते हैं, लेकिन जल्दी भी "
+                                "हो सकती है। यह अनुमान है, समय की गारंटी नहीं। अभी भुगतान शुरू "
+                                "नहीं हुआ है; पहले मंजूरी जरूरी है।"
+                            ),
+                        }[language]
+                    )
+                else:
+                    chunks.append(
+                        {
+                            "en": (
+                                "The records do not include a confirmed completion time, so I "
+                                "cannot promise when this will finish."
+                            ),
+                            "hinglish": (
+                                "Records mein complete hone ka confirmed time nahi hai, isliye "
+                                "main exact waqt ka vaada nahi kar sakta."
+                            ),
+                            "hi": (
+                                "रिकॉर्ड में पूरा होने का निश्चित समय नहीं है, इसलिए मैं सटीक समय "
+                                "का वादा नहीं कर सकता।"
+                            ),
+                        }[language]
+                    )
     return " ".join(chunks)
 
 
-def outcome_reply(outcomes, language):
+def outcome_reply(outcomes, language, *, focus="status"):
     parts = []
     for value in outcomes:
+        if value["kind"] in {"invalid_date", "invalid_trip", "unmatched_trip", "no_records"}:
+            parts.append(validation_reply(value, language))
+            continue
         if value["kind"] == "clarify":
             parts.append(TEXT[language]["clarify"])
             continue
         if value["kind"] == "status":
             parts.append(
-                status_reply(value["payments"], language, duplicate=value.get("duplicate", False))
+                status_reply(
+                    value["payments"],
+                    language,
+                    duplicate=value.get("duplicate", False),
+                    focus=focus,
+                )
             )
             continue
         if value["kind"] == "review":
@@ -277,25 +360,32 @@ def outcome_reply(outcomes, language):
                 parts.append(TEXT[language]["outside_window"])
             parts.append(TEXT[language]["review"])
             continue
-        details = []
-        for item in value.get("items", []):
-            if item["expected"] is not None and item["historical"] is not None:
-                if language == "en":
-                    details.append(
-                        f"For {item['source']}, you should have received ₹{item['expected']}. "
-                        f"Our records show that ₹{item['historical']} was paid."
-                    )
-                elif language == "hinglish":
-                    details.append(
-                        f"{item['source']} ke liye aapko ₹{item['expected']} milne chahiye the. "
-                        f"Records mein ₹{item['historical']} ka payment dikh raha hai."
-                    )
-                else:
-                    details.append(
-                        f"{item['source']} के लिए आपको ₹{item['expected']} मिलने चाहिए थे। "
-                        f"रिकॉर्ड में ₹{item['historical']} का भुगतान दर्ज है।"
-                    )
-        parts.extend(details[:6])
+        items = value.get("items", [])
+        if len(items) == 1 and re.fullmatch(r"T\d+", items[0]["source"]):
+            parts.append(f"Trip {items[0]['source']}:")
+        if value.get("expected") is not None and "penalty" not in value.get("claim_types", []):
+            dates = value.get("dates", [])
+            from datetime import date
+
+            day = date.fromisoformat(dates[0]).strftime("%-d %B") if len(dates) == 1 else None
+            expected, historical = value["expected"], value["historical"]
+            if language == "en":
+                scope = f" on {day}" if day else ""
+                parts.append(
+                    f"I checked your records{scope}. You should have received "
+                    f"₹{expected}, but ₹{historical} was recorded as paid."
+                )
+            elif language == "hinglish":
+                scope = f" {day} ke aapke orders" if day else " aapke records"
+                parts.append(
+                    f"Maine{scope} check kiye. Records ke hisaab se ₹{expected} milne"
+                    f" chahiye the, lekin ₹{historical} hi mile hain."
+                )
+            else:
+                parts.append(
+                    f"मैंने आपके रिकॉर्ड जाँचे। आपको ₹{expected} मिलने चाहिए थे, "
+                    f"लेकिन ₹{historical} का भुगतान दर्ज है।"
+                )
         kind, amount = value["kind"], value.get("amount", "0")
         if kind == "no_shortfall":
             reasons = value.get("reasons", [])
@@ -321,20 +411,45 @@ def outcome_reply(outcomes, language):
                 else "मैंने रिकॉर्ड जाँचे, लेकिन कोई बकाया राशि नहीं मिली।"
             )
         elif kind == "approval":
-            parts.append(
-                f"We found ₹{amount} still owed to you. Our support team needs to "
-                f"approve it before payment can proceed."
-                if language == "en"
-                else (
-                    f"Aapke ₹{amount} baaki hain. Payment se pehle support team ki "
-                    f"manzoori chahiye. Payment abhi confirm nahi hai."
+            if language == "en":
+                reason = (
+                    "This exceeds the automatic payment limit"
+                    if value.get("over_auto_limit")
+                    else (
+                        "Today's automatic payment allowance is already used or reserved; "
+                        "only one automatic payment per rider per day is allowed"
+                    )
+                    if value.get("approval_reason")
+                    == "Daily automatic payment allowance already used or reserved"
+                    else "Support approval is required for this payment"
                 )
-                if language == "hinglish"
-                else (
-                    f"आपके ₹{amount} बकाया हैं। भुगतान से पहले सहायता टीम की मंजूरी "
-                    f"चाहिए। भुगतान अभी पुष्ट नहीं है।"
+                parts.append(
+                    f"The ₹{amount} difference is verified. {reason}, so it has been "
+                    f"sent to our support team for approval. Payment has not been "
+                    f"initiated."
                 )
-            )
+            elif language == "hinglish":
+                reason = (
+                    "Yeh amount automatic payment limit se zyada hai"
+                    if value.get("over_auto_limit")
+                    else (
+                        "Aaj automatic payment ki request pehle hi ban chuki hai. "
+                        "Ek din mein ek hi automatic payment allowed hai"
+                    )
+                    if value.get("approval_reason")
+                    == "Daily automatic payment allowance already used or reserved"
+                    else "Is payment ke liye support team ki approval zaroori hai"
+                )
+                parts.append(
+                    f"₹{amount} ka difference confirm hua hai. {reason}, isliye "
+                    f"support team ki approval ke liye bhej diya hai. Abhi payment "
+                    f"initiate nahi hua hai."
+                )
+            else:
+                parts.append(
+                    f"₹{amount} का अंतर सत्यापित है। इसे मंजूरी के लिए सहायता टीम को "
+                    f"भेज दिया है। अभी भुगतान शुरू नहीं हुआ है।"
+                )
         elif kind == "authorized":
             parts.append(
                 f"We confirmed that ₹{amount} is still owed to you and queued it "
@@ -349,4 +464,93 @@ def outcome_reply(outcomes, language):
                     f"आपके ₹{amount} बकाया हैं और भुगतान का अनुरोध तैयार है। भुगतान की पुष्टि अभी नहीं हुई है।"
                 )
             )
-    return " ".join(parts)[:5000]
+    return "\n\n".join(parts)[:5000]
+
+
+def validation_reply(value, language):
+    kind, supplied = value["kind"], value.get("value", "")
+    if kind == "invalid_date":
+        return {
+            "en": (
+                f"‘{supplied}’ is not a valid calendar date, so I cannot check a "
+                f"claim for it. Please correct the date; you do not need to "
+                f"resend details already supplied."
+            ),
+            "hinglish": (
+                f"‘{supplied}’ valid calendar date nahi hai, isliye is date ka "
+                f"claim check nahi kar sakta. Sirf sahi date bata dijiye; jo "
+                f"details de chuke hain unhe dobara bhejne ki zaroorat nahi hai."
+            ),
+            "hi": (
+                f"‘{supplied}’ मान्य तारीख नहीं है, इसलिए इस तारीख का दावा जाँचा "
+                f"नहीं जा सकता। केवल सही तारीख बताइए; बाकी जानकारी दोबारा भेजने "
+                f"की जरूरत नहीं है।"
+            ),
+        }[language]
+    if kind == "invalid_trip":
+        return {
+            "en": (
+                f"I could not find trip {supplied} in this account's records. I "
+                f"cannot verify a payment claim for that ID. Please check the ID;"
+                f" no payment has been requested for it."
+            ),
+            "hinglish": (
+                f"Trip {supplied} is account ke records mein nahi mila. Is ID par"
+                f" payment claim verify nahi ho sakta. ID check kar lijiye; iske "
+                f"liye koi payment request nahi bheji gayi hai."
+            ),
+            "hi": (
+                f"इस खाते के रिकॉर्ड में ट्रिप {supplied} नहीं मिली। इस आईडी के "
+                f"लिए भुगतान का दावा सत्यापित नहीं हो सकता। कृपया आईडी जाँच लें; "
+                f"इसके लिए भुगतान का अनुरोध नहीं भेजा गया है।"
+            ),
+        }[language]
+    if kind == "unmatched_trip":
+        dates = ", ".join(value.get("dates", []))
+        if dates:
+            return {
+                "en": (
+                    f"This trip is recorded on {dates}, which differs from the date "
+                    f"you supplied. Which date should I check? I have kept your trip "
+                    f"ID."
+                ),
+                "hinglish": (
+                    f"Yeh trip records mein {dates} ki hai, jo aapki batayi date se "
+                    f"alag hai. Kaunsi date check karoon? Trip ID mere paas hai."
+                ),
+                "hi": (
+                    f"रिकॉर्ड में यह ट्रिप {dates} की है, जो बताई गई तारीख से अलग है।"
+                    f" कौन सी तारीख जाँचूँ? ट्रिप आईडी मेरे पास है।"
+                ),
+            }[language]
+        return {
+            "en": (
+                "That trip could not be verified for this account, so I cannot "
+                "approve a payment for it. Please check the trip ID."
+            ),
+            "hinglish": (
+                "Yeh trip is account ke liye verify nahi hui, isliye is par "
+                "payment approve nahi kar sakta. Trip ID check kar lijiye."
+            ),
+            "hi": (
+                "यह ट्रिप इस खाते के लिए सत्यापित नहीं हुई, इसलिए इसके लिए "
+                "भुगतान मंजूर नहीं किया जा सकता। कृपया ट्रिप आईडी जाँचें।"
+            ),
+        }[language]
+    return {
+        "en": (
+            "I checked the supplied date, but found no supporting trip "
+            "records. I cannot verify this claim with the available data. "
+            "Please check the date or share a trip ID for it."
+        ),
+        "hinglish": (
+            "Maine batayi date check ki, lekin us din ke supporting trip "
+            "records nahi mile. Available data se yeh claim verify nahi ho "
+            "sakta. Date check kar lijiye ya us trip ki ID bata dijiye."
+        ),
+        "hi": (
+            "मैंने बताई गई तारीख जाँची, लेकिन उस दिन के ट्रिप रिकॉर्ड नहीं "
+            "मिले। उपलब्ध जानकारी से दावा सत्यापित नहीं हो सकता। कृपया तारीख"
+            " जाँचें या ट्रिप आईडी बताइए।"
+        ),
+    }[language]

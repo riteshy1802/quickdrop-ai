@@ -1519,11 +1519,13 @@
 .rider-investigation {
   margin: 0.5rem 0 0.75rem 2.5rem;
   max-width: 36rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.65rem 0.8rem;
+  border: 0;
+  padding: 0.25rem 0;
   color: var(--muted-foreground);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  opacity: 0.72;
+  transition: opacity 180ms ease;
 }
 .rider-investigation summary {
   display: flex;
@@ -1533,7 +1535,8 @@
   list-style: none;
 }
 .rider-investigation summary::-webkit-details-marker { display: none; }
-.rider-investigation summary > span { flex: 1; }
+.rider-investigation summary > span { flex: 0 1 auto; }
+.rider-investigation:hover, .rider-investigation:focus-within { opacity: 1; }
 .rider-investigation summary > svg:last-child { transition: transform 180ms ease; }
 .rider-investigation[open] summary > svg:last-child { transform: rotate(180deg); }
 .rider-investigation ol { list-style: none; margin: 0.75rem 0 0; padding: 0; }
@@ -1542,5 +1545,5 @@
 @keyframes rider-activity-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
   .rider-activity-spinner { animation: none; }
-  .rider-investigation summary > svg:last-child { transition: none; }
+  .rider-investigation, .rider-investigation summary > svg:last-child { transition: none; }
 }

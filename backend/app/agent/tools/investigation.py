@@ -149,7 +149,11 @@ class AgentTools:
             state["extraction"] = extraction.model_dump(mode="json")
             message.agent_state = state
             context = dict(conversation.context)
-            context["agent"] = {**context.get("agent", {}), "extraction": state["extraction"]}
+            context["agent"] = {
+                **context.get("agent", {}),
+                "extraction": state["extraction"],
+                "language": extraction.language,
+            }
             conversation_service.set_context(conversation, context)
             trace_service.record(
                 session,

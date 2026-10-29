@@ -73,7 +73,8 @@ def matches_trip_date(token: str, service_date: date, resolved: date) -> bool:
 def literal_dates(text: str) -> list[str]:
     """Copy explicit supported date phrases for the narrow complaint-routing guard."""
     months = "|".join(re.escape(month) for month in sorted(MONTHS, key=len, reverse=True))
-    day = r"\d{1,2}(?:st|nd|rd|th)?"
+    # Capture impossible supplied days too, so validation can explain them explicitly.
+    day = r"\d{1,4}(?:st|nd|rd|th)?"
     pattern = (
         rf"(?<!\w)(?:\d{{4}}-\d{{2}}-\d{{2}}|"
         rf"{day}\s+(?:{months})(?:\s+\d{{4}})?|"

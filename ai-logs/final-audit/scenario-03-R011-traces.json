@@ -1,0 +1,358 @@
+[
+  {
+    "at": "2026-10-29T17:37:49.870151Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "19 ko incentive nahi mila",
+      "rider_id": "R011",
+      "message_id": "wamid.CONV3A",
+      "received_at": "2026-09-22T10:10:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T17:37:49.918306Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:37:55.398644Z",
+    "type": "decision",
+    "name": "agent_deferred",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "resume_at": "2026-10-29T17:37:57.398629+00:00"
+    }
+  },
+  {
+    "at": "2026-10-29T17:37:57.515020Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.269141Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v6",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.284907Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "count": 10
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.294123Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "count": 10
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.314207Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "2026-09-19",
+          "type": "incentive",
+          "reasons": [
+            "Claim is within the seven-day IST window",
+            "10 completed trips on this IST date",
+            "No historical payout line was found in the attested complete source scope",
+            "Historical pay matches policy"
+          ],
+          "expected": "0",
+          "historical": "0",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R011",
+      "outstanding": "0",
+      "received_at": "2026-09-22T04:40:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.325712Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.328739Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "7d94f8d9-b16b-43d5-845f-827cc4b6b3b7"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "no_shortfall",
+          "items": [
+            {
+              "source": "2026-09-19",
+              "expected": "0",
+              "historical": "0"
+            }
+          ],
+          "reasons": [
+            "10 completed trips on this IST date"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:04.335331Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Is din 10 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila."
+  },
+  {
+    "at": "2026-10-29T17:38:04.570459Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "nahi nahi 12 kiye the, dobara check karo",
+      "rider_id": "R011",
+      "message_id": "wamid.CONV3B",
+      "received_at": "2026-09-22T10:12:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T17:38:04.595798Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.802511Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        },
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "intent": "followup",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": true,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v6",
+      "records_disputed": true,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.818653Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "count": 10
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.828507Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "count": 10
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.846887Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "2026-09-19",
+          "type": "incentive",
+          "reasons": [
+            "Claim is within the seven-day IST window",
+            "10 completed trips on this IST date",
+            "No historical payout line was found in the attested complete source scope",
+            "Historical pay matches policy"
+          ],
+          "expected": "0",
+          "historical": "0",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R011",
+      "outstanding": "0",
+      "received_at": "2026-09-22T04:42:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.861225Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.871368Z",
+    "type": "decision",
+    "name": "dispute_persisted",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "status": "INVESTIGATING",
+      "dispute_id": "9b7cc6a0-994b-5917-ac40-d79a485a7d6a"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.895170Z",
+    "type": "decision",
+    "name": "payment_authorization",
+    "input": {
+      "dispute_id": "9b7cc6a0-994b-5917-ac40-d79a485a7d6a"
+    },
+    "output": {
+      "reason": "Source records, eligibility, or provider history need review",
+      "status": "ESCALATED",
+      "queue_id": "3263821d-cd60-45c9-9931-c4314b062e30",
+      "intent_id": null
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.895462Z",
+    "type": "decision",
+    "name": "agent_escalation",
+    "input": {
+      "dispute_id": "9b7cc6a0-994b-5917-ac40-d79a485a7d6a"
+    },
+    "output": {
+      "reason": "Source records, eligibility, or provider history need review",
+      "queue_id": "3263821d-cd60-45c9-9931-c4314b062e30"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.919019Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "d3f62289-9773-47ca-a55d-5d5b14daf755"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "review",
+          "reason": "NO_SHORTFALL"
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:06.929869Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai."
+  }
+]

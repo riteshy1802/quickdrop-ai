@@ -1,0 +1,29 @@
+scenario-01-R003: decision=PASS, execution=PASS, confirmed=25
+scenario-02-R027: decision=PASS, execution=PASS, confirmed=15
+scenario-03-R011: decision=PASS, execution=PASS, confirmed=0
+scenario-04-R020: decision=PASS, execution=PASS, confirmed=0
+scenario-05-R003: decision=PASS, execution=PASS, confirmed=25
+scenario-06-R005: decision=FAIL, execution=FAIL, confirmed=0
+amazon extraction failed (ReadTimeoutError)
+scenario-07-R008: decision=PASS, execution=PASS, confirmed=0
+scenario-08-R013: decision=PASS, execution=PASS, confirmed=0
+scenario-09-R014: decision=PASS, execution=PASS, confirmed=10
+scenario-10-R016: decision=PASS, execution=PASS, confirmed=0
+scenario-11-R021: decision=PASS, execution=PASS, confirmed=0
+scenario-12-R022: decision=PASS, execution=PASS, confirmed=0
+scenario-13-R024: decision=PASS, execution=PASS, confirmed=150
+scenario-14-R025: decision=PASS, execution=PASS, confirmed=0
+scenario-15-R007: decision=PASS, execution=PASS, confirmed=34
+scenario-16-R031: decision=PASS, execution=PASS, confirmed=22
+scenario-17-R009: decision=PASS, execution=PASS, confirmed=0
+scenario-18-R026: decision=PASS, execution=PASS, confirmed=32
+amazon extraction failed (TimeoutError)
+scenario-19-R033: decision=PASS, execution=PASS, confirmed=176
+scenario-20-R034: decision=PASS, execution=PASS, confirmed=0
+scenario-21-R035: decision=PASS, execution=PASS, confirmed=25
+scenario-22-R036: decision=PASS, execution=PASS, confirmed=0
+scenario-23-R028: decision=PASS, execution=PASS, confirmed=0
+scenario-24-R037: decision=PASS, execution=PASS, confirmed=0
+Live audit completed: 24 scenarios.
+
+EXIT_CODE=0

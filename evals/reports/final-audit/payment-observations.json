@@ -1,0 +1,200 @@
+[
+  {
+    "scenario": "scenario-21-R035",
+    "at": "2026-10-29T17:40:35.589280Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "0f9302b4-abef-4c64-8620-9a3293ee8004",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_6a0811ccdad6"
+    }
+  },
+  {
+    "scenario": "scenario-01-R003",
+    "at": "2026-10-29T17:37:43.076847Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "0d3f19fe-546a-43fc-a449-a9aa8f9061a6",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_4b20333a78ca"
+    }
+  },
+  {
+    "scenario": "scenario-15-R007",
+    "at": "2026-10-29T17:39:38.733508Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "d4a8d6f6-162e-42f5-9601-b118a802bef4",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_85474e90660c"
+    }
+  },
+  {
+    "scenario": "scenario-05-R003",
+    "at": "2026-10-29T17:38:21.037043Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "c0a80e54-c528-4a1b-868c-7a022b08dc04",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_e9e69d9368f5"
+    }
+  },
+  {
+    "scenario": "scenario-18-R026",
+    "at": "2026-10-29T17:39:56.300770Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "19400c8e-0f3b-4991-8ebc-0387a01f0ca5",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "UNKNOWN",
+      "outcome": "provider_outcome_uncertain",
+      "http_status": 504,
+      "next_retry_at": "2026-10-29T17:39:58.223594+00:00",
+      "provider_payout_id": null
+    }
+  },
+  {
+    "scenario": "scenario-18-R026",
+    "at": "2026-10-29T17:39:58.381769Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 2,
+      "intent_id": "19400c8e-0f3b-4991-8ebc-0387a01f0ca5",
+      "operation": "RECONCILE"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "ledger_confirmed",
+      "http_status": null,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_425be44066a5"
+    }
+  },
+  {
+    "scenario": "scenario-16-R031",
+    "at": "2026-10-29T17:39:49.083354Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "1bd2bf54-536c-4f54-ab2e-202d62631d66",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_627368e8cb5a"
+    }
+  },
+  {
+    "scenario": "scenario-13-R024",
+    "at": "2026-10-29T17:39:26.415225Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "dcb44aa6-1da2-4652-bcae-dbba42124914",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_6768273b9ce8"
+    }
+  },
+  {
+    "scenario": "scenario-09-R014",
+    "at": "2026-10-29T17:39:01.082471Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "fa8f34df-a698-4788-b286-19f166d6e213",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_107a038d7238"
+    }
+  },
+  {
+    "scenario": "scenario-02-R027",
+    "at": "2026-10-29T17:37:47.276997Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "10bdf9ca-d27a-4623-a23a-f1a3d8c8f3a9",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_66d86722d0be"
+    }
+  },
+  {
+    "scenario": "scenario-19-R033",
+    "at": "2026-10-29T17:40:22.876077Z",
+    "type": "tool_call",
+    "name": "payswift_request_result",
+    "input": {
+      "attempt": 1,
+      "intent_id": "e09eb139-25a0-43bf-a195-f90a2a9afe5a",
+      "operation": "POST"
+    },
+    "output": {
+      "status": "SUCCEEDED",
+      "outcome": "provider_confirmed",
+      "http_status": 201,
+      "next_retry_at": null,
+      "provider_payout_id": "pout_2a25d36145af"
+    }
+  }
+]

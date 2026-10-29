@@ -1,0 +1,17 @@
+{
+  "syntax": "PASS",
+  "triggers": [
+    "push",
+    "pull_request",
+    "workflow_dispatch"
+  ],
+  "jobs": [
+    "backend-quality",
+    "frontend-quality",
+    "database-validation"
+  ],
+  "permissions": {
+    "contents": "read"
+  },
+  "remote_action_sha_validation": "PASS: four active commit pages checked; see action-references.json"
+}

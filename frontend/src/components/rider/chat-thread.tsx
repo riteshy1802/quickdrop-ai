@@ -9,25 +9,14 @@ import type {
   Scenario,
 } from "@/types/rider";
 import { ChatMessage } from "./chat-message";
-import { InvestigationActivity } from "./investigation-activity";
+import { activityLabels, InvestigationActivity } from "./investigation-activity";
 import { MessageComposer } from "./message-composer";
 import { ConversationEmptyState } from "./conversation-empty-state";
 import { date } from "./format";
 import { useConversationEvents } from "@/hooks/realtime/use-events";
 import { useSendMessage } from "./use-rider-support";
 const statuses: Record<string, string> = {
-  verification_pending: "Verification is pending; saved work will resume",
-  started: "Starting investigation",
-  understanding_complaint: "Understanding complaint",
-  checking_trip_records: "Checking trip records",
-  retrieving_payout_history: "Retrieving payout history",
-  calculating_verified_shortfall: "Calculating verified shortfall",
-  checking_payment_eligibility: "Checking payment eligibility",
-  authorizing_payment: "Checking payment authorization",
-  retry_pending: "Verification will retry",
-  investigation_failed: "Investigation unavailable; awaiting support review",
-  escalating_to_ops: "Escalating to Ops",
-  preparing_response: "Preparing response",
+  ...activityLabels,
   human_support: "Human Support is handling this conversation",
 };
 export function ChatThread({
@@ -159,8 +148,8 @@ export function ChatThread({
                   }}
                 />
               )}
-            {(live.stream.status ||
-              mutation.isPending ||
+            {((live.stream.status && !live.stream.activity.length) ||
+              (mutation.isPending && !live.stream.activity.length) ||
               live.connection === "reconnecting") && (
               <div role="status" className="rider-processing">
                 <Sparkles size={15} />

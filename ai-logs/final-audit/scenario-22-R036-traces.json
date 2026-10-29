@@ -1,0 +1,181 @@
+[
+  {
+    "at": "2026-10-29T17:40:36.085108Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "18 ko order T990831 ka distance galat laga hai",
+      "rider_id": "R036",
+      "message_id": "wamid.LZ3ZVNKF9QTG8J",
+      "received_at": "2026-09-23T12:00:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T17:40:36.132591Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.847988Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "RECORD_DISPUTE",
+          "trip_ids": [
+            "T990831"
+          ],
+          "date_tokens": [
+            "18"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v6",
+      "records_disputed": true,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.868682Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.880480Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "count": 1
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.900250Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T990831",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "52",
+          "historical": "52",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R036",
+      "outstanding": "0",
+      "received_at": "2026-09-23T06:30:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.911917Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.919304Z",
+    "type": "decision",
+    "name": "dispute_persisted",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "status": "INVESTIGATING",
+      "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.933300Z",
+    "type": "decision",
+    "name": "payment_authorization",
+    "input": {
+      "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+    },
+    "output": {
+      "reason": "Source records, eligibility, or provider history need review",
+      "status": "ESCALATED",
+      "queue_id": "13062e43-f161-4f03-936e-e6ce3554d509",
+      "intent_id": null
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.933414Z",
+    "type": "decision",
+    "name": "agent_escalation",
+    "input": {
+      "dispute_id": "3a908c52-9c44-5468-a133-d861634bf51d"
+    },
+    "output": {
+      "reason": "Source records, eligibility, or provider history need review",
+      "queue_id": "13062e43-f161-4f03-936e-e6ce3554d509"
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.944791Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "10e9bbd9-2d15-44fb-b17e-f812355b6900"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "review",
+          "reason": "NO_SHORTFALL"
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T17:40:37.953412Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Maine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai."
+  }
+]

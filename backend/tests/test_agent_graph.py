@@ -107,6 +107,7 @@ async def test_multiple_disputes_and_daily_auto_limit(agent_setup):
     extraction["claims"].append({"kind": "PENALTY", "date_tokens": ["21"]})
     reply, _, _, _ = await turn("R027", "20 ko surge aur 21 ko penalty do baar kata", extraction)
     assert "15" in reply and "10" in reply
+    assert "Ek din mein ek hi automatic payment allowed hai" in reply
     async with factory() as session:
         intents = list(await session.scalars(select(PaymentIntent)))
         assert len(intents) == 1 and intents[0].amount == 15

@@ -1,0 +1,133 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "20 ko surge nahi mila aur 21 ko penalty do baar kata",
+      "received_at": "2026-09-23T10:30:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "20 ko surge nahi mila aur 21 ko penalty do baar kata",
+          "received_at": "2026-09-23T05:00:00+00:00",
+          "reference_time": "2026-09-23T10:30:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:37:45.277158+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "SURGE",
+          "trip_ids": [],
+          "date_tokens": [
+            "20"
+          ]
+        },
+        {
+          "kind": "PENALTY",
+          "trip_ids": [],
+          "date_tokens": [
+            "21"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.727
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "10 wala bhi abhi de do na",
+      "received_at": "2026-09-23T10:31:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "20 ko surge nahi mila aur 21 ko penalty do baar kata",
+          "received_at": "2026-09-23T05:00:00+00:00",
+          "reference_time": "2026-09-23T10:30:00+05:30"
+        },
+        {
+          "sender": "AI",
+          "text": "Trip T604546:\n\nMaine 20 September ke aapke orders check kiye. Records ke hisaab se ₹393 milne chahiye the, lekin ₹378 hi mile hain.\n\nAapke ₹15 baaki hain aur payment bhejne ki request taiyar hai. Payment abhi confirm nahi hai.\n\nTrip T936237:\n\n₹10 ka difference confirm hua hai. Aaj automatic payment ki request pehle hi ban chuki hai. Ek din mein ek hi automatic payment allowed hai, isliye support team ki approval ke liye bhej diya hai. Abhi payment initiate nahi hua hai.",
+          "received_at": "2026-10-29T17:37:47.218128+00:00",
+          "reference_time": null
+        },
+        {
+          "sender": "RIDER",
+          "text": "10 wala bhi abhi de do na",
+          "received_at": "2026-09-23T05:01:00+00:00",
+          "reference_time": "2026-09-23T10:31:00+05:30"
+        }
+      ],
+      "context": {
+        "language": "hinglish",
+        "extraction": {
+          "claims": [
+            {
+              "kind": "SURGE",
+              "trip_ids": [],
+              "date_tokens": [
+                "20"
+              ]
+            },
+            {
+              "kind": "PENALTY",
+              "trip_ids": [],
+              "date_tokens": [
+                "21"
+              ]
+            }
+          ],
+          "intent": "complaint",
+          "language": "hinglish",
+          "simplify": false,
+          "correction": false,
+          "help_topic": "general",
+          "help_answer": "",
+          "records_disputed": false,
+          "mentioned_amounts": []
+        },
+        "dispute_ids": [
+          "66506953-e4f8-5c29-b8d2-5ba57c80d7bb",
+          "76bbc90c-d11b-5c9b-af46-867df1f81b2f"
+        ]
+      }
+    },
+    "started_at": "2026-10-29T17:37:47.525966+00:00",
+    "validated_model_output": {
+      "intent": "status",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PENALTY",
+          "trip_ids": [],
+          "date_tokens": [
+            "21"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.9656
+  }
+]

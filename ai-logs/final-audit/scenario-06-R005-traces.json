@@ -1,0 +1,308 @@
+[
+  {
+    "at": "2026-10-29T17:38:21.530220Z",
+    "type": "message_in",
+    "name": "receive_message",
+    "input": {
+      "text": "kal ka payout kam aaya hai. 12 se zyada order kiye the maine",
+      "rider_id": "R005",
+      "message_id": "wamid.U9M9Z3HF69E2M9",
+      "received_at": "2026-09-22T09:20:00+05:30",
+      "conversation_id": null
+    },
+    "output": null
+  },
+  {
+    "at": "2026-10-29T17:38:21.574666Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:27.053781Z",
+    "type": "decision",
+    "name": "agent_deferred",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "resume_at": "2026-10-29T17:38:29.053769+00:00"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:29.160704Z",
+    "type": "tool_call",
+    "name": "get_rider_profile",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "found": true
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.379300Z",
+    "type": "decision",
+    "name": "intent_extraction",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": [
+            "kal"
+          ]
+        }
+      ],
+      "intent": "complaint",
+      "language": "hinglish",
+      "simplify": false,
+      "correction": false,
+      "help_topic": "general",
+      "help_answer": "",
+      "prompt_version": "quickdrop-extraction-v6",
+      "records_disputed": false,
+      "mentioned_amounts": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.393430Z",
+    "type": "tool_call",
+    "name": "get_rider_trips",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "count": 13
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.404206Z",
+    "type": "tool_call",
+    "name": "get_payout_history",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "count": 13
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.423488Z",
+    "type": "tool_call",
+    "name": "reconcile_dispute",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "items": [
+        {
+          "id": "T253744",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "29",
+          "historical": "29",
+          "outstanding": "0"
+        },
+        {
+          "id": "T281890",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "32",
+          "historical": "32",
+          "outstanding": "0"
+        },
+        {
+          "id": "T335141",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "25",
+          "historical": "25",
+          "outstanding": "0"
+        },
+        {
+          "id": "T454306",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "39",
+          "historical": "39",
+          "outstanding": "0"
+        },
+        {
+          "id": "T508700",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "27",
+          "historical": "27",
+          "outstanding": "0"
+        },
+        {
+          "id": "T547576",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "25",
+          "historical": "25",
+          "outstanding": "0"
+        },
+        {
+          "id": "T621300",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "63",
+          "historical": "63",
+          "outstanding": "0"
+        },
+        {
+          "id": "T681635",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "28",
+          "historical": "28",
+          "outstanding": "0"
+        },
+        {
+          "id": "T729833",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "45",
+          "historical": "45",
+          "outstanding": "0"
+        },
+        {
+          "id": "T784434",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "57",
+          "historical": "57",
+          "outstanding": "0"
+        },
+        {
+          "id": "T802235",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "25",
+          "historical": "25",
+          "outstanding": "0"
+        },
+        {
+          "id": "T815383",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "25",
+          "historical": "25",
+          "outstanding": "0"
+        },
+        {
+          "id": "T859165",
+          "type": "trip",
+          "reasons": [
+            "Trip belongs to the trusted rider",
+            "Claim is within the seven-day IST window",
+            "Historical pay matches policy"
+          ],
+          "expected": "50",
+          "historical": "50",
+          "outstanding": "0"
+        }
+      ],
+      "status": "NO_SHORTFALL",
+      "rider_id": "R005",
+      "outstanding": "0",
+      "received_at": "2026-09-22T03:50:00+00:00",
+      "source_coverage": true,
+      "provider_available": true,
+      "verified_shortfall": "0"
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.436815Z",
+    "type": "tool_call",
+    "name": "get_payment_status",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "payments": []
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.440190Z",
+    "type": "decision",
+    "name": "agent_financial_decision",
+    "input": {
+      "message_id": "ec9fff9d-dd34-4d19-869b-c8bfb4820aa5"
+    },
+    "output": {
+      "outcomes": [
+        {
+          "kind": "no_shortfall",
+          "items": [],
+          "reasons": []
+        }
+      ]
+    }
+  },
+  {
+    "at": "2026-10-29T17:38:31.447181Z",
+    "type": "reply",
+    "name": "send_reply",
+    "input": null,
+    "output": "Maine records check kiye, lekin koi baaki payment nahi mila."
+  }
+]

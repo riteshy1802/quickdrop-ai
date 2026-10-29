@@ -1,0 +1,38 @@
+{
+  "compliance": {
+    "PASS": 46,
+    "PARTIAL": 7,
+    "FAIL": 7,
+    "NOT TESTED": 4
+  },
+  "defects": {
+    "P0": 3,
+    "P1": 3,
+    "P2": 3
+  },
+  "live": {
+    "scenario_count": 24,
+    "decision_pass": 23,
+    "execution_pass": 23,
+    "eventual_pass": 23,
+    "delivery_pass": 15,
+    "end_to_end_pass": 15,
+    "auto_intents": 10,
+    "confirmed_auto_amount": 514,
+    "webhook_turns": 30,
+    "acknowledgment_turns": 9,
+    "max_webhook_seconds": 5.5661,
+    "max_final_agent_seconds": 23.9791,
+    "deferred_scenarios": [
+      3,
+      4,
+      6,
+      7,
+      13,
+      15,
+      16,
+      19,
+      21
+    ]
+  }
+}

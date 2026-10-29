@@ -1,0 +1,144 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "19 ko incentive nahi mila",
+      "received_at": "2026-09-22T10:10:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:37:49.922551+00:00",
+    "failure": "CancelledError",
+    "latency_seconds": 5.4714
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "19 ko incentive nahi mila",
+      "received_at": "2026-09-22T10:10:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:37:57.519282+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 6.7459
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "nahi nahi 12 kiye the, dobara check karo",
+      "received_at": "2026-09-22T10:12:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "19 ko incentive nahi mila",
+          "received_at": "2026-09-22T04:40:00+00:00",
+          "reference_time": "2026-09-22T10:10:00+05:30"
+        },
+        {
+          "sender": "AI",
+          "text": "Is din 10 completed trips record mein hain.\n\nMaine records check kiye, lekin koi baaki payment nahi mila.",
+          "received_at": "2026-10-29T17:38:04.335331+00:00",
+          "reference_time": null
+        },
+        {
+          "sender": "RIDER",
+          "text": "nahi nahi 12 kiye the, dobara check karo",
+          "received_at": "2026-09-22T04:42:00+00:00",
+          "reference_time": "2026-09-22T10:12:00+05:30"
+        }
+      ],
+      "context": {
+        "language": "hinglish",
+        "extraction": {
+          "claims": [
+            {
+              "kind": "INCENTIVE",
+              "trip_ids": [],
+              "date_tokens": [
+                "19"
+              ]
+            }
+          ],
+          "intent": "complaint",
+          "language": "hinglish",
+          "simplify": false,
+          "correction": false,
+          "help_topic": "general",
+          "help_answer": "",
+          "records_disputed": false,
+          "mentioned_amounts": []
+        }
+      }
+    },
+    "started_at": "2026-10-29T17:38:04.599604+00:00",
+    "validated_model_output": {
+      "intent": "followup",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        },
+        {
+          "kind": "INCENTIVE",
+          "trip_ids": [],
+          "date_tokens": [
+            "19"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": true,
+      "records_disputed": true
+    },
+    "latency_seconds": 2.1991
+  }
+]

@@ -61,7 +61,7 @@ async def test_complete_messages_endpoint_with_real_graph(agent_setup, monkeypat
         first = await http.post("/messages", json=payload)
         again = await http.post("/messages", json=payload)
         assert first.status_code == 200 and first.json() == again.json()
-        assert "25" in first.json()["reply"] and "not confirmed" in first.json()["reply"]
+        assert "25" in first.json()["reply"] and "confirm nahi" in first.json()["reply"]
     assert model.await_count == 1
     async with factory() as session:
         assert await session.scalar(select(func.count()).select_from(PaymentIntent)) == 1

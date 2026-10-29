@@ -1,0 +1,63 @@
+backend/tests/test_realtime.py:32:def test_event_roundtrip_and_explicit_payload():
+backend/tests/test_realtime.py:46:async def test_real_redis_fans_out_to_two_subscribers():
+backend/tests/test_realtime.py:67:async def test_publisher_failure_is_best_effort(monkeypatch):
+backend/tests/test_realtime.py:81:async def test_sse_named_frames_heartbeat_and_disconnect_cleanup(monkeypatch):
+backend/tests/test_realtime.py:111:async def test_sse_cancellation_closes_subscription(monkeypatch):
+backend/tests/test_realtime.py:142:async def test_sse_redis_unavailable_and_session_expiration(monkeypatch):
+backend/tests/test_realtime.py:173:async def test_signed_rider_context_and_cross_rider_subscription(ops_api):
+backend/tests/test_realtime.py:192:async def test_committed_events_and_rollback_never_publish_early(ops_api):
+backend/tests/test_realtime.py:212:async def test_human_message_events_are_public_and_notes_ops_only(ops_api):
+backend/tests/test_realtime.py:243:async def test_safe_final_text_has_stable_identity_and_no_model_output(ops_api):
+backend/tests/test_realtime.py:266:async def test_committed_reply_streams_multiple_exact_chunks(ops_api):
+backend/tests/test_realtime.py:288:async def test_signed_simulator_reads_and_explicit_thread_submission(ops_api, monkeypatch):
+backend/tests/test_realtime.py:318:async def test_authorized_http_sse_responses(ops_api, monkeypatch):
+backend/tests/test_realtime.py:346:async def test_worker_payment_events_follow_provider_confirmation(ops_api, monkeypatch):
+backend/tests/test_realtime.py:387:async def test_complete_rider_ops_worker_flow_with_real_redis(ops_api, monkeypatch, amount):
+backend/tests/test_payments_database.py:211:async def test_success_duplicate_authorization_and_audit(payments, provider):
+backend/tests/test_payments_database.py:255:async def test_full_amount_threshold(payments, provider, amount, status):
+backend/tests/test_payments_database.py:275:async def test_second_auto_and_concurrent_authorizations_require_ops(payments, provider):
+backend/tests/test_payments_database.py:302:async def test_concurrent_duplicate_authorization_creates_one_intent(payments, provider):
+backend/tests/test_payments_database.py:316:async def test_approved_full_balance_uses_ops_intent(payments, provider):
+backend/tests/test_payments_database.py:340:async def test_rejected_and_ambiguous_posts(payments, provider, behavior, expected):
+backend/tests/test_payments_database.py:354:async def test_429_schedules_same_key_and_respects_retry_after(payments, provider):
+backend/tests/test_payments_database.py:371:async def test_lost_response_reconciles_without_second_post(payments, provider, behavior):
+backend/tests/test_payments_database.py:384:async def test_worker_crash_after_provider_execution_recovers_by_get(payments, provider):
+backend/tests/test_payments_database.py:406:async def test_crash_before_network_and_provider_reset_never_repost(payments, provider):
+backend/tests/test_payments_database.py:420:async def test_two_workers_cannot_claim_same_active_job(payments, provider):
+backend/tests/test_payments_database.py:433:async def test_ledger_restart_preserves_success_and_blocks_new_authorization(payments, provider):
+backend/tests/test_payments_database.py:448:async def test_unknown_ledger_reset_stays_unknown_and_never_posts_again(payments, provider):
+backend/tests/test_payments_database.py:460:async def test_changed_evidence_and_expired_ist_day_block_dispatch(payments, provider):
+backend/tests/test_payments_database.py:479:async def test_missing_source_coverage_or_ledger_blocks_authorization(payments, provider):
+backend/tests/test_payments_database.py:494:async def test_reconcile_api_is_guarded_and_get_only(payments, provider, monkeypatch):
+backend/tests/test_payments_database.py:523:async def test_new_historical_credit_blocks_dispatch_overpayment(payments, provider):
+backend/tests/test_payments_database.py:544:async def test_overlapping_dispute_cannot_create_second_obligation(payments, provider):
+backend/tests/test_payments_database.py:574:async def test_forged_or_partial_ops_approval_does_not_authorize(payments, provider):
+backend/tests/test_payments_database.py:588:async def test_no_authorization_snapshot_means_no_post(payments, provider):
+backend/tests/test_payments_database.py:598:async def test_rate_limit_retry_budget_is_finite(payments, provider):
+backend/tests/test_payments_database.py:611:async def test_unavailable_preflight_defers_without_post_and_recovers(payments, provider):
+backend/tests/test_payments_database.py:625:async def test_conflicting_manual_reconciliation_stops_pending_dispatch(payments, provider):
+backend/tests/test_ops_endpoints.py:109:async def test_successful_logins_do_not_consume_failure_allowance(ops_api):
+backend/tests/test_ops_endpoints.py:118:async def test_login_retry_after_reports_remaining_window(ops_api):
+backend/tests/test_ops_endpoints.py:153:async def test_rider_review_status_comes_from_payment_intent(ops_api):
+backend/tests/test_ops_endpoints.py:208:async def test_authentication_sessions_cookie_flags_and_logout(ops_api):
+backend/tests/test_ops_endpoints.py:236:async def test_expiration_rotation_and_idempotent_admin_seed(ops_api):
+backend/tests/test_ops_endpoints.py:255:async def test_rate_limit_and_browser_origin(ops_api):
+backend/tests/test_ops_endpoints.py:276:async def test_secure_cookie_on_https(ops_api):
+backend/tests/test_ops_endpoints.py:305:async def test_every_ops_endpoint_requires_auth(ops_api, method, path):
+backend/tests/test_ops_endpoints.py:310:async def test_public_assignment_routes_are_unauthenticated(ops_api, monkeypatch):
+backend/tests/test_ops_endpoints.py:332:async def test_exact_425_approval_is_atomic_and_does_not_pay(ops_api, monkeypatch):
+backend/tests/test_ops_endpoints.py:359:async def test_concurrent_approvals_have_one_winner(ops_api, monkeypatch):
+backend/tests/test_ops_endpoints.py:386:async def test_unsafe_approval_rolls_back(ops_api, monkeypatch, problem):
+backend/tests/test_ops_endpoints.py:420:async def test_rejection_requires_reason_and_cannot_repeat(ops_api):
+backend/tests/test_ops_endpoints.py:436:async def test_escalation_assignment_resolution_and_wrong_type(ops_api):
+backend/tests/test_ops_endpoints.py:465:async def test_takeover_messages_notes_privacy_and_safe_handback(ops_api):
+backend/tests/test_ops_endpoints.py:511:async def test_handback_and_resolution_blockers(ops_api, blocker):
+backend/tests/test_ops_endpoints.py:550:async def test_resolution_creates_fresh_thread_for_next_rider_message(ops_api, monkeypatch):
+backend/tests/test_ops_endpoints.py:582:async def test_takeover_fences_inflight_graph_even_after_handback(ops_api):
+backend/tests/test_ops_endpoints.py:621:async def test_human_mode_persists_incoming_and_suppresses_ai(ops_api, monkeypatch):
+backend/tests/test_ops_endpoints.py:656:async def test_missing_resources(ops_api, path):
+backend/tests/test_ops_endpoints.py:669:async def test_takeover_fences_payment_authorization_boundary(ops_api):
+backend/tests/test_ops_endpoints.py:701:async def test_concurrent_human_message_retries_and_audit_events(ops_api):
+backend/tests/test_ops_endpoints.py:738:async def test_concurrent_escalation_assignments_have_one_owner(ops_api):
+backend/tests/test_ops_endpoints.py:752:async def test_reference_425_claim_uses_real_csv_coverage(connection, seeded, provider):
+backend/tests/test_ops_endpoints.py:799:async def test_payment_completion_preserves_human_control(ops_api, monkeypatch):

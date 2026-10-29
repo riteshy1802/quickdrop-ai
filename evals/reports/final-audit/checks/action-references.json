@@ -1,0 +1,10 @@
+{
+  "status": "PASS: active pinned commit pages exist in expected upstream repositories",
+  "scope": "commit existence verified through official GitHub pages; actual remote CI run not performed",
+  "references": [
+    "https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "https://github.com/actions/setup-python/commit/6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+    "https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1",
+    "https://github.com/astral-sh/setup-uv/commit/68559e99cc807c1eb7e9238fd43a15bba460eec2"
+  ]
+}

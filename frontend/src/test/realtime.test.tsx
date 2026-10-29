@@ -309,10 +309,10 @@ it("renders actual progress separately and reconciles an already saved reply onc
         event("agent.status", 1, { status: "checking_trip_records" }),
       );
     });
-    expect(screen.getByText("Checking trip records")).toBeTruthy();
+    expect(screen.getByText("Checking trips")).toBeTruthy();
     expect(
       document.querySelector(".rider-message-bubble")?.textContent,
-    ).not.toContain("Checking trip records");
+    ).not.toContain("Checking trips");
     expect(document.querySelector(".rider-investigation")?.hasAttribute("open")).toBe(true);
     act(() => FakeSource.instances[0].emit(event("agent.message.delta", 2, {
       message_id: id, text: "Existing ",
@@ -333,7 +333,7 @@ it("renders actual progress separately and reconciles an already saved reply onc
     );
     expect(screen.getAllByText("Existing reply")).toHaveLength(1);
     expect(document.querySelector(".rider-investigation")?.hasAttribute("open")).toBe(false);
-    expect(screen.getByText("Checking your trip records")).toBeTruthy();
+    expect(screen.getByText("Checking trips")).toBeTruthy();
   } finally {
     HTMLElement.prototype.scrollIntoView = original;
   }

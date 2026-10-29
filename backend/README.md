@@ -221,3 +221,34 @@ now use real APIs, cookie sessions and typed live events, with PostgreSQL refetc
 recovery. Run `make infra-up`, then `make backend`, `make workers` and `make frontend`
 in separate terminals. New configuration examples are in `backend/.env.example` and
 `frontend/.env.example`.
+
+## Stable API and optional development reload
+
+From the repository root, `make backend` runs without auto-reload. Editing Python
+files does not stop the running API. Restart it manually to load backend changes.
+Use `make backend-dev` only when automatic restarts after file edits are wanted.
+Both commands set a five-second graceful shutdown timeout, configurable through
+`BACKEND_SHUTDOWN_TIMEOUT`.
+
+With reload enabled, Uvicorn's “Shutting down” message after a file edit is expected:
+it replaces the server process. Live SSE responses can remain open indefinitely,
+so the timeout bounds waiting for these connections before cancellation. Existing
+stream cancellation cleanup closes Redis subscriptions, and browser EventSource
+reconnects and refreshes saved state after the API returns. The timeout does not
+stop a running healthy server after five seconds; it applies only to shutdown.
+
+A server started before the Makefile change keeps its original command-line flags.
+Stop that existing server once, then run `make backend` to use the stable command.
+
+Run `make backend-stop` from another terminal to stop this checkout's local API,
+its reload supervisor, and child processes. It attempts graceful termination first,
+then forces remaining processes to stop after eight seconds. Override this with
+`make backend-stop BACKEND_STOP_TIMEOUT=2` if needed. Workers, frontend, Docker
+services, and other checkouts are excluded. Repeated calls with no API running are
+safe. This helper uses Linux `/proc` and only targets processes owned by your user.
+To inspect matching processes without stopping them:
+
+```sh
+cd backend
+uv run python -m app.scripts.stop_backend --dry-run
+```

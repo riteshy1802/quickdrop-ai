@@ -1,0 +1,143 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "bhai payout galat aaya hai",
+      "received_at": "2026-09-22T09:00:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "bhai payout galat aaya hai",
+          "received_at": "2026-09-22T03:30:00+00:00",
+          "reference_time": "2026-09-22T09:00:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:37:38.622700+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": []
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.7662
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "20 wala",
+      "received_at": "2026-09-22T09:02:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "bhai payout galat aaya hai",
+          "received_at": "2026-09-22T03:30:00+00:00",
+          "reference_time": "2026-09-22T09:00:00+05:30"
+        },
+        {
+          "sender": "AI",
+          "text": "Main check kar deta hoon. Aap trip ID ya date bata dijiye, taaki sahi payment dekh sakoon.",
+          "received_at": "2026-10-29T17:37:40.417858+00:00",
+          "reference_time": null
+        },
+        {
+          "sender": "RIDER",
+          "text": "20 wala",
+          "received_at": "2026-09-22T03:32:00+00:00",
+          "reference_time": "2026-09-22T09:02:00+05:30"
+        }
+      ],
+      "context": {
+        "language": "hinglish",
+        "extraction": {
+          "claims": [
+            {
+              "kind": "PAYOUT",
+              "trip_ids": [],
+              "date_tokens": []
+            }
+          ],
+          "intent": "complaint",
+          "language": "hinglish",
+          "simplify": false,
+          "correction": false,
+          "help_topic": "general",
+          "help_answer": "",
+          "records_disputed": false,
+          "mentioned_amounts": []
+        }
+      }
+    },
+    "started_at": "2026-10-29T17:37:40.516560+00:00",
+    "validated_model_output": {
+      "intent": "followup",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "PAYOUT",
+          "trip_ids": [],
+          "date_tokens": [
+            "20"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 2.1142
+  },
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "thik hai, kab tak aayega?",
+      "received_at": "2026-09-22T09:05:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "thik hai, kab tak aayega?",
+          "received_at": "2026-09-22T03:35:00+00:00",
+          "reference_time": "2026-09-22T09:05:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:37:43.322308+00:00",
+    "validated_model_output": {
+      "intent": "status",
+      "language": "hinglish",
+      "claims": [],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": false
+    },
+    "latency_seconds": 1.4601
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "pid": 1879370,
+    "role": "api",
+    "cwd": "/home/ritesh/quickdrop-ai/backend"
+  },
+  {
+    "pid": 1879373,
+    "role": "api",
+    "cwd": "/home/ritesh/quickdrop-ai/backend"
+  },
+  {
+    "pid": 1879599,
+    "role": "worker",
+    "cwd": "/home/ritesh/quickdrop-ai/backend"
+  },
+  {
+    "pid": 1879607,
+    "role": "worker",
+    "cwd": "/home/ritesh/quickdrop-ai/backend"
+  }
+]

@@ -1,0 +1,340 @@
+{
+  "scenario_id": 12,
+  "rider_id": "R022",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.D8VFF49EJAXFEP",
+        "text": "13 sept ko order T502951 ka surge nahi mila",
+        "received_at": "2026-09-23T09:00:00+05:30",
+        "rider_id": "R022"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 2.114,
+      "initial_response": {
+        "reply": "Yeh claim automatic payment ke liye valid nahi hai, kyunki trip saat din ki eligibility window ke bahar hai.\n\nMaine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai."
+      },
+      "final_reply": "Yeh claim automatic payment ke liye valid nahi hai, kyunki trip saat din ki eligibility window ke bahar hai.\n\nMaine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+      "total_agent_seconds": 2.1214,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [
+          {
+            "id": "3948a38f-f94a-5bc4-a6d8-954b29159235",
+            "rider_id": "R022",
+            "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec",
+            "status": "ESCALATED",
+            "verified_amount": null,
+            "details": {
+              "request": {
+                "rider_id": "R022",
+                "trip_ids": [
+                  "T502951"
+                ],
+                "trip_dates": [],
+                "received_at": "2026-09-23T03:30:00Z",
+                "penalty_dates": [],
+                "reference_time": "2026-09-23T09:00:00+05:30",
+                "incentive_dates": []
+              },
+              "scope_key": "f799dd2cf3655de781b6d7d21b1d6d2e08741c9bb192556a4bc399694af61703"
+            }
+          }
+        ],
+        "items": [],
+        "intents": [],
+        "queues": [
+          {
+            "id": "60128df0-5b07-4b9d-9551-3d5effe0f827",
+            "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235",
+            "type": "escalation",
+            "status": "PENDING",
+            "amount": null,
+            "reason": "Claim is outside the seven-day eligibility window",
+            "assigned_to": null,
+            "resolved_at": null
+          }
+        ],
+        "messages": [
+          {
+            "id": "57309134-7b29-422a-b3ed-1b01291dedd9",
+            "message_id": "wamid.D8VFF49EJAXFEP",
+            "sender_type": "RIDER",
+            "content": "13 sept ko order T502951 ka surge nahi mila",
+            "received_at": "2026-09-23T03:30:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "SURGE",
+                    "trip_ids": [
+                      "T502951"
+                    ],
+                    "date_tokens": [
+                      "13 sept"
+                    ]
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-23T09:00:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec"
+          },
+          {
+            "id": "11f0c536-d3fa-487e-85e4-12629762f39e",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Yeh claim automatic payment ke liye valid nahi hai, kyunki trip saat din ki eligibility window ke bahar hai.\n\nMaine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [
+      {
+        "id": "3948a38f-f94a-5bc4-a6d8-954b29159235",
+        "rider_id": "R022",
+        "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec",
+        "status": "ESCALATED",
+        "verified_amount": null,
+        "details": {
+          "request": {
+            "rider_id": "R022",
+            "trip_ids": [
+              "T502951"
+            ],
+            "trip_dates": [],
+            "received_at": "2026-09-23T03:30:00Z",
+            "penalty_dates": [],
+            "reference_time": "2026-09-23T09:00:00+05:30",
+            "incentive_dates": []
+          },
+          "scope_key": "f799dd2cf3655de781b6d7d21b1d6d2e08741c9bb192556a4bc399694af61703"
+        }
+      }
+    ],
+    "items": [],
+    "intents": [],
+    "queues": [
+      {
+        "id": "60128df0-5b07-4b9d-9551-3d5effe0f827",
+        "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235",
+        "type": "escalation",
+        "status": "PENDING",
+        "amount": null,
+        "reason": "Claim is outside the seven-day eligibility window",
+        "assigned_to": null,
+        "resolved_at": null
+      }
+    ],
+    "messages": [
+      {
+        "id": "57309134-7b29-422a-b3ed-1b01291dedd9",
+        "message_id": "wamid.D8VFF49EJAXFEP",
+        "sender_type": "RIDER",
+        "content": "13 sept ko order T502951 ka surge nahi mila",
+        "received_at": "2026-09-23T03:30:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "SURGE",
+                "trip_ids": [
+                  "T502951"
+                ],
+                "date_tokens": [
+                  "13 sept"
+                ]
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-23T09:00:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec"
+      },
+      {
+        "id": "11f0c536-d3fa-487e-85e4-12629762f39e",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Yeh claim automatic payment ke liye valid nahi hai, kyunki trip saat din ki eligibility window ke bahar hai.\n\nMaine aapka case support team ko review ke liye bheja hai. Abhi koi extra payment confirm nahi hua hai.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "3ed93f7b-dc1e-435e-8548-ff2a4b2b8cec"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [
+    {
+      "id": "60128df0-5b07-4b9d-9551-3d5effe0f827",
+      "rider_id": "R022",
+      "type": "escalation",
+      "amount": null,
+      "reason": "Claim is outside the seven-day eligibility window",
+      "created_at": "2026-10-29T17:39:11.950405Z"
+    }
+  ],
+  "provider_ledger": [],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 0,
+    "approval": null,
+    "escalation": "optional"
+  },
+  "auto_authorized_amount": 0,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [
+    null
+  ],
+  "agent_escalation_count": 1,
+  "all_escalation_count": 1,
+  "provider_confirmed_amount": 0,
+  "provider_ledger_amount": 0,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": false,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips",
+    "get_payout_history",
+    "reconcile_dispute",
+    "get_payment_status"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T17:39:11.827794Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "SURGE",
+            "trip_ids": [
+              "T502951"
+            ],
+            "date_tokens": [
+              "13 sept"
+            ]
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v6",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:11.936204Z",
+      "type": "decision",
+      "name": "dispute_persisted",
+      "input": {
+        "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+      },
+      "output": {
+        "status": "INVESTIGATING",
+        "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:11.959580Z",
+      "type": "decision",
+      "name": "payment_authorization",
+      "input": {
+        "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+      },
+      "output": {
+        "reason": "Claim is outside the seven-day eligibility window",
+        "status": "ESCALATED",
+        "queue_id": "60128df0-5b07-4b9d-9551-3d5effe0f827",
+        "intent_id": null
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:11.959768Z",
+      "type": "decision",
+      "name": "agent_escalation",
+      "input": {
+        "dispute_id": "3948a38f-f94a-5bc4-a6d8-954b29159235"
+      },
+      "output": {
+        "reason": "Claim is outside the seven-day eligibility window",
+        "queue_id": "60128df0-5b07-4b9d-9551-3d5effe0f827"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:11.986593Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "57309134-7b29-422a-b3ed-1b01291dedd9"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "review",
+            "reason": "outside_window"
+          }
+        ]
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "NOT APPLICABLE"
+}

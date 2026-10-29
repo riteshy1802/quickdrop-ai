@@ -1,0 +1,458 @@
+{
+  "counts": {
+    "PASS": 46,
+    "PARTIAL": 7,
+    "FAIL": 7,
+    "NOT TESTED": 4
+  },
+  "criteria": [
+    {
+      "id": "A01",
+      "requirement": "Original message text, IDs, rider IDs, order and received_at preserved",
+      "status": "PASS",
+      "evidence": "All 30 request records compared with data/conversations.json; 24 fresh DB clones",
+      "implementation_or_artifacts": "data/conversations.json; audit-preservation.json"
+    },
+    {
+      "id": "A02",
+      "requirement": "Configured real LLM and actual LangGraph; no model labels or fallback",
+      "status": "PARTIAL",
+      "evidence": "23 scenarios invoked Nova; R037 was correctly blocked before the model. 38 real invocations, 27 validated responses,9 cancellations,2 unavailable extractions; literal 24-scenario model-invocation coverage is not met",
+      "implementation_or_artifacts": "app/agent/llm.py; app/agent/graph.py; ai-logs/final-audit/*-llm.json"
+    },
+    {
+      "id": "A03",
+      "requirement": "Fresh isolated data and supplied sandbox per scenario",
+      "status": "PASS",
+      "evidence": "40 riders, 3,304 trips, 3,222 payout lines seeded once; fresh clone and fresh server.pyc process per scenario; independent Redis",
+      "implementation_or_artifacts": "evals/audit_live.py; seed-counts.json"
+    },
+    {
+      "id": "A04",
+      "requirement": "All 24 official financial decisions correct",
+      "status": "FAIL",
+      "evidence": "23/24; R005 missed expected ₹150 incentive",
+      "implementation_or_artifacts": "scenario-06-R005.json"
+    },
+    {
+      "id": "A05",
+      "requirement": "Expected payouts actually confirmed with PaySwift",
+      "status": "FAIL",
+      "evidence": "23/24 expected outcomes; R005 issued no intent. All 10 produced AUTO intents confirmed, ₹514 total",
+      "implementation_or_artifacts": "live-24-results.json; *-traces.json"
+    },
+    {
+      "id": "A06",
+      "requirement": "Natural-language scenario facts match targeted required mentions",
+      "status": "PASS",
+      "evidence": "Dataset reply_mentions checks passed for all 24; these checks are NOT settlement evidence",
+      "implementation_or_artifacts": "live-24-results.json"
+    },
+    {
+      "id": "A07",
+      "requirement": "Fare base ₹25 + ₹6/km after 2 km, surge on whole fare",
+      "status": "PASS",
+      "evidence": "Financial arithmetic unit/DB tests passed; live fare cases including R007/R031/R033",
+      "implementation_or_artifacts": "app/services/financial/calculator.py; tests/test_financial.py; checks/backend-pytest.txt"
+    },
+    {
+      "id": "A08",
+      "requirement": "Per-trip ROUND_HALF_UP rounding",
+      "status": "PASS",
+      "evidence": "Decimal arithmetic and explicit rounding tests passed",
+      "implementation_or_artifacts": "tests/test_financial.py; app/services/financial/calculator.py"
+    },
+    {
+      "id": "A09",
+      "requirement": "₹150 incentive for 12 completed trips",
+      "status": "PARTIAL",
+      "evidence": "Calculator and labelled scenarios pass; live R024 succeeds but R005 extraction skips bonus scope",
+      "implementation_or_artifacts": "tests/test_financial.py; scenario-13-R024.json; scenario-06-R005.json"
+    },
+    {
+      "id": "A10",
+      "requirement": "₹10 rider cancellation; customer cancellation earns zero",
+      "status": "PASS",
+      "evidence": "Financial tests and live penalty cases including R014/R027 passed",
+      "implementation_or_artifacts": "app/services/financial/calculator.py; tests/test_financial.py; scenario-09-R014.json"
+    },
+    {
+      "id": "A11",
+      "requirement": "IST day grouping and seven completed-day eligibility",
+      "status": "PASS",
+      "evidence": "Clock/eligibility tests passed; original September timestamps used; R022 remains ineligible",
+      "implementation_or_artifacts": "tests/test_reference_clock.py; tests/test_financial.py; scenario-12-R022.json"
+    },
+    {
+      "id": "A12",
+      "requirement": "Business demo clock cannot override official evaluator timestamps",
+      "status": "PASS",
+      "evidence": "Audit process cleared demo clock, preserved received_at, and verified input timestamps; clock tests passed",
+      "implementation_or_artifacts": "app/core/clock.py; tests/test_reference_clock.py; audit-preservation.json"
+    },
+    {
+      "id": "A13",
+      "requirement": "Real time retained for audit, retries, leases and auto-pay date",
+      "status": "PASS",
+      "evidence": "Stored traces are October, request eligibility September; real daily reservation tests passed",
+      "implementation_or_artifacts": "app/services/payment_authorization.py; app/repositories/payment_jobs.py; *-traces.json"
+    },
+    {
+      "id": "A14",
+      "requirement": "Historical payouts, duplicate source rows and normalization handled",
+      "status": "PASS",
+      "evidence": "Seed skipped 10 duplicate trip rows, logged 64 reference mappings; normalization/data-quality suites passed; source hashes unchanged",
+      "implementation_or_artifacts": "seed-counts.json; tests/test_data_quality.py; tests/test_normalization_pipeline.py; audit-preservation.json"
+    },
+    {
+      "id": "A15",
+      "requirement": "No money beyond verified outstanding; current evidence rechecked before POST",
+      "status": "PASS",
+      "evidence": "All live intents within verified disputes; overpayment/changed-credit/overlap tests passed",
+      "implementation_or_artifacts": "tests/test_payments_database.py; live-24-results.json"
+    },
+    {
+      "id": "A16",
+      "requirement": "Automatic amount limited to ₹200 per dispute; no splitting",
+      "status": "PASS",
+      "evidence": "R016 ₹425 and R034 ₹249 approval, no pre-approval intents; threshold/splitting tests passed",
+      "implementation_or_artifacts": "app/services/payment_authorization.py; scenario-10-R016.json; scenario-20-R034.json"
+    },
+    {
+      "id": "A17",
+      "requirement": "At most one automatic payout per rider per actual IST day",
+      "status": "PASS",
+      "evidence": "R027 one ₹15 AUTO and ₹10 pending approval; transactional/concurrent guard tests passed",
+      "implementation_or_artifacts": "scenario-02-R027.json; tests/test_payments_database.py"
+    },
+    {
+      "id": "A18",
+      "requirement": "Duplicate wamid and repeated claims never create duplicate payouts",
+      "status": "PASS",
+      "evidence": "Official repeated delivery has one ₹25 intent/provider entry; duplicate approval returns 409; concurrency tests passed",
+      "implementation_or_artifacts": "scenario-05-R003.json; ops-payment-results.json; tests/test_messaging.py"
+    },
+    {
+      "id": "A19",
+      "requirement": "Prior provider payments and ambiguity block unsafe obligations",
+      "status": "PASS",
+      "evidence": "Lost-response/reset/overlap tests passed; live ambiguous provider response recovered via ledger",
+      "implementation_or_artifacts": "tests/test_payments_database.py; payment-observations.json"
+    },
+    {
+      "id": "A20",
+      "requirement": "Durable intent before network POST; stable idempotency key",
+      "status": "PASS",
+      "evidence": "Persisted intent/key captured; existing worker claim and preflight path used; durability tests passed",
+      "implementation_or_artifacts": "app/repositories/payment_jobs.py; tests/test_payments_database.py; scenario JSON snapshots"
+    },
+    {
+      "id": "A21",
+      "requirement": "Concurrent worker claiming and lease recovery",
+      "status": "PASS",
+      "evidence": "Two-worker, crash-after-send and crash-before-network tests passed with controlled provider",
+      "implementation_or_artifacts": "tests/test_payments_database.py"
+    },
+    {
+      "id": "A22",
+      "requirement": "400/409/429/5xx/timeout handling and retry scheduling",
+      "status": "PASS",
+      "evidence": "Existing deterministic injected-failure tests all passed; real sandbox observed 201 and 504 with ledger recovery",
+      "implementation_or_artifacts": "tests/test_payswift.py; tests/test_payments_database.py; payment-observations.json"
+    },
+    {
+      "id": "A23",
+      "requirement": "UNKNOWN/NEEDS_REVIEW and provider restart safety",
+      "status": "PASS",
+      "evidence": "Controlled reset/unknown tests passed. Restarting in-memory provider remains an acknowledged limitation",
+      "implementation_or_artifacts": "tests/test_payments_database.py; payswift/README.md"
+    },
+    {
+      "id": "A24",
+      "requirement": "R016 exact ₹599/₹174/₹425 pending approval before Ops",
+      "status": "PASS",
+      "evidence": "Baseline 599 expected,174 historical,425 difference; one pending case, zero intents",
+      "implementation_or_artifacts": "scenario-10-R016.json"
+    },
+    {
+      "id": "A25",
+      "requirement": "Authenticated R016 approval, one durable ₹425 intent and confirmed payout",
+      "status": "PASS",
+      "evidence": "17 live Ops checks passed; exactly one OPS_APPROVED intent, matching provider ₹425, repeated approval 409",
+      "implementation_or_artifacts": "ops-R016.json"
+    },
+    {
+      "id": "A26",
+      "requirement": "Independent R034 authenticated rejection, reason/audit, no payment",
+      "status": "PASS",
+      "evidence": "17 live Ops checks passed; rejected queue, no intent/ledger entry, repeat rejected",
+      "implementation_or_artifacts": "ops-R034.json"
+    },
+    {
+      "id": "A27",
+      "requirement": "Correct intent, date-only investigation, corrections and context",
+      "status": "PARTIAL",
+      "evidence": "23 live decision successes; contextual/correction tests pass; R005 bonus scope failure remains",
+      "implementation_or_artifacts": "app/agent/nodes.py; tests/test_agent_context.py; live-24-results.json"
+    },
+    {
+      "id": "A28",
+      "requirement": "Trusted rider/trip ownership; spoofing and injection resistance",
+      "status": "PASS",
+      "evidence": "Live R020 cannot become another rider; ownership/injection/tool fencing tests passed",
+      "implementation_or_artifacts": "scenario-04-R020.json; tests/test_agent_tools.py; tests/test_agent_graph.py"
+    },
+    {
+      "id": "A29",
+      "requirement": "Ask for missing details rather than fabricate; support record disagreement",
+      "status": "PASS",
+      "evidence": "Live vague R003 and disagreement R011 pass; invalid-scope regressions passed",
+      "implementation_or_artifacts": "scenario-01-R003.json; scenario-03-R011.json; tests/test_agent_context.py"
+    },
+    {
+      "id": "A30",
+      "requirement": "Multiple simultaneous complaints and follow-up status",
+      "status": "PASS",
+      "evidence": "Live R027 separates surge/penalty and routes second AUTO to approval; live status turns pass",
+      "implementation_or_artifacts": "scenario-02-R027.json; tests/test_claim_status.py"
+    },
+    {
+      "id": "A31",
+      "requirement": "English, Hindi and Hinglish with plain truthful status",
+      "status": "PARTIAL",
+      "evidence": "Language/template tests pass; live dataset facts correct except R005; deferred HTTP acknowledgments are generic English",
+      "implementation_or_artifacts": "tests/test_rider_payment_language.py; tests/test_agent_education.py; live-24-results.json"
+    },
+    {
+      "id": "A32",
+      "requirement": "LLM failures handled without silent mocked fallback",
+      "status": "PASS",
+      "evidence": "Two unavailable live extractions and nine foreground cancellations resumed durably; no mock model used",
+      "implementation_or_artifacts": "llm-metrics.json; ai-logs/final-audit/*-llm.json"
+    },
+    {
+      "id": "A33",
+      "requirement": "No private chain-of-thought, raw credentials or tool argument leakage in SSE",
+      "status": "PASS",
+      "evidence": "Payload schema/stream privacy tests passed; audit logs contain structured tool arguments, not model private reasoning",
+      "implementation_or_artifacts": "tests/test_realtime.py; app/realtime/events.py"
+    },
+    {
+      "id": "A34",
+      "requirement": "Authenticated Ops login/session/logout and unauthorized rejection",
+      "status": "PASS",
+      "evidence": "Real authenticated HTTP checks on R016/R034 passed; full auth/CSRF/rate-limit suite passed",
+      "implementation_or_artifacts": "ops-payment-results.json; tests/test_ops_endpoints.py"
+    },
+    {
+      "id": "A35",
+      "requirement": "Approval/rejection/escalation assignment and resolution APIs",
+      "status": "PASS",
+      "evidence": "Live approval/rejection plus controlled real API escalation assignment/resolution tests passed",
+      "implementation_or_artifacts": "ops-payment-results.json; tests/test_ops_endpoints.py::test_escalation_assignment_resolution_and_wrong_type"
+    },
+    {
+      "id": "A36",
+      "requirement": "Human takeover, rider replies, internal-note privacy, AI suppression",
+      "status": "PASS",
+      "evidence": "Live R016/R034 takeover/reply/note/suppression/privacy checks passed",
+      "implementation_or_artifacts": "ops-payment-results.json"
+    },
+    {
+      "id": "A37",
+      "requirement": "In-flight AI fenced; sensitive handback blocked; safe handback supported",
+      "status": "PASS",
+      "evidence": "Live pending handback rejected; ownership race and safe handback API tests passed",
+      "implementation_or_artifacts": "tests/test_ops_endpoints.py; ops-payment-results.json"
+    },
+    {
+      "id": "A38",
+      "requirement": "Conversation resolution and attributed audit events",
+      "status": "PASS",
+      "evidence": "Both live Ops flows resolved; operator action tests/audit tests passed",
+      "implementation_or_artifacts": "ops-payment-results.json; tests/test_ops_endpoints.py"
+    },
+    {
+      "id": "A39",
+      "requirement": "Simple Ops UI provides review, approve/reject and correct action boundaries",
+      "status": "PARTIAL",
+      "evidence": "UI builds and APIs pass; approval Assign-to-me action is shown but backend accepts assignment only for escalation",
+      "implementation_or_artifacts": "frontend/src/components/ops/approvals.tsx; app/services/ops_case_service.py"
+    },
+    {
+      "id": "A40",
+      "requirement": "Real Redis event publication after commits and rollback safety",
+      "status": "PASS",
+      "evidence": "Real Redis fanout and HTTP/service/worker flow tests passed; publishers are mocked only in unrelated tests",
+      "implementation_or_artifacts": "tests/test_realtime.py::test_complete_rider_ops_worker_flow_with_real_redis"
+    },
+    {
+      "id": "A41",
+      "requirement": "Authorized SSE, heartbeats, cleanup and session expiry",
+      "status": "PASS",
+      "evidence": "Real ASGI auth checks, generator heartbeat/disconnect/cancellation tests passed",
+      "implementation_or_artifacts": "tests/test_realtime.py"
+    },
+    {
+      "id": "A42",
+      "requirement": "Frontend query/mutation via TanStack, reconnect/refetch and no duplicate bubbles",
+      "status": "PASS",
+      "evidence": "26 frontend tests including stream identity/dedup/reconnect + HTTP hooks passed; source uses TanStack Query",
+      "implementation_or_artifacts": "frontend/src/test/realtime.test.tsx; frontend/src/test/http-hooks.test.tsx; checks/frontend-test.txt"
+    },
+    {
+      "id": "A43",
+      "requirement": "Full live-model→real-provider→Redis→SSE→browser rendering in one run",
+      "status": "NOT TESTED",
+      "evidence": "No browser opened. Components verified separately; live audit uses ASGI HTTP without browser EventSource",
+      "implementation_or_artifacts": "infrastructure-results.md"
+    },
+    {
+      "id": "A44",
+      "requirement": "GET /health returns 200 with ready PostgreSQL",
+      "status": "PASS",
+      "evidence": "Local API health and all isolated scenario health calls returned 200",
+      "implementation_or_artifacts": "app/api/health.py; live-24-results.json"
+    },
+    {
+      "id": "A45",
+      "requirement": "POST /messages request/reply shape and idempotent multi-turn contract",
+      "status": "PASS",
+      "evidence": "30 original request records returned 200 with reply; stored/replayed final response idempotent",
+      "implementation_or_artifacts": "live-24-results.json; tests/test_messaging.py"
+    },
+    {
+      "id": "A46",
+      "requirement": "Webhook receives 2xx within approximately 10 seconds",
+      "status": "PASS",
+      "evidence": "30/30 <10s; maximum 5.5661s. This is ACK timing, not final-answer timing.",
+      "implementation_or_artifacts": "live-24-results.json"
+    },
+    {
+      "id": "A47",
+      "requirement": "Original vendor webhook delivers the final useful rider answer",
+      "status": "FAIL",
+      "evidence": "9/30 original responses were acknowledgments; completion required persisted-state polling and replay; only 15/24 scenarios delivered all final replies in original responses",
+      "implementation_or_artifacts": "live-24-results.json; app/services/message_service.py"
+    },
+    {
+      "id": "A48",
+      "requirement": "GET /trace chronological required event schema",
+      "status": "PASS",
+      "evidence": "24/24 isolated responses contain at,type,name,input,output sorted by time",
+      "implementation_or_artifacts": "live-24-results.json; ai-logs/final-audit/*-traces.json"
+    },
+    {
+      "id": "A49",
+      "requirement": "GET /ops/pending IDs/types/amounts/reasons/timestamps; closed cases excluded",
+      "status": "PASS",
+      "evidence": "All isolated calls returned 200; pending entries and closed-entry exclusion tests passed",
+      "implementation_or_artifacts": "live-24-results.json; tests/test_ops_endpoints.py"
+    },
+    {
+      "id": "A50",
+      "requirement": "docker compose up starts the complete required system on 8000",
+      "status": "FAIL",
+      "evidence": "Compose declares postgres,redis,payswift,worker, but no API (or frontend); no automatic migration/seed orchestration",
+      "implementation_or_artifacts": "docker-compose.yml; checks/compose-services.txt"
+    },
+    {
+      "id": "A51",
+      "requirement": "Migrations apply/check/downgrade in disposable PostgreSQL",
+      "status": "PASS",
+      "evidence": "487-test suite ran fresh database migration cycle; audit template also migrated and seeded",
+      "implementation_or_artifacts": "tests/conftest.py; checks/backend-pytest.txt; checks/audit-migrations.txt"
+    },
+    {
+      "id": "A52",
+      "requirement": "PAYSWIFT_BASE_URL and backend/provider connectivity",
+      "status": "PASS",
+      "evidence": "PaySwift client reads environment; audit uses a fresh per-scenario URL; original sandbox untouched",
+      "implementation_or_artifacts": "app/core/config.py; app/integrations/payswift.py; checks/sandbox-start-probe.txt"
+    },
+    {
+      "id": "A53",
+      "requirement": "Required service health, worker availability and Redis connectivity",
+      "status": "PASS",
+      "evidence": "Local API/provider health OK; local worker running; configured Redis PING true; isolated worker functions exercised",
+      "implementation_or_artifacts": "checks/local-runtime-processes.json; checks/compose-ps.jsonl; infrastructure-results.md"
+    },
+    {
+      "id": "A54",
+      "requirement": "Supplied PaySwift service implementation preserved",
+      "status": "PASS",
+      "evidence": "No tracked payswift changes and bytecode SHA256 unchanged during audit",
+      "implementation_or_artifacts": "audit-preservation.json; checks/security-scan.json"
+    },
+    {
+      "id": "A55",
+      "requirement": "Portable one-command eval accepts service URL and only public interfaces",
+      "status": "FAIL",
+      "evidence": "python evals/run.py http://localhost:8000 exits 2 (missing file); internal audit harness is NOT a replacement",
+      "implementation_or_artifacts": "checks/portable-evaluator.txt; evals/audit_live.py"
+    },
+    {
+      "id": "A56",
+      "requirement": "One-page root README explains run/design/assumptions/evals/skips",
+      "status": "FAIL",
+      "evidence": "Root README is three-line assignment stub; detailed backend docs do not satisfy root submission README",
+      "implementation_or_artifacts": "README.md; backend/README.md"
+    },
+    {
+      "id": "A57",
+      "requirement": "Environment variables documented without secrets",
+      "status": "PARTIAL",
+      "evidence": "backend/.env.example and frontend/.env.example cover app settings; root example/setup instructions absent",
+      "implementation_or_artifacts": "backend/.env.example; frontend/.env.example; README.md"
+    },
+    {
+      "id": "A58",
+      "requirement": "Raw AI-assisted development session exports in ai-logs",
+      "status": "FAIL",
+      "evidence": "Before audit only ai-logs/README.md existed. New sanitized model-evaluation logs are not development-session exports",
+      "implementation_or_artifacts": "ai-logs/README.md; ai-logs/final-audit/README.md"
+    },
+    {
+      "id": "A59",
+      "requirement": "GitHub Actions triggers push/main, PR/main, manual; least privilege",
+      "status": "PASS",
+      "evidence": "YAML parsed; triggers and permissions contents:read correct; backend,frontend,DB jobs defined",
+      "implementation_or_artifacts": "checks/workflow-syntax.json; .github/workflows/workflow.yml"
+    },
+    {
+      "id": "A60",
+      "requirement": "CI checks run locally and active action refs exist",
+      "status": "PASS",
+      "evidence": "Backend 487 passed/1 skipped, Ruff clean, frontend 26 tests/lint/types/build clean; four active SHA commit pages verified",
+      "implementation_or_artifacts": "checks/; checks/action-references.json"
+    },
+    {
+      "id": "A61",
+      "requirement": "Actual remote GitHub Actions run succeeds on submitted main",
+      "status": "NOT TESTED",
+      "evidence": "No workflow dispatched or push performed; working tree is dirty and uncommitted",
+      "implementation_or_artifacts": "manifest.json; .github/workflows/workflow.yml"
+    },
+    {
+      "id": "A62",
+      "requirement": "No committed credentials",
+      "status": "PARTIAL",
+      "evidence": "No tracked .env or recognizable AWS/Groq/private-key patterns in tracked working tree; complete history secret scan not done",
+      "implementation_or_artifacts": "checks/security-scan.json"
+    },
+    {
+      "id": "A63",
+      "requirement": "Private non-fork repository and Sarthak-pyard collaborator",
+      "status": "NOT TESTED",
+      "evidence": "Remote repository settings/collaborator access require manual confirmation; no invitations sent",
+      "implementation_or_artifacts": "SUBMISSION.md"
+    },
+    {
+      "id": "A64",
+      "requirement": "Submit main before 24-hour deadline with repository link",
+      "status": "NOT TESTED",
+      "evidence": "Email receipt/deadline not available; no commit, push, deployment or email performed",
+      "implementation_or_artifacts": "BRIEF.md; SUBMISSION.md"
+    }
+  ]
+}

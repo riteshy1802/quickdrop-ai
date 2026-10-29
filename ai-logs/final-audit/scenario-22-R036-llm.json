@@ -1,0 +1,44 @@
+[
+  {
+    "provider": "amazon",
+    "model": "us.amazon.nova-pro-v1:0",
+    "prompt_version": "quickdrop-extraction-v6",
+    "system_prompt_sha256": "e0ab66102ba64cb4449ab831fbc05b28420fba98f7a78613fb190324ca496f8f",
+    "input": {
+      "text": "18 ko order T990831 ka distance galat laga hai",
+      "received_at": "2026-09-23T12:00:00+05:30",
+      "history": [
+        {
+          "sender": "RIDER",
+          "text": "18 ko order T990831 ka distance galat laga hai",
+          "received_at": "2026-09-23T06:30:00+00:00",
+          "reference_time": "2026-09-23T12:00:00+05:30"
+        }
+      ],
+      "context": {}
+    },
+    "started_at": "2026-10-29T17:40:36.136739+00:00",
+    "validated_model_output": {
+      "intent": "complaint",
+      "language": "hinglish",
+      "claims": [
+        {
+          "kind": "RECORD_DISPUTE",
+          "trip_ids": [
+            "T990831"
+          ],
+          "date_tokens": [
+            "18"
+          ]
+        }
+      ],
+      "mentioned_amounts": [],
+      "help_topic": "general",
+      "help_answer": "",
+      "simplify": false,
+      "correction": false,
+      "records_disputed": true
+    },
+    "latency_seconds": 1.7068
+  }
+]

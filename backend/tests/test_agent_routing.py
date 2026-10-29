@@ -80,7 +80,8 @@ async def test_unknown_trip_requests_details_before_escalating(agent_setup):
     reply, _, _, _ = await turn(
         "R003", "T999999999 surge missing", extracted(ids=("T999999999",), language="en")
     )
-    assert "trip ID or date" in reply
+    assert "T999999999" in reply and "could not find" in reply
+    assert "no payment has been requested" in reply
     async with factory() as session:
         assert not list(await session.scalars(select(PaymentIntent)))
         assert not list(await session.scalars(select(OpsQueue)))

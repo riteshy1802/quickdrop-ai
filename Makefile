@@ -11,10 +11,11 @@ NPM ?= npm
 BACKEND_HOST ?= 127.0.0.1
 BACKEND_PORT ?= 8000
 BACKEND_SHUTDOWN_TIMEOUT ?= 5
+BACKEND_STOP_TIMEOUT ?= 8
 FRONTEND_PORT ?= 3000
 
 .PHONY: help install install-backend install-frontend infra-up infra-down status \
-	migrate migrations migration-current migration-check seed seed-admin backend frontend \
+	migrate migrations migration-current migration-check seed seed-admin backend backend-dev backend-stop frontend \
 	worker workers worker-docker worker-stop lint typecheck test test-unit build replay
 
 help: ## List available commands
@@ -57,8 +58,14 @@ seed-admin: ## Seed Ops admin from OPS_ADMIN_EMAIL and OPS_ADMIN_PASSWORD
 replay: ## Replay historical scenarios locally in a disposable database with mocked payments
 	cd "$(BACKEND_DIR)" && $(UV) run python -m app.scripts.replay --local-test-mode
 
-backend: ## Run FastAPI with auto-reload in the foreground
+backend: ## Run FastAPI without automatic restarts on file edits
+	cd "$(BACKEND_DIR)" && $(UV) run uvicorn app.main:app --timeout-graceful-shutdown "$(BACKEND_SHUTDOWN_TIMEOUT)" --host "$(BACKEND_HOST)" --port "$(BACKEND_PORT)"
+
+backend-dev: ## Run FastAPI with optional auto-reload and bounded connection shutdown
 	cd "$(BACKEND_DIR)" && $(UV) run uvicorn app.main:app --reload --timeout-graceful-shutdown "$(BACKEND_SHUTDOWN_TIMEOUT)" --host "$(BACKEND_HOST)" --port "$(BACKEND_PORT)"
+
+backend-stop: ## Stop this checkout's API and children; force remaining processes after timeout
+	cd "$(BACKEND_DIR)" && $(UV) run python -m app.scripts.stop_backend --timeout "$(BACKEND_STOP_TIMEOUT)"
 
 frontend: ## Run Next.js development server in the foreground
 	cd "$(FRONTEND_DIR)" && $(NPM) run dev -- --port "$(FRONTEND_PORT)"

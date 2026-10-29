@@ -1,0 +1,8 @@
+PaySwift sandbox listening on :34791 (chaos=on)
+[payswift] "GET /health HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R035 HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R035 HTTP/1.1" 200 -
+[payswift] "GET /v1/payouts?rider_id=R035 HTTP/1.1" 200 -
+[payswift] payout_request rider=R035 amount=25 idem=yes
+[payswift] "POST /v1/payouts HTTP/1.1" 201 -
+[payswift] "GET /v1/payouts?rider_id=R035 HTTP/1.1" 200 -

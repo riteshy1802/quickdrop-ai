@@ -1,0 +1,227 @@
+{
+  "scenario_id": 11,
+  "rider_id": "R021",
+  "scenario": "single message",
+  "turns": [
+    {
+      "request": {
+        "message_id": "wamid.WSHY22LRQ9ZSY5",
+        "text": "order T482410 ka payment nahi aaya",
+        "received_at": "2026-09-22T12:30:00+05:30",
+        "rider_id": "R021"
+      },
+      "http_status": 200,
+      "webhook_latency_seconds": 3.576,
+      "initial_response": {
+        "reply": "Yeh trip is account ke liye verify nahi hui, isliye is par payment approve nahi kar sakta. Trip ID check kar lijiye."
+      },
+      "final_reply": "Yeh trip is account ke liye verify nahi hui, isliye is par payment approve nahi kar sakta. Trip ID check kar lijiye.",
+      "total_agent_seconds": 3.5791,
+      "completed": true,
+      "idempotent_replay": true,
+      "decision_state_before_payment_worker": {
+        "disputes": [],
+        "items": [],
+        "intents": [],
+        "queues": [],
+        "messages": [
+          {
+            "id": "17389758-6cf4-40ca-87a3-c02ac8916873",
+            "message_id": "wamid.WSHY22LRQ9ZSY5",
+            "sender_type": "RIDER",
+            "content": "order T482410 ka payment nahi aaya",
+            "received_at": "2026-09-22T07:00:00+00:00",
+            "processing_status": "COMPLETED",
+            "agent_state": {
+              "version": 1,
+              "extraction": {
+                "claims": [
+                  {
+                    "kind": "PAYOUT",
+                    "trip_ids": [
+                      "T482410"
+                    ],
+                    "date_tokens": []
+                  }
+                ],
+                "intent": "complaint",
+                "language": "hinglish",
+                "simplify": false,
+                "correction": false,
+                "help_topic": "general",
+                "help_answer": "",
+                "records_disputed": false,
+                "mentioned_amounts": []
+              },
+              "reference_time": "2026-09-22T12:30:00+05:30"
+            },
+            "is_internal": false,
+            "conversation_id": "a64a770d-5a4e-464a-96ac-cfd8026b1864"
+          },
+          {
+            "id": "ebec9e76-d75c-4179-b3df-b28649ca954c",
+            "message_id": null,
+            "sender_type": "AI",
+            "content": "Yeh trip is account ke liye verify nahi hui, isliye is par payment approve nahi kar sakta. Trip ID check kar lijiye.",
+            "received_at": null,
+            "processing_status": null,
+            "agent_state": null,
+            "is_internal": false,
+            "conversation_id": "a64a770d-5a4e-464a-96ac-cfd8026b1864"
+          }
+        ]
+      },
+      "worker_errors": []
+    }
+  ],
+  "transport": "actual FastAPI ASGI route, in-process HTTP",
+  "llm_mode": "LIVE, no model labels or mocked responses",
+  "payment_worker_mode": "existing durable worker functions, no scheduling overrides",
+  "health_http_status": 200,
+  "state": {
+    "disputes": [],
+    "items": [],
+    "intents": [],
+    "queues": [],
+    "messages": [
+      {
+        "id": "17389758-6cf4-40ca-87a3-c02ac8916873",
+        "message_id": "wamid.WSHY22LRQ9ZSY5",
+        "sender_type": "RIDER",
+        "content": "order T482410 ka payment nahi aaya",
+        "received_at": "2026-09-22T07:00:00+00:00",
+        "processing_status": "COMPLETED",
+        "agent_state": {
+          "version": 1,
+          "extraction": {
+            "claims": [
+              {
+                "kind": "PAYOUT",
+                "trip_ids": [
+                  "T482410"
+                ],
+                "date_tokens": []
+              }
+            ],
+            "intent": "complaint",
+            "language": "hinglish",
+            "simplify": false,
+            "correction": false,
+            "help_topic": "general",
+            "help_answer": "",
+            "records_disputed": false,
+            "mentioned_amounts": []
+          },
+          "reference_time": "2026-09-22T12:30:00+05:30"
+        },
+        "is_internal": false,
+        "conversation_id": "a64a770d-5a4e-464a-96ac-cfd8026b1864"
+      },
+      {
+        "id": "ebec9e76-d75c-4179-b3df-b28649ca954c",
+        "message_id": null,
+        "sender_type": "AI",
+        "content": "Yeh trip is account ke liye verify nahi hui, isliye is par payment approve nahi kar sakta. Trip ID check kar lijiye.",
+        "received_at": null,
+        "processing_status": null,
+        "agent_state": null,
+        "is_internal": false,
+        "conversation_id": "a64a770d-5a4e-464a-96ac-cfd8026b1864"
+      }
+    ]
+  },
+  "trace_http_status": 200,
+  "ops_pending_http_status": 200,
+  "ops_pending": [],
+  "provider_ledger": [],
+  "decision_status": "PASS",
+  "execution_status": "PASS",
+  "overall_status": "PASS",
+  "expected": {
+    "payout": 0,
+    "approval": null,
+    "escalation": "optional"
+  },
+  "auto_authorized_amount": 0,
+  "pending_approval_amount": null,
+  "pending_approval_count": 0,
+  "verified_dispute_amounts": [],
+  "agent_escalation_count": 0,
+  "all_escalation_count": 0,
+  "provider_confirmed_amount": 0,
+  "provider_ledger_amount": 0,
+  "unconfirmed_intents": [],
+  "reply_mentions_pass": true,
+  "settlement_required": false,
+  "financial_match": true,
+  "escalation_match": true,
+  "tool_calls": [
+    "get_rider_profile",
+    "get_rider_trips"
+  ],
+  "decision_events": [
+    {
+      "at": "2026-10-29T17:39:09.499153Z",
+      "type": "decision",
+      "name": "intent_extraction",
+      "input": {
+        "message_id": "17389758-6cf4-40ca-87a3-c02ac8916873"
+      },
+      "output": {
+        "claims": [
+          {
+            "kind": "PAYOUT",
+            "trip_ids": [
+              "T482410"
+            ],
+            "date_tokens": []
+          }
+        ],
+        "intent": "complaint",
+        "language": "hinglish",
+        "simplify": false,
+        "correction": false,
+        "help_topic": "general",
+        "help_answer": "",
+        "prompt_version": "quickdrop-extraction-v6",
+        "records_disputed": false,
+        "mentioned_amounts": []
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:09.532638Z",
+      "type": "decision",
+      "name": "evidence_conflict",
+      "input": {
+        "message_id": "17389758-6cf4-40ca-87a3-c02ac8916873"
+      },
+      "output": {
+        "reason": "Trip not found for trusted rider"
+      }
+    },
+    {
+      "at": "2026-10-29T17:39:09.542922Z",
+      "type": "decision",
+      "name": "agent_financial_decision",
+      "input": {
+        "message_id": "17389758-6cf4-40ca-87a3-c02ac8916873"
+      },
+      "output": {
+        "outcomes": [
+          {
+            "kind": "unmatched_trip",
+            "dates": []
+          }
+        ]
+      }
+    }
+  ],
+  "webhook_budget_pass": true,
+  "trace_contract_pass": true,
+  "all_turns_completed": true,
+  "llm_calls": 1,
+  "eventual_scenario_status": "PASS",
+  "delivery_status": "PASS",
+  "end_to_end_status": "PASS",
+  "worker_execution_status": "NOT APPLICABLE"
+}

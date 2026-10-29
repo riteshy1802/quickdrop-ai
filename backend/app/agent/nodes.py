@@ -5,17 +5,26 @@ from collections import defaultdict
 
 from app.agent import llm
 from app.agent.dates import grounded, literal_dates, matches_trip_date, resolve_date
+from app.agent.education import educational_reply
 from app.agent.replies import TEXT, outcome_reply, status_reply
 from app.agent.state import Extraction
 from app.agent.tools.investigation import EvidenceConflict
+from app.agent.understanding import question_focus, repair, response_language
 from app.core.clock import claim_time
 from app.repositories.trips import IST
 from app.services.financial.eligibility import date_eligibility
 from app.services.financial.types import ClaimRequest
+from app.services.payment_authorization import AUTO_PAY_LIMIT
 
 
 class AgentDeferred(Exception):
     pass
+
+
+class ScopeIssue(ValueError):
+    def __init__(self, code, value):
+        self.code, self.value = code, value
+        super().__init__(code)
 
 
 def language_hint(text):
@@ -24,9 +33,10 @@ def language_hint(text):
     return (
         "hinglish"
         if re.search(
-            r"\b(bhai|nahi|nahin|nai|mera|mere|mujhe|aap|aapka|ka|ki|ko|hai|hain|hua|ho|"
+            r"\b(bhai|nahi|nahin|nai|mera|mere|meri|mujhe|aap|aapka|ka|ki|ko|hai|hain|hua|ho|"
             r"kya|kyun|kyu|karo|batao|paise|paisa|tarikh|wala|kal|mein|mei|kab|mila|mili|"
-            r"raha|rahi|rahe|karna|galat|kata|kitna|kitne|kitni|namaste)\b",
+            r"raha|rahi|rahe|karna|galat|kata|kitna|kitne|kitni|namaste|maine|mene|lekin|toh|diya|krdiya|"
+            r"samjhao|samajh|samjha|samajhao|kaise|dhanyavaad|shukriya|aasaan|asaan|theek|acha|achha)\b",
             text,
             re.I,
         )
@@ -66,7 +76,10 @@ def scope_requests(extraction, state):
         for token in claim.date_tokens:
             if not grounded(token, own_text):
                 raise ValueError("Dates must be grounded in rider messages")
-            grouped[kind]["dates"].add(resolve_token(token, state))
+            try:
+                grouped[kind]["dates"].add(resolve_token(token, state))
+            except ValueError:
+                raise ScopeIssue("invalid_date", token) from None
         if not claim.trip_ids and not claim.date_tokens:
             grouped[kind]  # preserve the missing-scope clarification
     requests = []
@@ -109,7 +122,7 @@ class Nodes:
         from app.realtime.publisher import progress
 
         await progress(self.tools.claimed, "understanding_complaint")
-        hint = language_hint(state["text"])
+        hint = response_language(state["text"], language_hint(state["text"]), state["context"])
         other_riders = {value.upper() for value in re.findall(r"\bR\d+\b", state["text"], re.I)} - {
             state["rider_id"].upper()
         }
@@ -141,18 +154,18 @@ class Nodes:
                     "intent_extraction_failed", {"retryable": True}, event_type="error"
                 )
                 raise AgentDeferred from None
-            await self.tools.checkpoint(extraction)
+        extraction = repair(extraction, state)
         # A model classification cannot skip tools for an explicit fare complaint.
         ids = re.findall(r"\bT\d+\b", state["text"], re.I)
         fare_issue = re.search(
-            r"\b(surge|payout|fare|payment)\b.{0,60}\b(missing|short|wrong|nahi|nai|kam)\b"
+            r"\b(surge|payout|fare|payment|paisa|paise)\b.{0,60}\b(missing|short|wrong|nahi|nai|kam)\b"
             r"|\b(missing|short|wrong)\b.{0,60}\b(surge|payout|fare|payment)\b",
             state["text"],
             re.I,
         )
-        if ids and fare_issue and extraction.intent in {"other", "status"}:
+        dates = literal_dates(state["text"])
+        if (ids or dates) and fare_issue and extraction.intent in {"other", "status", "help"}:
             ids = list(dict.fromkeys(value.upper() for value in ids))
-            dates = literal_dates(state["text"])
             if len(ids) > 20 or len(dates) > 7:
                 await self.tools.mark_clarification()
                 return {"extraction": extraction, "decision": "clarify"}
@@ -169,12 +182,24 @@ class Nodes:
             )
             await self.tools.audit(
                 "investigation_required",
-                {"reason": "Explicit trip fare complaint"},
+                {"reason": "Explicit scoped fare complaint"},
                 event_type="decision",
             )
+        # A same-case follow-up reads current status; it is not a new authorization.
+        if (
+            question_focus(state["text"]) != "status"
+            and not ids
+            and not dates
+            and extraction.intent != "unsafe"
+            and not extraction.records_disputed
+            and not any(claim.kind == "RECORD_DISPUTE" for claim in extraction.claims)
+        ):
+            extraction = extraction.model_copy(update={"intent": "status", "claims": []})
         # Script and current rider wording determine the response language, not a model guess.
         extraction = extraction.model_copy(update={"language": hint})
-        if extraction.intent in {"unsafe", "other", "status"}:
+        if extraction.model_dump(mode="json") != state.get("saved"):
+            await self.tools.checkpoint(extraction)
+        if extraction.intent in {"unsafe", "other", "status", "help"}:
             return {"extraction": extraction, "decision": extraction.intent}
         try:
             scope_requests(extraction, state)
@@ -183,6 +208,12 @@ class Nodes:
             await self.tools.audit(
                 "clarification_requested", {"missing": str(exc)}, event_type="decision"
             )
+            if isinstance(exc, ScopeIssue):
+                return {
+                    "extraction": extraction,
+                    "outcomes": [{"kind": exc.code, "value": exc.value}],
+                    "decision": "invalid_scope",
+                }
             return {"extraction": extraction, "decision": "clarify", "missing": [str(exc)]}
         return {"extraction": extraction}
 
@@ -193,8 +224,16 @@ class Nodes:
             c.kind == "RECORD_DISPUTE" for c in state["extraction"].claims
         )
         for request in requests:
+            trips = []
             try:
                 trips = await self.tools.get_rider_trips(request)
+                missing_ids = set(request.trip_ids) - {trip["trip_id"] for trip in trips}
+                if missing_ids:
+                    outcomes.append(
+                        {"kind": "invalid_trip", "value": ", ".join(sorted(missing_ids))}
+                    )
+                    await self.tools.mark_clarification()
+                    continue
                 for claim in state["extraction"].claims:
                     for trip in trips:
                         if trip["trip_id"] not in {value.upper() for value in claim.trip_ids}:
@@ -212,7 +251,17 @@ class Nodes:
                 )
                 if not review_requested:
                     await self.tools.mark_clarification()
-                    outcomes.append({"kind": "clarify"})
+                    outcomes.append(
+                        {
+                            "kind": "unmatched_trip",
+                            "dates": sorted(
+                                {
+                                    trip["started_at"].astimezone(IST).date().isoformat()
+                                    for trip in trips
+                                }
+                            ),
+                        }
+                    )
                     continue
                 # Persist an ownership-review item without revealing the foreign record.
                 result, _ = await self.tools.reconcile_dispute(request)
@@ -238,7 +287,7 @@ class Nodes:
                     {"missing": "Supporting trip records or claim scope"},
                     event_type="decision",
                 )
-                outcomes.append({"kind": "clarify"})
+                outcomes.append({"kind": "no_records"})
                 continue
             if review_requested or result.status in {
                 "REQUIRES_REVIEW",
@@ -319,7 +368,25 @@ class Nodes:
                     identifier, "Payment authorization requires verification"
                 )
                 kind = "review"
-            outcomes.append({"kind": kind, "items": details, "amount": str(result.outstanding)})
+            outcomes.append(
+                {
+                    "kind": kind,
+                    "items": details,
+                    "amount": str(result.outstanding),
+                    "expected": str(result.expected_amount),
+                    "historical": str(result.historical_paid),
+                    "claim_types": sorted({item.source_type for item in result.items}),
+                    "over_auto_limit": result.verified_shortfall > AUTO_PAY_LIMIT,
+                    "approval_reason": authorization.reason,
+                    "dates": sorted(
+                        {
+                            item.service_date.isoformat()
+                            for item in result.items
+                            if item.service_date
+                        }
+                    ),
+                }
+            )
         await self.tools.audit(
             "agent_financial_decision", {"outcomes": outcomes}, event_type="decision"
         )
@@ -331,7 +398,10 @@ class Nodes:
         await progress(self.tools.claimed, "preparing_response")
         language = state["extraction"].language
         decision = state.get("decision")
-        if decision == "status":
+        focus = question_focus(state["text"])
+        if decision == "help":
+            reply = educational_reply(state)
+        elif decision == "status":
             payments = []
             if state["extraction"].claims:
                 try:
@@ -344,9 +414,11 @@ class Nodes:
                 payments = await self.tools.payment_status()
             payments = list({item["id"]: item for item in payments}.values())
             direct = bool(re.search(r"matlab|ho chuka|paid|done|मतलब|हो गया", state["text"], re.I))
-            reply = status_reply(payments, language, direct=direct)
+            reply = status_reply(payments, language, direct=direct, focus=focus)
+        elif decision == "invalid_scope":
+            reply = outcome_reply(state["outcomes"], language, focus=focus)
         elif decision:
             reply = TEXT[language].get(decision, TEXT[language]["clarify"])
         else:
-            reply = outcome_reply(state["outcomes"], language)
+            reply = outcome_reply(state["outcomes"], language, focus=focus)
         return {"reply": reply}
