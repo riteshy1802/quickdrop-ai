@@ -37,8 +37,11 @@ non-development environments, or `OPS_COOKIE_SECURE=true`. Set the secure overri
 TLS terminates at a proxy. Serve the frontend and API on the same site.
 
 Login attempts are limited per normalized email and directly connected IP, across API
-processes, using PostgreSQL counters and transaction locks. All attempts count toward
-the configured fixed window. Forwarded IP headers are not trusted. Behind a proxy,
+processes, using PostgreSQL counters and transaction locks. Only failed credential
+checks count toward the configured fixed window (default: five failures in 15 minutes).
+Successful logins neither consume nor reset the failure allowance. A blocked request
+returns HTTP 429 with the remaining wait in `Retry-After`; restarting the API does not
+clear these database counters. Forwarded IP headers are not trusted. Behind a proxy,
 its address shares an IP limit; configure trusted proxy handling separately before
 using this in a public service. Invalid and unknown accounts use the same error.
 Credentialed CORS permits configured origins. Mutations reject untrusted Origin and

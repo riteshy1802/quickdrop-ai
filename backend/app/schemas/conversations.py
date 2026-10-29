@@ -21,7 +21,7 @@ class ConversationResponse(BaseModel):
     id: UUID
     rider_id: str
     title: str
-    status: Literal["OPEN", "RESOLVED", "HUMAN_HANDLING", "AWAITING_APPROVAL", "PAYMENT_PENDING"]
+    status: ConversationStatus | Literal["PAYMENT_VERIFICATION_REQUIRED"]
     source_status: ConversationStatus
     handler: Literal["AI", "OPS"]
     handling_mode: HandlingMode
@@ -42,6 +42,7 @@ class MessageResponse(BaseModel):
     received_at: datetime | None
     visibility: Literal["RIDER", "INTERNAL"]
     operator_id: UUID | None = None
+    client_message_id: str | None = None
 
 
 class DisputeItemResponse(BaseModel):

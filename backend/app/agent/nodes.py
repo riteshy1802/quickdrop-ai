@@ -4,10 +4,13 @@ import re
 from collections import defaultdict
 
 from app.agent import llm
-from app.agent.dates import grounded, resolve_date
+from app.agent.dates import grounded, literal_dates, matches_trip_date, resolve_date
 from app.agent.replies import TEXT, outcome_reply, status_reply
 from app.agent.state import Extraction
+from app.agent.tools.investigation import EvidenceConflict
+from app.core.clock import claim_time
 from app.repositories.trips import IST
+from app.services.financial.eligibility import date_eligibility
 from app.services.financial.types import ClaimRequest
 
 
@@ -20,20 +23,28 @@ def language_hint(text):
         return "hi"
     return (
         "hinglish"
-        if re.search(r"\b(bhai|nahi|mera|paisa|payout.*aaya|tarikh|wala|kal)\b", text, re.I)
+        if re.search(
+            r"\b(bhai|nahi|nahin|nai|mera|mere|mujhe|aap|aapka|ka|ki|ko|hai|hain|hua|ho|"
+            r"kya|kyun|kyu|karo|batao|paise|paisa|tarikh|wala|kal|mein|mei|kab|mila|mili|"
+            r"raha|rahi|rahe|karna|galat|kata|kitna|kitne|kitni|namaste)\b",
+            text,
+            re.I,
+        )
         else "en"
     )
 
 
 def resolve_token(token, state):
-    anchor = state["received_at"]
+    anchor = state.get("reference_time", state["received_at"])
     if not grounded(token, state["text"]):
         for previous in reversed(state["history"]):
             if previous["sender"] == "RIDER" and grounded(token, previous["text"]):
                 if previous.get("received_at"):
                     from datetime import datetime
 
-                    anchor = datetime.fromisoformat(previous["received_at"])
+                    anchor = datetime.fromisoformat(
+                        previous.get("reference_time") or previous["received_at"]
+                    )
                 break
     return resolve_date(token, anchor)
 
@@ -72,6 +83,7 @@ def scope_requests(extraction, state):
             ClaimRequest(
                 rider_id=state["rider_id"],
                 received_at=state["received_at"],
+                reference_time=state.get("reference_time"),
                 trip_ids=ids,
                 trip_dates=days if kind == "PAYOUT" and not ids else (),
                 penalty_dates=days if kind == "PENALTY" else (),
@@ -94,6 +106,9 @@ class Nodes:
         return loaded
 
     async def understand(self, state):
+        from app.realtime.publisher import progress
+
+        await progress(self.tools.claimed, "understanding_complaint")
         hint = language_hint(state["text"])
         other_riders = {value.upper() for value in re.findall(r"\bR\d+\b", state["text"], re.I)} - {
             state["rider_id"].upper()
@@ -116,7 +131,7 @@ class Nodes:
             try:
                 extraction = await self.extractor(
                     text=state["text"],
-                    received_at=state["received_at"].astimezone(IST),
+                    received_at=state.get("reference_time", state["received_at"]).astimezone(IST),
                     history=state["history"],
                     context=state["context"],
                 )
@@ -127,6 +142,38 @@ class Nodes:
                 )
                 raise AgentDeferred from None
             await self.tools.checkpoint(extraction)
+        # A model classification cannot skip tools for an explicit fare complaint.
+        ids = re.findall(r"\bT\d+\b", state["text"], re.I)
+        fare_issue = re.search(
+            r"\b(surge|payout|fare|payment)\b.{0,60}\b(missing|short|wrong|nahi|nai|kam)\b"
+            r"|\b(missing|short|wrong)\b.{0,60}\b(surge|payout|fare|payment)\b",
+            state["text"],
+            re.I,
+        )
+        if ids and fare_issue and extraction.intent in {"other", "status"}:
+            ids = list(dict.fromkeys(value.upper() for value in ids))
+            dates = literal_dates(state["text"])
+            if len(ids) > 20 or len(dates) > 7:
+                await self.tools.mark_clarification()
+                return {"extraction": extraction, "decision": "clarify"}
+            extraction = extraction.model_copy(
+                update={
+                    "intent": "complaint",
+                    "claims": extraction.claims
+                    or Extraction(
+                        intent="complaint",
+                        language=hint,
+                        claims=[{"kind": "PAYOUT", "trip_ids": ids, "date_tokens": dates}],
+                    ).claims,
+                }
+            )
+            await self.tools.audit(
+                "investigation_required",
+                {"reason": "Explicit trip fare complaint"},
+                event_type="decision",
+            )
+        # Script and current rider wording determine the response language, not a model guess.
+        extraction = extraction.model_copy(update={"language": hint})
         if extraction.intent in {"unsafe", "other", "status"}:
             return {"extraction": extraction, "decision": extraction.intent}
         try:
@@ -148,20 +195,25 @@ class Nodes:
         for request in requests:
             try:
                 trips = await self.tools.get_rider_trips(request)
-                constraints = {
-                    resolve_token(token, state)
-                    for claim in state["extraction"].claims
-                    if set(claim.trip_ids) & set(request.trip_ids)
-                    for token in claim.date_tokens
-                }
-                if constraints and any(
-                    trip["trip_id"] in request.trip_ids
-                    and trip["started_at"].astimezone(IST).date() not in constraints
-                    for trip in trips
-                ):
-                    raise ValueError("Trip date differs from supplied date")
+                for claim in state["extraction"].claims:
+                    for trip in trips:
+                        if trip["trip_id"] not in {value.upper() for value in claim.trip_ids}:
+                            continue
+                        day = trip["started_at"].astimezone(IST).date()
+                        if claim.date_tokens and not any(
+                            matches_trip_date(token, day, resolve_token(token, state))
+                            for token in claim.date_tokens
+                        ):
+                            raise EvidenceConflict("Trip date differs from supplied date")
                 await self.tools.get_payout_history(request)
-            except ValueError:
+            except EvidenceConflict as exc:
+                await self.tools.audit(
+                    "evidence_conflict", {"reason": str(exc)}, event_type="decision"
+                )
+                if not review_requested:
+                    await self.tools.mark_clarification()
+                    outcomes.append({"kind": "clarify"})
+                    continue
                 # Persist an ownership-review item without revealing the foreign record.
                 result, _ = await self.tools.reconcile_dispute(request)
                 identifier = await self.tools.ensure_dispute(request, result)
@@ -175,6 +227,19 @@ class Nodes:
             if existing and result.status == "NEEDS_RECONCILIATION":
                 outcomes.append({"kind": "status", "payments": existing})
                 continue
+            missing_records = result.status == "NEEDS_INFORMATION" or (
+                result.status == "INELIGIBLE"
+                and all(item.service_date is None for item in result.items)
+            )
+            if missing_records and not review_requested:
+                await self.tools.mark_clarification()
+                await self.tools.audit(
+                    "clarification_requested",
+                    {"missing": "Supporting trip records or claim scope"},
+                    event_type="decision",
+                )
+                outcomes.append({"kind": "clarify"})
+                continue
             if review_requested or result.status in {
                 "REQUIRES_REVIEW",
                 "NEEDS_INFORMATION",
@@ -183,10 +248,23 @@ class Nodes:
                 "NEEDS_RECONCILIATION",
             }:
                 identifier = await self.tools.ensure_dispute(request, result)
-                await self.tools.create_ops_escalation(
-                    identifier, "Source records, eligibility, or provider history need review"
+                outside_window = any(
+                    item.service_date is not None
+                    and not date_eligibility(item.service_date, claim_time(request)).eligible
+                    for item in result.items
                 )
-                outcomes.append({"kind": "review"})
+                await self.tools.create_ops_escalation(
+                    identifier,
+                    "Claim is outside the seven-day eligibility window"
+                    if outside_window
+                    else "Source records, eligibility, or provider history need review",
+                )
+                outcomes.append(
+                    {
+                        "kind": "review",
+                        "reason": "outside_window" if outside_window else result.status,
+                    }
+                )
                 continue
             details = [
                 {
@@ -203,7 +281,7 @@ class Nodes:
             ]
             if result.outstanding == 0:
                 if existing:
-                    outcomes.append({"kind": "status", "payments": existing})
+                    outcomes.append({"kind": "status", "payments": existing, "duplicate": True})
                 else:
                     outcomes.append(
                         {
@@ -234,6 +312,8 @@ class Nodes:
                     {"kind": "status", "payments": await self.tools.payment_status(result)}
                 )
                 continue
+            elif authorization.status == "ESCALATED":
+                kind = "review"
             else:
                 await self.tools.create_ops_escalation(
                     identifier, "Payment authorization requires verification"
@@ -246,10 +326,25 @@ class Nodes:
         return {"outcomes": outcomes}
 
     async def reply(self, state):
+        from app.realtime.publisher import progress
+
+        await progress(self.tools.claimed, "preparing_response")
         language = state["extraction"].language
         decision = state.get("decision")
         if decision == "status":
-            reply = status_reply(await self.tools.payment_status(), language)
+            payments = []
+            if state["extraction"].claims:
+                try:
+                    requests = scope_requests(state["extraction"], state)
+                except ValueError:
+                    requests = []
+                for request in requests:
+                    payments.extend(await self.tools.payment_status(request=request))
+            else:
+                payments = await self.tools.payment_status()
+            payments = list({item["id"]: item for item in payments}.values())
+            direct = bool(re.search(r"matlab|ho chuka|paid|done|मतलब|हो गया", state["text"], re.I))
+            reply = status_reply(payments, language, direct=direct)
         elif decision:
             reply = TEXT[language].get(decision, TEXT[language]["clarify"])
         else:

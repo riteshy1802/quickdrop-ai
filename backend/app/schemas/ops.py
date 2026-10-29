@@ -48,6 +48,8 @@ class PayoutResponse(BaseModel):
     amount_rupees: Decimal
     status: PaymentStatus
     initiation: Literal["AUTO", "HUMAN_APPROVED"]
+    retry_count: int = 0
+    next_retry_at: datetime | None = None
     provider_id: str | None
     reconciled_at: datetime | None
     created_at: datetime

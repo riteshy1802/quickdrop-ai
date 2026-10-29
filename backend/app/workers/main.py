@@ -22,19 +22,31 @@ async def run():
     settings = get_settings()
     try:
         while not stop.is_set():
+            phase = "Agent"
             try:
                 agent_work = await resume_one(get_session_factory())
+                phase = "Payment"
                 payment_work = await process_one(get_session_factory(), client)
                 if agent_work or payment_work:
                     continue
             except Exception as exc:
                 # Exception text can contain SQL values or URLs. Log only its class.
-                logger.warning("Payment worker iteration failed (%s)", type(exc).__name__)
+                if isinstance(exc, ConnectionRefusedError):
+                    logger.warning(
+                        "%s worker database connection refused; run make infra-up "
+                        "and check POSTGRES_HOST/POSTGRES_PORT",
+                        phase,
+                    )
+                else:
+                    logger.warning("%s worker iteration failed (%s)", phase, type(exc).__name__)
             try:
                 await asyncio.wait_for(stop.wait(), settings.payment_poll_seconds)
             except TimeoutError:
                 pass
     finally:
+        from app.realtime.publisher import drain
+
+        await drain()
         await client.aclose()
         get_payswift_client.cache_clear()
         await get_engine().dispose()

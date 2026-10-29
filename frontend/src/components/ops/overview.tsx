@@ -72,7 +72,7 @@ function Overview({ data }: { data: OpsSnapshot }) {
       t.conversation.handler === "AI" &&
       t.conversation.resolved_by !== "OPS" &&
       !approved.has(t.conversation.id) &&
-      t.disputes.some((d) => d.verified_difference_rupees > 0),
+      t.disputes.some((d) => (d.verified_difference_rupees ?? 0) > 0),
   ).length;
   const noAdjustment = threads.filter(
     (t) =>
@@ -160,13 +160,13 @@ function Overview({ data }: { data: OpsSnapshot }) {
     {
       label: "Total disputes",
       value: disputes.length,
-      description: "Disputes in selected sample dates",
+      description: "Disputes in selected dates",
       icon: Activity,
     },
     {
       label: "AI auto-resolved",
       value: auto,
-      description: "Resolved sample claims without human approval",
+      description: "Resolved claims without human approval",
       icon: CheckCheck,
     },
     {
@@ -195,7 +195,7 @@ function Overview({ data }: { data: OpsSnapshot }) {
           .filter((p) => p.status === "SUCCEEDED")
           .reduce((sum, p) => sum + p.amount_rupees, 0),
       ),
-      description: "Only explicit simulated provider confirmations",
+      description: "Only provider-confirmed payments",
       icon: Wallet,
     },
     {
@@ -217,8 +217,8 @@ function Overview({ data }: { data: OpsSnapshot }) {
           value={range}
           onChange={(e) => setRange(e.target.value)}
         >
-          <option value="all">All sample dates</option>
-          <option value="week">Latest 7 sample days</option>
+          <option value="all">All dates</option>
+          <option value="week">Latest 7 days</option>
         </select>
         <Button
           variant="outline"
@@ -266,7 +266,7 @@ function Overview({ data }: { data: OpsSnapshot }) {
           <div
             className="ops-chart"
             role="img"
-            aria-label={`${disputes.length} sample disputes over ${trend.length} dates`}
+            aria-label={`${disputes.length} disputes over ${trend.length} dates`}
           >
             <ResponsiveContainer width="100%" height={210}>
               <AreaChart

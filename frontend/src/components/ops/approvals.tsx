@@ -246,9 +246,7 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
         <div>
           <Panel
             title="Financial reconciliation"
-            meta={
-              <span className="ops-caption">Illustrative source records</span>
-            }
+            meta={<span className="ops-caption">Verified source records</span>}
           >
             <div className="ops-table-scroll">
               <table className="ops-table">
@@ -267,15 +265,9 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
                         <strong>{row.description}</strong>
                         <code>{row.trip_id ?? row.type}</code>
                       </td>
+                      <td className="ops-mono">{money(row.expected_rupees)}</td>
                       <td className="ops-mono">
-                        {dispute.items.length === 1
-                          ? money(dispute.expected_rupees)
-                          : "Not provided"}
-                      </td>
-                      <td className="ops-mono">
-                        {dispute.items.length === 1
-                          ? money(dispute.historical_rupees)
-                          : "Not provided"}
+                        {money(row.historical_rupees)}
                       </td>
                       <td className="ops-mono">
                         {money(row.difference_rupees)}
@@ -403,7 +395,7 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
                       <ConfirmDialog
                         label="Approve payment"
                         title={`Approve ${money(item.amount_rupees)} for ${item.rider_id}?`}
-                        description={`Authorize exactly ${money(item.amount_rupees)} for dispute ${item.dispute_id}. This creates a pending intent in the demo. It does not confirm settlement or move real money.`}
+                        description={`Authorize exactly ${money(item.amount_rupees)} for dispute ${item.dispute_id}. This authorizes a pending payment intent. Settlement requires PaySwift confirmation.`}
                         disabled={action.isPending || !eligible}
                         onConfirm={() =>
                           action.mutateAsync({ type: "approve", id: item.id })
@@ -438,8 +430,10 @@ function CaseReview({ id, data }: { id: string; data: OpsSnapshot }) {
                         title="Resolve this escalation?"
                         description="Record that the ambiguity has been reviewed. This action never authorizes a payment."
                         disabled={action.isPending}
-                        onConfirm={() =>
+                        reasonRequired
+                        onConfirm={(reason) =>
                           action.mutateAsync({
+                            reason,
                             type: "resolve_case",
                             id: item.id,
                           })

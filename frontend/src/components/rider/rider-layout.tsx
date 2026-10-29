@@ -18,6 +18,7 @@ import { DisputeDetailsPanel } from "./dispute-details-panel";
 import { ConversationEmptyState } from "./conversation-empty-state";
 import {
   useConversations,
+  useRiderContext,
   useDesktopDetails,
   useCreateConversation,
   useRiders,
@@ -58,9 +59,10 @@ function Workspace({
   const [detailsOpen, setDetailsOpen] = useState(true);
   const [detailsSheet, setDetailsSheet] = useState(false);
   const desktop = useDesktopDetails();
-  const conversations = useConversations(rider.id);
+  const context = useRiderContext(rider.id);
+  const conversations = useConversations(rider.id, context.isSuccess);
   const activeId = selected ?? conversations.data?.[0]?.id;
-  const thread = useThread(rider.id, activeId);
+  const thread = useThread(rider.id, activeId, context.isSuccess);
   const create = useCreateConversation(rider.id);
   async function start(scenario: Scenario | null = null) {
     try {
@@ -89,7 +91,7 @@ function Workspace({
       onSelect={select}
       onNew={() => void start()}
       loading={conversations.isPending}
-      creating={create.isPending}
+      creating={create.isPending || !context.isSuccess}
     />
   );
   const details = (
@@ -120,7 +122,7 @@ function Workspace({
             Demo workspace
             <span className="rider-banner-extra">
               {" "}
-              · Scripted conversations. Sample financial records.
+              · Connected support. Assignment financial records.
             </span>
           </span>
           <span>No real payouts</span>
@@ -133,7 +135,7 @@ function Workspace({
             </Button>
           </div>
         )}
-        {conversations.isError ? (
+        {context.isError ? <ErrorPanel message={context.error.message} onRetry={()=>context.mutate()}/> : conversations.isError ? (
           <ErrorPanel
             message={conversations.error.message}
             onRetry={() => void conversations.refetch()}
@@ -161,13 +163,13 @@ function Workspace({
             conversation={thread.data.conversation}
             messages={thread.data.messages}
             onScenario={(scenario) => void start(scenario)}
-            creating={create.isPending}
+            creating={create.isPending || !context.isSuccess}
           />
         ) : (
           <>
             <ConversationEmptyState
               onScenario={(scenario) => void start(scenario)}
-              creating={create.isPending}
+              creating={create.isPending || !context.isSuccess}
             />
             <Button
               className="rider-start-button"

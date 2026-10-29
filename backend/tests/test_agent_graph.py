@@ -60,7 +60,7 @@ async def test_clarification_multiturn_and_payment_status(agent_setup):
     again = await message_service.claim(factory, payload)
     assert again == reply
     reply, _, _, _ = await turn("R003", "kab aayega?", {"intent": "status", "language": "hinglish"})
-    assert "PENDING" in reply and "confirm nahi" in reply
+    assert "payment bhejne" in reply and "confirm nahi" in reply
     async with factory() as session:
         assert await session.scalar(select(func.count()).select_from(PaymentIntent)) == 1
 
@@ -134,7 +134,7 @@ async def test_unknown_existing_payment_is_not_duplicated(agent_setup):
         intent = await session.scalar(select(PaymentIntent))
         intent.status = "UNKNOWN"
     reply, _, _, _ = await turn("R003", "T926334 ka surge fir check karo", request)
-    assert "UNKNOWN" in reply
+    assert "duplicate payment" in reply and "UNKNOWN" not in reply
     async with factory() as session:
         assert await session.scalar(select(func.count()).select_from(PaymentIntent)) == 1
 
@@ -142,14 +142,14 @@ async def test_unknown_existing_payment_is_not_duplicated(agent_setup):
 async def test_no_shortfall_old_claim_and_wrong_trip_owner(agent_setup):
     factory, turn, _ = agent_setup
     reply, _, _, _ = await turn(
-        "R011", "19 ko incentive nahi mila", extracted("INCENTIVE", dates=("19",), language="en")
+        "R011", "Incentive missing on 19", extracted("INCENTIVE", dates=("19",), language="en")
     )
     assert "10 completed trips" in reply
     await turn("R022", "13 sept T502951 surge", extracted(ids=("T502951",), dates=("13 sept",)))
     await turn("R020", "T926334 surge", extracted(ids=("T926334",)))
     async with factory() as session:
         assert not list(await session.scalars(select(PaymentIntent)))
-        assert await session.scalar(select(func.count()).select_from(OpsQueue)) == 2
+        assert await session.scalar(select(func.count()).select_from(OpsQueue)) == 1
 
 
 async def test_hindi_reply_and_trace_completeness(agent_setup):
@@ -157,7 +157,7 @@ async def test_hindi_reply_and_trace_completeness(agent_setup):
     reply, claimed, _, _ = await turn(
         "R003", "T926334 का सर्ज नहीं मिला", extracted(ids=("T926334",), language="hi")
     )
-    assert "भुगतान" in reply and "पुष्ट नहीं" in reply
+    assert "भुगतान की पुष्टि अभी नहीं हुई है" in reply
     async with factory() as session:
         names = set(
             await session.scalars(
@@ -184,12 +184,12 @@ async def test_model_hallucination_cannot_select_trip(agent_setup):
         assert not list(await session.scalars(select(PaymentIntent)))
 
 
-async def test_trip_date_conflict_escalates_without_money(agent_setup):
+async def test_trip_date_conflict_requests_clarification_without_money(agent_setup):
     factory, turn, _ = agent_setup
     reply, _, _, _ = await turn(
         "R003", "T926334 19 ko surge", extracted(ids=("T926334",), dates=("19",))
     )
-    assert "review" in reply
+    assert "date" in reply.lower()
     async with factory() as session:
         assert not list(await session.scalars(select(PaymentIntent)))
-        assert await session.scalar(select(func.count()).select_from(OpsQueue)) == 1
+        assert await session.scalar(select(func.count()).select_from(OpsQueue)) == 0

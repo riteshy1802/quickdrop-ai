@@ -7,7 +7,7 @@ from uuid import UUID
 
 @dataclass(frozen=True)
 class AuthorizationResult:
-    status: Literal["AUTHORIZED", "EXISTING", "APPROVAL_REQUIRED", "BLOCKED"]
+    status: Literal["AUTHORIZED", "EXISTING", "APPROVAL_REQUIRED", "ESCALATED", "BLOCKED"]
     reason: str
     intent_id: UUID | None = None
     queue_id: UUID | None = None

@@ -306,7 +306,8 @@ async def test_audit_chronology_redaction_and_rider_isolation(api):
     second = await client.get(f"/trace/{rider}")
     assert first.json() == second.json()
     events = first.json()
-    assert events[0]["type"] == "message_in" and events[1]["type"] == "reply"
+    message_events = [event for event in events if event["type"] in {"message_in", "reply"}]
+    assert [event["type"] for event in message_events] == ["message_in", "reply"]
     assert [event["at"] for event in events] == sorted(event["at"] for event in events)
     assert events[-1]["input"]["amount"] == "1.25"
     assert events[-1]["input"]["nested"]["api_key"] == "[REDACTED]"

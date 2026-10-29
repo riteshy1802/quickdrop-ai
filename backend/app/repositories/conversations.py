@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Conversation, Message
+from app.models import Conversation, Dispute, Message, PaymentIntent
 from app.repositories.pagination import page
 
 
@@ -24,7 +24,21 @@ def summaries():
         .correlate(Conversation)
         .scalar_subquery()
     )
-    return select(Conversation, last_message.label("last_message"), title.label("title"))
+    verification_required = (
+        exists()
+        .where(
+            Dispute.conversation_id == Conversation.id,
+            PaymentIntent.dispute_id == Dispute.id,
+            PaymentIntent.status == "NEEDS_REVIEW",
+        )
+        .correlate(Conversation)
+    )
+    return select(
+        Conversation,
+        last_message.label("last_message"),
+        title.label("title"),
+        verification_required.label("verification_required"),
+    )
 
 
 async def active(session: AsyncSession, rider_id: str):

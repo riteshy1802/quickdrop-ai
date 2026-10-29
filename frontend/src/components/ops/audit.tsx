@@ -258,7 +258,7 @@ function AuditExplorer({ data }: { data: OpsSnapshot }) {
         <SheetContent className="ops-detail-sheet ops-trace-sheet">
           <SheetTitle>{event?.name ?? "Trace details"}</SheetTitle>
           <SheetDescription>
-            Sanitized event metadata and sample tool payloads.
+            Sanitized event metadata and recorded tool payloads.
           </SheetDescription>
           {event && (
             <>

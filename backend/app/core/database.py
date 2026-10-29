@@ -41,3 +41,7 @@ async def get_db_session() -> AsyncIterator[AsyncSession]:
         except Exception:
             await session.rollback()
             raise
+
+
+# Register post-commit transient event notifications in both API and worker processes.
+from app.realtime import database_events as _database_events  # noqa: E402,F401

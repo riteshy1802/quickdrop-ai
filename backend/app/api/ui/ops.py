@@ -69,6 +69,8 @@ def payout_response(row):
         "status": payout.status,
         "initiation": "AUTO" if payout.payment_type == "AUTO" else "HUMAN_APPROVED",
         "provider_id": payout.provider_payout_id,
+        "retry_count": payout.retry_count,
+        "next_retry_at": payout.next_retry_at,
         "reconciled_at": payout.last_reconciled_at,
         "created_at": payout.created_at,
         "updated_at": payout.updated_at,

@@ -57,3 +57,28 @@ def grounded(token: str, text: str) -> bool:
         bool(token)
         and re.search(r"(?<![\w])" + re.escape(token) + r"(?![\w])", text, re.I) is not None
     )
+
+
+def matches_trip_date(token: str, service_date: date, resolved: date) -> bool:
+    """A bare day constrains an identified trip's day, not an invented month.
+
+    Relative or explicit dates still match the full resolved date. This never changes
+    received_at or seven-day eligibility; the financial engine checks those separately.
+    """
+    text = token.lower().strip().translate(DIGITS)
+    bare = re.fullmatch(r"(\d{1,2})(?:st|nd|rd|th)?(?:\s+(?:tarikh|tareekh|ko|wala))?", text)
+    return service_date.day == int(bare[1]) if bare else service_date == resolved
+
+
+def literal_dates(text: str) -> list[str]:
+    """Copy explicit supported date phrases for the narrow complaint-routing guard."""
+    months = "|".join(re.escape(month) for month in sorted(MONTHS, key=len, reverse=True))
+    day = r"\d{1,2}(?:st|nd|rd|th)?"
+    pattern = (
+        rf"(?<!\w)(?:\d{{4}}-\d{{2}}-\d{{2}}|"
+        rf"{day}\s+(?:{months})(?:\s+\d{{4}})?|"
+        rf"(?:{months})\s+{day}(?:\s+\d{{4}})?|"
+        rf"{day}\s+(?:tarikh|tareekh|ko|wala)|"
+        r"day before yesterday|yesterday|today|parso|parson|kal|aaj|कल|आज|परसों)(?!\w)"
+    )
+    return list(dict.fromkeys(match[0] for match in re.finditer(pattern, text, re.I)))

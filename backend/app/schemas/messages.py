@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator
 
 
@@ -7,6 +9,7 @@ class IncomingMessage(BaseModel):
     message_id: str = Field(min_length=1, max_length=255)
     rider_id: str = Field(min_length=1, max_length=32)
     text: str = Field(min_length=1, max_length=10000)
+    conversation_id: UUID | None = None
     received_at: AwareDatetime
 
     @field_validator("message_id", "rider_id", "text")

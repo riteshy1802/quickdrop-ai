@@ -86,7 +86,9 @@ def test_groq_initialization_uses_bounded_settings(monkeypatch):
         kwargs = constructor.call_args.kwargs
         assert kwargs["model"] == "openai/gpt-oss-20b"
         assert kwargs["max_retries"] == 0 and kwargs["temperature"] == 0
-        model.with_structured_output.assert_called_once_with(Extraction, method="function_calling")
+        model.with_structured_output.assert_called_once_with(
+            Extraction, method="json_schema", strict=True
+        )
     finally:
         llm.get_extractor.cache_clear()
 
@@ -110,3 +112,98 @@ def test_relative_followup_keeps_original_vendor_day():
         intent="complaint", language="en", claims=[{"kind": "SURGE", "date_tokens": ["kal"]}]
     )
     assert scope_requests(extraction, state)[0].trip_dates[0].isoformat() == "2026-09-21"
+
+
+@pytest.mark.parametrize("nested", [False, True])
+def test_groq_error_diagnostics_exclude_provider_payloads(nested):
+    class ProviderError(Exception):
+        status_code = 400
+
+    error = ProviderError("secret prompt")
+    body = {
+        "code": "tool_use_failed",
+        "message": "private rider text",
+        "failed_generation": "secret",
+    }
+    error.body = {"error": body} if nested else body
+    diagnostic = llm.safe_failure(error)
+    assert diagnostic == "ProviderError http=400 code=tool_use_failed"
+    assert "private" not in diagnostic and "secret" not in diagnostic
+
+
+def test_models_without_strict_json_keep_function_calling(monkeypatch):
+    from unittest.mock import Mock
+
+    from app.core.config import Settings
+
+    settings = Settings(
+        _env_file=None, groq_api_key="synthetic-key", groq_model="llama-3.3-70b-versatile"
+    )
+    model = Mock()
+    monkeypatch.setattr(llm, "ChatGroq", Mock(return_value=model))
+    monkeypatch.setattr(llm, "get_settings", lambda: settings)
+    llm.get_extractor.cache_clear()
+    try:
+        llm.get_extractor()
+        model.with_structured_output.assert_called_once_with(Extraction, method="function_calling")
+    finally:
+        llm.get_extractor.cache_clear()
+
+
+@pytest.mark.parametrize(
+    "token,expected",
+    [
+        ("20", True),
+        ("20th", True),
+        ("19", False),
+        ("20 oct", False),
+        ("2026-09-20", True),
+        ("kal", False),
+    ],
+)
+def test_identified_trip_partial_day_does_not_invent_a_month(token, expected):
+    from datetime import date
+
+    from app.agent.dates import matches_trip_date
+
+    stamp = datetime.fromisoformat("2026-10-29T09:00:00+05:30")
+    assert matches_trip_date(token, date(2026, 9, 20), resolve_date(token, stamp)) is expected
+
+
+@pytest.mark.parametrize(
+    "environment,host,enabled",
+    [
+        ("production", "localhost", True),
+        ("development", "remote.invalid", True),
+        ("development", "localhost", False),
+    ],
+)
+def test_historical_replay_requires_explicit_local_test_mode(environment, host, enabled):
+    from app.core.config import Settings
+    from app.scripts.replay import require_local_test_mode
+
+    with pytest.raises(ValueError):
+        require_local_test_mode(
+            Settings(
+                _env_file=None,
+                app_env=environment,
+                postgres_host=host,
+                postgres_password="test-only",
+            ),
+            enabled,
+        )
+
+
+def test_historical_local_replay_is_allowed():
+    from app.core.config import Settings
+    from app.scripts.replay import require_local_test_mode
+
+    require_local_test_mode(Settings(_env_file=None, postgres_password="test-only"), True)
+
+
+def test_routing_guard_copies_dates_without_treating_trip_ids_or_money_as_dates():
+    from app.agent.dates import literal_dates
+
+    assert literal_dates("T926334 surge 25 rupees missing 19 sept") == ["19 sept"]
+    assert literal_dates("T123 ka surge nahi mila 20 tarikh wala") == ["20 tarikh"]
+    assert literal_dates("T123 payment missing yesterday") == ["yesterday"]

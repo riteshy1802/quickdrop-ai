@@ -43,6 +43,7 @@ class ClaimRequest(FinancialModel):
     # This identity must come from a trusted caller, never from chat text or an LLM.
     rider_id: str = Field(min_length=1)
     received_at: AwareDatetime
+    reference_time: AwareDatetime | None = None
     trip_ids: tuple[str, ...] = ()
     trip_dates: tuple[date, ...] = ()
     penalty_dates: tuple[date, ...] = ()

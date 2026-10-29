@@ -7,21 +7,17 @@ export function MessageComposer({
   onSend,
   pending,
   error,
-  onSimulateError,
 }: {
   onSend: (text: string) => Promise<boolean>;
   pending: boolean;
   error: string | null;
-  onSimulateError: () => void;
 }) {
   const [text, setText] = useState("");
-  const [simulate, setSimulate] = useState(false);
   const input = useRef<HTMLTextAreaElement>(null);
   async function submit() {
     if (!text.trim() || pending) return;
     if (await onSend(text.trim())) {
       setText("");
-      setSimulate(false);
       input.current?.focus();
     }
   }
@@ -88,16 +84,7 @@ export function MessageComposer({
           <ShieldCheck size={11} />
           Demo only. No real money moves.
         </span>
-        <button
-          type="button"
-          disabled={pending || simulate}
-          onClick={() => {
-            onSimulateError();
-            setSimulate(true);
-          }}
-        >
-          {simulate ? "Next send will fail once" : "Test send error"}
-        </button>
+
       </div>
     </div>
   );

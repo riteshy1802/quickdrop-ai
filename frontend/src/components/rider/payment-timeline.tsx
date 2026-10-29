@@ -24,8 +24,10 @@ export function PaymentTimeline({
           ? ["Adjustment approved", "Payment processing"]
           : status === "AWAITING_APPROVAL"
             ? ["Difference identified", "Awaiting human approval"]
-            : status === "FAILED" || status === "NEEDS_REVIEW"
-              ? ["Adjustment submitted", "Needs review"]
+            : status === "NEEDS_REVIEW"
+              ? ["Adjustment verified", "Payment verification required"]
+              : status === "FAILED"
+              ? ["Payment could not be completed", "Support review required"]
               : ["Payment not initiated"];
   return (
     <div className="rider-payment">
@@ -45,7 +47,7 @@ export function PaymentTimeline({
       {payment && (
         <div className="rider-payment-amount">
           {money(payment.amount_rupees)}
-          <span>Sample adjustment</span>
+          <span>Sandbox payment amount</span>
         </div>
       )}
       <ol className="rider-payment-timeline">
@@ -70,7 +72,7 @@ export function PaymentTimeline({
               {index === steps.length - 1 && (
                 <small>
                   {status === "SUCCEEDED"
-                    ? "Simulated confirmation only"
+                    ? "Confirmed by PaySwift sandbox"
                     : "No successful payment confirmed"}
                 </small>
               )}

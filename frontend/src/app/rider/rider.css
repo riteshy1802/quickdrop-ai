@@ -1514,3 +1514,33 @@
     transition: none;
   }
 }
+
+/* Public investigation activity is separate from the rider-facing answer. */
+.rider-investigation {
+  margin: 0.5rem 0 0.75rem 2.5rem;
+  max-width: 36rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.65rem 0.8rem;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+}
+.rider-investigation summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  list-style: none;
+}
+.rider-investigation summary::-webkit-details-marker { display: none; }
+.rider-investigation summary > span { flex: 1; }
+.rider-investigation summary > svg:last-child { transition: transform 180ms ease; }
+.rider-investigation[open] summary > svg:last-child { transform: rotate(180deg); }
+.rider-investigation ol { list-style: none; margin: 0.75rem 0 0; padding: 0; }
+.rider-investigation li { display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0; }
+.rider-activity-spinner { animation: rider-activity-spin 1.2s linear infinite; }
+@keyframes rider-activity-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .rider-activity-spinner { animation: none; }
+  .rider-investigation summary > svg:last-child { transition: none; }
+}

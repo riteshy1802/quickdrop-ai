@@ -213,3 +213,11 @@ Apply migrations, configure `OPS_ADMIN_EMAIL` / `OPS_ADMIN_PASSWORD`, then run
 `uv run python -m app.scripts.seed_admin`. All `/ui/ops/*` endpoints require the
 login cookie. Assignment `/messages`, `/trace/{rider_id}`, and `/ops/pending` remain
 public for evaluator compatibility.
+
+## Connected frontend and realtime
+
+See [live UI, Redis and SSE setup](docs/realtime.md). The existing Rider and Ops pages
+now use real APIs, cookie sessions and typed live events, with PostgreSQL refetches for
+recovery. Run `make infra-up`, then `make backend`, `make workers` and `make frontend`
+in separate terminals. New configuration examples are in `backend/.env.example` and
+`frontend/.env.example`.

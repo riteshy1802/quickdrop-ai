@@ -30,6 +30,7 @@ class AgentState(TypedDict, total=False):
     message_id: UUID
     text: str
     received_at: datetime
+    reference_time: datetime
     history: list[dict]
     context: dict
     saved: dict | None

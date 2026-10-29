@@ -192,8 +192,8 @@ function PayoutList({ data }: { data: OpsSnapshot }) {
             value={range}
             onChange={(e) => setRange(e.target.value)}
           >
-            <option value="all">All sample dates</option>
-            <option value="week">Latest 7 sample days</option>
+            <option value="all">All dates</option>
+            <option value="week">Latest 7 days</option>
           </select>
           <input
             className="ops-filter-input"
@@ -241,11 +241,11 @@ function PayoutList({ data }: { data: OpsSnapshot }) {
           searchPlaceholder="Search payment, rider, dispute, or provider…"
         />
       </Panel>
-      <Panel title="PaySwift sandbox · simulated health">
+      <Panel title="PaySwift sandbox">
         <div className="ops-provider-health">
           <div>
             <span>Availability</span>
-            <strong>Mock only · not monitored live</strong>
+            <strong>Not monitored live</strong>
           </div>
           <div>
             <span>Last observed reconciliation</span>
@@ -328,8 +328,8 @@ function PayoutDetail({ data, id }: { data: OpsSnapshot; id: string }) {
             ))}
           </ol>
           <p className="ops-panel-note">
-            Only recorded sample events are shown. Authorization is separate
-            from provider settlement.
+            Only recorded events are shown. Authorization is separate from
+            provider settlement.
           </p>
         </Panel>
         <Panel title="Provider reconciliation">
@@ -348,10 +348,6 @@ function PayoutDetail({ data, id }: { data: OpsSnapshot; id: string }) {
               <div>
                 <dt>Provider payout ID</dt>
                 <dd>{p.provider_id ?? "Not observed"}</dd>
-              </div>
-              <div>
-                <dt>Matching reference</dt>
-                <dd>{p.id}</dd>
               </div>
               <div>
                 <dt>Last reconciliation</dt>
@@ -373,10 +369,10 @@ function PayoutDetail({ data, id }: { data: OpsSnapshot; id: string }) {
               onClick={() => action.mutate({ type: "reconcile", id: p.id })}
             >
               <RefreshCw size={14} />
-              {action.isPending ? "Reconciling…" : "Reconcile · demo only"}
+              {action.isPending ? "Reconciling…" : "Reconcile"}
             </Button>
             <small className="ops-muted">
-              No payout is retried. A sample ledger lookup determines the
+              No payout is retried. A provider ledger lookup determines the
               observed status.
             </small>
           </div>
@@ -414,11 +410,7 @@ function PayoutDetail({ data, id }: { data: OpsSnapshot; id: string }) {
                     {a.duration_ms === null ? "Unknown" : `${a.duration_ms} ms`}
                   </td>
                   <td>{a.result}</td>
-                  <td>
-                    {a.retry_scheduled
-                      ? "Yes, sample historical attempt"
-                      : "No"}
-                  </td>
+                  <td>{a.retry_scheduled ? "Yes, recorded attempt" : "No"}</td>
                   <td>{a.error_category ?? "None"}</td>
                 </tr>
               ))}

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createMockOpsApi, sanitizeTraceJson } from "./ops";
-import { createMockRiderApi } from "./rider";
+import { createMockOpsApi, sanitizeTraceJson } from "./ops.mock";
+import { createMockRiderApi } from "./rider.mock";
 import type { OpsUser } from "@/types/ops";
 const operator: OpsUser = {
   id: "demo-ops",

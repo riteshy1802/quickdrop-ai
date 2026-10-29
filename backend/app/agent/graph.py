@@ -27,12 +27,23 @@ def build_graph(tools, *, extractor=None):
 
 async def run_agent(factory, claimed, *, client=None, extractor=None):
     tools = AgentTools(factory, claimed, client)
-    result = await build_graph(tools, extractor=extractor).ainvoke(
+    from app.realtime.publisher import Run, current_run, progress
+
+    current_run.set(Run(claimed.token, claimed.conversation_id, claimed.rider_id))
+    await progress(claimed, "started", kind="agent.started")
+    reply = None
+    async for update in build_graph(tools, extractor=extractor).astream(
         {
             "rider_id": claimed.rider_id,
             "conversation_id": claimed.conversation_id,
             "message_id": claimed.message_id,
         },
         config={"recursion_limit": 8, "callbacks": []},
-    )
-    return result["reply"]
+        stream_mode="updates",
+    ):
+        # Structured extraction and tool payloads are deliberately never forwarded.
+        if "reply" in update:
+            reply = update["reply"]["reply"]
+    if reply is None:
+        raise ValueError("Agent did not produce a rider response")
+    return reply

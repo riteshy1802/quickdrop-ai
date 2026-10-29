@@ -70,6 +70,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: ESLint
         run: npm run lint
+      - name: Frontend integration tests
+        run: npm test
       - name: TypeScript
         run: npm run typecheck
       - name: Next.js production build
@@ -86,6 +88,15 @@ jobs:
     env:
       DATABASE_URL: postgresql+asyncpg://quickdrop_ci:ci_only_password@127.0.0.1:5432/quickdrop_ci
     services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
       postgres:
         image: postgres:16-alpine
         env:

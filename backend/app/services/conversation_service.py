@@ -47,12 +47,10 @@ def set_context(conversation: Conversation, context: dict):
 
 
 def summary(row):
-    conversation, last_message, title = row
+    conversation, last_message, title, *verification = row
     status = conversation.status
-    if status == "AWAITING_INFORMATION":
-        status = "OPEN"
-    elif status == "ESCALATED":
-        status = "HUMAN_HANDLING" if conversation.handling_mode == "HUMAN" else "AWAITING_APPROVAL"
+    if verification and verification[0]:
+        status = "PAYMENT_VERIFICATION_REQUIRED"
     return {
         "id": conversation.id,
         "rider_id": conversation.rider_id,
@@ -76,6 +74,7 @@ def message_response(message):
         "conversation_id": message.conversation_id,
         "sender": message.sender_type,
         "operator_id": message.operator_id,
+        "client_message_id": message.message_id,
         "text": message.content,
         "created_at": message.created_at,
         "received_at": message.received_at,

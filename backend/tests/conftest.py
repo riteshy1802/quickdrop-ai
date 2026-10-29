@@ -93,3 +93,14 @@ async def seeded(session):
     async with session.begin():
         counts = await seed_data(session)
     return counts
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def isolate_realtime_publishing(monkeypatch):
+    from unittest.mock import AsyncMock
+
+    from app.realtime import publisher
+
+    monkeypatch.setattr(publisher, "publish", AsyncMock())
+    yield
+    await publisher.drain()

@@ -1,5 +1,5 @@
 "use client";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { riderApi } from "@/lib/api/rider";
 import type { PostMessageRequest, Scenario } from "@/types/rider";
@@ -16,16 +16,44 @@ export function useRiders() {
     queryFn: () => riderApi.getRiders(),
   });
 }
-export function useConversations(riderId: string) {
+export function useRiderContext(riderId: string) {
+  const client = useQueryClient();
+  const selection = useMutation({
+    mutationFn: () => riderApi.selectRider(riderId),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: ["rider-ui", riderId] }),
+  });
+  const select = selection.mutate;
+  useEffect(() => {
+    select();
+  }, [select, riderId]);
+  useEffect(() => {
+    const renew = (event: Event) => {
+      if ((event as CustomEvent<string>).detail === riderId) select();
+    };
+    window.addEventListener("quickdrop:rider-context-expired", renew);
+    return () =>
+      window.removeEventListener("quickdrop:rider-context-expired", renew);
+  }, [riderId, select]);
+  return selection;
+}
+export function useConversations(riderId: string, enabled = true) {
   return useQuery({
     queryKey: riderKeys.conversations(riderId),
+    enabled,
     queryFn: () => riderApi.getConversations(riderId),
+    refetchInterval: 15000,
   });
 }
-export function useThread(riderId: string, id: string | undefined) {
+export function useThread(
+  riderId: string,
+  id: string | undefined,
+  enabled = true,
+) {
   return useQuery({
     queryKey: riderKeys.thread(riderId, id ?? "none"),
-    enabled: !!id,
+    enabled: !!id && enabled,
+    refetchInterval: 15000,
     queryFn: async () => {
       if (!id) throw new Error("Select a conversation.");
       const [conversation, messages, disputes] = await Promise.all([
@@ -51,12 +79,10 @@ export function useSendMessage(riderId: string, id: string) {
   return useMutation({
     mutationFn: ({
       request,
-      simulateFailure,
     }: {
       request: PostMessageRequest;
       simulateFailure?: boolean;
-    }) =>
-      riderApi.postMessage(request, { conversation_id: id, simulateFailure }),
+    }) => riderApi.postMessage(request, { conversation_id: id }),
     retry: false,
     onSuccess: async () => {
       await Promise.all([

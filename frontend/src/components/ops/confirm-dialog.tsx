@@ -91,10 +91,10 @@ export function ConfirmDialog({
           <form onSubmit={form.handleSubmit(submit)}>
             {reasonRequired && (
               <label className="ops-field">
-                Rejection reason
+                Decision reason
                 <Textarea
                   {...form.register("reason")}
-                  placeholder="Explain why this adjustment is rejected"
+                  placeholder="Explain your decision"
                   aria-invalid={!!form.formState.errors.reason}
                 />
                 {form.formState.errors.reason && (

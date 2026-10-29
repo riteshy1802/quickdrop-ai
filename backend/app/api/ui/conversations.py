@@ -67,3 +67,27 @@ async def conversation_disputes(
         session, conversation_id, limit=limit, offset=offset
     )
     return paginated(rows, total, limit, offset)
+
+
+@router.get("/conversations/{conversation_id}/payouts")
+async def conversation_payouts(
+    conversation_id: UUID, rider_id: str, session: Session, limit: Limit = 50, offset: Offset = 0
+):
+    from sqlalchemy import select
+
+    from app.api.ui.ops import payout_response
+    from app.models import Dispute, PaymentIntent
+    from app.repositories.pagination import page
+
+    await own_conversation(session, conversation_id, rider_id)
+    statement = (
+        select(PaymentIntent, Dispute.conversation_id)
+        .join(Dispute, Dispute.id == PaymentIntent.dispute_id)
+        .where(
+            Dispute.id.in_(await disputes.visible_scope(session, conversation_id)),
+            PaymentIntent.rider_id == rider_id,
+        )
+        .order_by(PaymentIntent.created_at, PaymentIntent.id)
+    )
+    rows, total = await page(session, statement, limit=limit, offset=offset)
+    return paginated([payout_response(row) for row in rows], total, limit, offset)

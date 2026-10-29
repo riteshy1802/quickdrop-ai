@@ -116,7 +116,11 @@ async def approval_queue(session, dispute, amount, reason, *, escalation=False):
                 session, dispute, AuthorizationResult("BLOCKED", "Pending approval amount changed")
             )
         return audit(
-            session, dispute, AuthorizationResult("APPROVAL_REQUIRED", reason, queue_id=prior.id)
+            session,
+            dispute,
+            AuthorizationResult(
+                "ESCALATED" if escalation else "APPROVAL_REQUIRED", reason, queue_id=prior.id
+            ),
         )
     queue = OpsQueue(
         id=uuid4(),
@@ -131,7 +135,11 @@ async def approval_queue(session, dispute, amount, reason, *, escalation=False):
     conversation = await session.get(Conversation, dispute.conversation_id)
     conversation.status = "ESCALATED" if escalation else "AWAITING_APPROVAL"
     return audit(
-        session, dispute, AuthorizationResult("APPROVAL_REQUIRED", reason, queue_id=queue.id)
+        session,
+        dispute,
+        AuthorizationResult(
+            "ESCALATED" if escalation else "APPROVAL_REQUIRED", reason, queue_id=queue.id
+        ),
     )
 
 

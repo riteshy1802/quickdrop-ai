@@ -273,7 +273,7 @@ function Topbar({ onMenu }: { onMenu: () => void }) {
               <DropdownMenu.Separator />
               <DropdownMenu.Item onSelect={() => void auth.logout()}>
                 <LogOut size={14} />
-                Sign out of demo
+                Sign out
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
@@ -298,7 +298,7 @@ export function OpsShell({ children }: { children: React.ReactNode }) {
           <Topbar onMenu={() => setMobile(true)} />
           <div className="ops-demo-strip">
             <span>DEMO WORKSPACE</span>
-            <p>Sample records · No live payments or production authorization</p>
+            <p>Connected workspace · Assignment records and PaySwift sandbox</p>
           </div>
           <main className="ops-page">{children}</main>
         </div>

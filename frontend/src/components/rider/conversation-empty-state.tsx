@@ -1,31 +1,13 @@
-import {
-  ArrowUpRight,
-  Calculator,
-  MessageSquare,
-  Sparkles,
-  UserRoundCheck,
-  Wallet,
-  CircleCheck,
-} from "lucide-react";
-import { scenarioLabels } from "@/lib/mock/rider-data";
+import { Sparkles } from "lucide-react";
 import type { Scenario } from "@/types/rider";
-const icons = {
-  surge: Wallet,
-  incentive: Sparkles,
-  large: Calculator,
-  correct: CircleCheck,
-  human: UserRoundCheck,
-  pending: MessageSquare,
-};
 export function ConversationEmptyState({
-  onScenario,
   creating,
 }: {
   onScenario: (scenario: Scenario) => void;
   creating: boolean;
 }) {
   return (
-    <div className="rider-empty-state">
+    <div className="rider-empty-state" aria-busy={creating}>
       <span className="rider-welcome-icon">
         <Sparkles size={29} />
       </span>
@@ -36,26 +18,9 @@ export function ConversationEmptyState({
         <br />
         Tell us what happened, in your own words.
       </p>
-      <div className="rider-scenario-heading">
-        OR EXPLORE A SAMPLE CONVERSATION
-      </div>
-      <div className="rider-scenario-grid">
-        {(Object.keys(scenarioLabels) as Scenario[]).map((scenario) => {
-          const Icon = icons[scenario];
-          return (
-            <button
-              key={scenario}
-              disabled={creating}
-              onClick={() => onScenario(scenario)}
-            >
-              <Icon size={16} />
-              <span>{scenarioLabels[scenario]}</span>
-              <ArrowUpRight size={13} />
-            </button>
-          );
-        })}
-      </div>
-      <small>Scripted examples · Not assignment evaluation results</small>
+      <small>
+        Conversations and payment status are saved in your workspace.
+      </small>
     </div>
   );
 }

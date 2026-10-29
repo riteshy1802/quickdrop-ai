@@ -5,6 +5,7 @@ from datetime import date
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.clock import claim_time
 from app.data_quality.normalize import prepare_trip
 from app.data_quality.report import DataQualityIssue
 from app.repositories import financial, riders
@@ -268,7 +269,7 @@ def reconcile_records(
     for kind, source_id in sorted(targets):
         trip = trip_map.get(source_id)
         eligibility = trip_eligibility(
-            request.rider_id, snapshot.rider_exists, trip, request.received_at
+            request.rider_id, snapshot.rider_exists, trip, claim_time(request)
         )
         if not eligibility.eligible:
             day = (
@@ -336,7 +337,7 @@ def reconcile_records(
             item = item.model_copy(update={"data_quality": quality[source_id].classification})
         items.append(item)
     for day in sorted(set(request.incentive_dates)):
-        eligibility = date_eligibility(day, request.received_at)
+        eligibility = date_eligibility(day, claim_time(request))
         day_records = [
             t
             for t in trip_map.values()

@@ -1,16 +1,19 @@
 # LangGraph dispute agent (Milestone 5)
 
+See [local business reference clock and streamed activity](reference-clock.md) for
+the current interactive demo behavior.
+
 ## Architecture
 
 There is one StateGraph with four nodes: load_context, understand, investigate, and reply. START enters load_context. Understand conditionally routes missing information, status questions, greetings, and rejected instructions directly to reply; grounded complaints enter investigate, then reply and END. Financial outcomes inside investigation follow deterministic tool results. The graph has no planning/reflection loop, no model-controlled payment tools, and a recursion limit of eight. One extraction call is allowed per attempt, with at most three extraction attempts across durable retries by default.
 
 State contains trusted rider/conversation/message identities, original text and aware vendor timestamp, bounded history, structured extracted context, missing fields, compact outcomes, and final reply. No checkpoint database or second history store exists. PostgreSQL conversations/messages remain authoritative. Message agent_state stores a validated extraction checkpoint so interrupted jobs can resume without repeating that model call.
 
-The model only extracts intent, language, complaint types, literal date tokens, trip IDs, untrusted mentioned amounts, and corrections. The server resolves dates in IST against received_at, or the timestamp of the original rider utterance for a remembered relative date. Grounding rejects invented date tokens and trip IDs. Conflicting supplied trip dates are escalated. Fare claims are merged before investigation so model output cannot split one large fare discrepancy into smaller auto-pay requests. Monetary calculations, eligibility, payment amounts, daily reservations, and approval decisions remain in the existing financial and payment services.
+The model only extracts intent, language, complaint types, literal date tokens, trip IDs, untrusted mentioned amounts, and corrections. The server resolves dates in IST against the effective business reference time (original received_at for evaluator requests), or the original utterance reference for a remembered relative date. Grounding rejects invented date tokens and trip IDs. Ambiguous or missing trip details prompt clarification; evidence-backed exceptions can be escalated. Fare claims are merged before investigation so model output cannot split one large fare discrepancy into smaller auto-pay requests. Monetary calculations, eligibility, payment amounts, daily reservations, and approval decisions remain in the existing financial and payment services.
 
 ## Groq configuration
 
-The default is openai/gpt-oss-20b. GROQ_MODEL can select another compatible tool-calling Groq model. GROQ_API_KEY is read as a SecretStr through existing settings; it is never printed or recorded in traces. Temperature is zero, SDK retries are disabled, and output is parsed into a Pydantic Extraction schema through ChatGroq.with_structured_output(method="function_calling").
+The default is openai/gpt-oss-20b. GROQ_MODEL can select another compatible tool-calling Groq model. GROQ_API_KEY is read as a SecretStr through existing settings; it is never printed or recorded in traces. Temperature is zero, SDK retries are disabled, and output is parsed into a Pydantic Extraction schema. GPT-OSS 20B/120B use `ChatGroq.with_structured_output(method="json_schema", strict=True)`; other configured models retain function calling. Strict schema support is documented by [Groq](https://console.groq.com/docs/structured-outputs).
 
 Groq's [tool-use documentation](https://console.groq.com/docs/tool-use/overview) lists GPT-OSS 20B support. The [deprecation history](https://console.groq.com/docs/deprecations) records the older Llama defaults' retirement for normal tiers, so those are not selected by default. [LangChain's ChatGroq structured-output reference](https://reference.langchain.com/python/langchain-groq/chat_models/ChatGroq/with_structured_output) documents the function-calling interface used here. Model availability remains account-dependent and configurable.
 
@@ -104,3 +107,17 @@ Tests also cover multilingual replies, relative-date provenance, trip ownership,
 New: app/agent/{graph,state,nodes,routes,replies,prompts,llm,dates}.py, app/agent/tools/{investigation,coverage}.py and package initializers; migration 5a6f842e91d0_agent_message_jobs.py; tests/test_agent_{extraction,tools,graph,scenarios,webhook}.py; tests/fixtures/agent_extractions.json; this document.
 
 Updated: app/core/config.py, app/models/message.py, app/models/agent_trace.py, app/services/message_service.py, app/services/payment_authorization.py, app/workers/main.py, backend environment/dependency files and README, tests/test_messaging.py, and docker-compose.yml. Earlier Milestone 4 work remains preserved. Frontend, source CSVs, financial calculation implementation, prior migrations, and payswift/ remain unchanged by this milestone.
+
+
+## Worker troubleshooting
+
+`make workers` waits for PostgreSQL, Redis and PaySwift through `make infra-up` before
+starting the local worker. If running locally, stop the Compose worker with
+`make worker-stop` to keep a single development worker. Stop an already running local
+worker with Ctrl+C before restarting it after a code change.
+
+Connection-refused warnings identify whether agent or payment work could not reach
+PostgreSQL. Check infrastructure health and the configured PostgreSQL host/port.
+Groq failures log only the exception class, HTTP status and a recognized machine error
+code. Provider error messages, failed generations, prompts and rider contents are not
+logged. A repeated HTTP 400 can therefore be diagnosed without exposing private input.

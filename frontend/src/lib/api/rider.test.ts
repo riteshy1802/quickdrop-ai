@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createMockRiderApi } from "./rider";
+import { createMockRiderApi } from "./rider.mock";
 import type { PostMessageRequest } from "@/types/rider";
 const request = (
   id = "wamid.test.1",

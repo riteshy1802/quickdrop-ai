@@ -106,6 +106,30 @@ async def ops_api(database_url, provider, monkeypatch):
     await engine.dispose()
 
 
+async def test_successful_logins_do_not_consume_failure_allowance(ops_api):
+    e = ops_api
+    e.settings.ops_login_attempts = 2
+    for _ in range(3):
+        await login(e)
+    async with e.factory() as session:
+        assert await session.scalar(select(func.count()).select_from(OpsLoginLimit)) == 0
+
+
+async def test_login_retry_after_reports_remaining_window(ops_api):
+    e = ops_api
+    e.settings.ops_login_attempts = 1
+    response = await e.http.post("/auth/login", json={"email": e.users[0].email, "password": "bad"})
+    assert response.status_code == 401
+    async with e.factory() as session, session.begin():
+        for row in await session.scalars(select(OpsLoginLimit)):
+            row.window_start -= timedelta(seconds=300)
+    response = await e.http.post(
+        "/auth/login", json={"email": e.users[0].email, "password": PASSWORD}
+    )
+    assert response.status_code == 429
+    assert 590 <= int(response.headers["Retry-After"]) <= 600
+
+
 async def login(env, index=0, http=None):
     response = await (http or env.http).post(
         "/auth/login",
@@ -124,6 +148,24 @@ async def conversation(env):
         session.add(row)
         await session.flush()
         return row.id
+
+
+async def test_rider_review_status_comes_from_payment_intent(ops_api):
+    e = ops_api
+    identifier, request = await create_case(e.factory, e.rider, 25)
+    result = await authorize_payment(
+        e.factory, e.client, identifier, request, source_data_complete=True
+    )
+    async with e.factory() as session, session.begin():
+        intent = await session.get(PaymentIntent, result.intent_id)
+        intent.status = "NEEDS_REVIEW"
+        dispute = await session.get(Dispute, identifier)
+        cid = dispute.conversation_id
+    await e.http.post("/ui/demo/rider", json={"rider_id": e.rider})
+    response = await e.http.get(f"/ui/conversations/{cid}", params={"rider_id": e.rider})
+    assert response.status_code == 200
+    assert response.json()["status"] == "PAYMENT_VERIFICATION_REQUIRED"
+    assert response.json()["source_status"] == "PAYMENT_PENDING"
 
 
 async def financial_case(env, amount=425):

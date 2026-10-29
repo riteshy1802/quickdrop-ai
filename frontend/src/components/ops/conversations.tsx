@@ -43,6 +43,7 @@ export function OpsConversations() {
 
 function Composer({ thread }: { thread: WorkspaceThread }) {
   const action = useOpsAction();
+  const retry = useRef<{ text: string; mode: string; id: string } | null>(null);
   const [mode, setMode] = useState<"reply" | "note">("reply");
   const form = useForm<{ text: string }>({
     resolver: zodResolver(
@@ -63,7 +64,12 @@ function Composer({ thread }: { thread: WorkspaceThread }) {
         type: mode,
         id: thread.conversation.id,
         text,
+        client_request_id:
+          retry.current?.text === text && retry.current.mode === mode
+            ? retry.current.id
+            : (retry.current = { text, mode, id: crypto.randomUUID() }).id,
       });
+      retry.current = null;
       form.reset();
     } catch {
       /* Error displayed below. */
@@ -72,7 +78,9 @@ function Composer({ thread }: { thread: WorkspaceThread }) {
   return (
     <form
       className={`ops-message-composer ${mode === "note" ? "is-note" : ""}`}
-      onSubmit={form.handleSubmit(send)}
+      onSubmit={(event) => {
+        void form.handleSubmit(send)(event);
+      }}
     >
       <div className="ops-composer-mode">
         <Segments
@@ -527,8 +535,13 @@ function ConversationWorkspace({ data }: { data: OpsSnapshot }) {
               title="Resolve this conversation?"
               description="This marks the conversation resolved. It does not settle an outstanding payment or approve a dispute."
               disabled={action.isPending || c.status === "RESOLVED"}
-              onConfirm={() =>
-                action.mutateAsync({ type: "resolve_conversation", id: c.id })
+              reasonRequired
+              onConfirm={(reason) =>
+                action.mutateAsync({
+                  type: "resolve_conversation",
+                  id: c.id,
+                  reason,
+                })
               }
             />
           </div>

@@ -17,8 +17,8 @@ import { Button } from "@/components/ui/button";
 import { useOpsAuth } from "./auth-context";
 import type { LoginInput } from "@/types/ops";
 const schema = z.object({
-  email: z.email("Enter a valid demo email."),
-  password: z.string().min(1, "Enter the demo password."),
+  email: z.email("Enter a valid email."),
+  password: z.string().min(1, "Enter your password."),
 });
 export function OpsLogin() {
   const auth = useOpsAuth();
@@ -26,7 +26,7 @@ export function OpsLogin() {
     [error, setError] = useState("");
   const form = useForm<LoginInput>({
     resolver: zodResolver(schema),
-    defaultValues: { email: "ops@quickdrop.demo", password: "" },
+    defaultValues: { email: "", password: "" },
   });
   async function submit(values: LoginInput) {
     try {
@@ -121,19 +121,11 @@ export function OpsLogin() {
               className="ops-primary ops-login-submit"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? "Signing in…" : "Sign in to demo"}
+              {form.formState.isSubmitting ? "Signing in…" : "Sign in"}
               <ArrowRight size={15} />
             </Button>
           </form>
-          <div className="ops-demo-credentials">
-            <strong>
-              Demo password: <code>demo-only</code>
-            </strong>
-            <span>
-              Use any valid email. This is simulated sign-in, not production
-              security.
-            </span>
-          </div>
+
         </div>
       </section>
     </main>

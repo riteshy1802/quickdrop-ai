@@ -71,6 +71,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-quickdrop}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       DATABASE_URL: ""
+      REDIS_URL: redis://redis:6379/0
       PAYSWIFT_BASE_URL: http://payswift:8081
       PAYMENT_POLL_SECONDS: ${PAYMENT_POLL_SECONDS:-2}
       PAYMENT_MAX_ATTEMPTS: ${PAYMENT_MAX_ATTEMPTS:-8}
@@ -81,6 +82,8 @@ services:
         condition: service_healthy
       payswift:
         condition: service_started
+      redis:
+        condition: service_healthy
 
 networks:
   default:

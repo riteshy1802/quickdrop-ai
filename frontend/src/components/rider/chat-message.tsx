@@ -36,6 +36,7 @@ export function ChatMessage({ message }: { message: Message }) {
             <time dateTime={message.created_at}>
               {time(message.created_at)}
             </time>
+            {message.pending && <span role="status">Sending…</span>}
             {message.delivery && (
               <CheckCheck size={13} aria-label="Delivered" />
             )}

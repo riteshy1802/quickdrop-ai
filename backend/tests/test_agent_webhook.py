@@ -45,14 +45,16 @@ async def test_complete_messages_endpoint_with_real_graph(agent_setup, monkeypat
     factory, _, client = agent_setup
     model = AsyncMock(
         return_value=Extraction(
-            intent="complaint", language="en", claims=[{"kind": "SURGE", "trip_ids": ["T926334"]}]
+            intent="complaint",
+            language="en",
+            claims=[{"kind": "SURGE", "trip_ids": ["T926334"], "date_tokens": ["20"]}],
         )
     )
     monkeypatch.setattr(llm, "extract", model)
     monkeypatch.setattr(investigation, "get_payswift_client", lambda: client)
     app = create_app()
     app.dependency_overrides[get_session_factory] = lambda: factory
-    payload = request()
+    payload = request(text="Bhai order T926334 ka surge nahi mila, 20 tarikh wala. Check karo pls")
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app), base_url="http://test"
     ) as http:
@@ -64,6 +66,23 @@ async def test_complete_messages_endpoint_with_real_graph(agent_setup, monkeypat
     async with factory() as session:
         assert await session.scalar(select(func.count()).select_from(PaymentIntent)) == 1
         assert await session.scalar(select(func.count()).select_from(Message)) == 2
+        message = await session.scalar(
+            select(Message).where(Message.message_id == payload["message_id"])
+        )
+        assert message.received_at == datetime.fromisoformat(payload["received_at"])
+        intent = await session.scalar(select(PaymentIntent))
+        assert intent.status == "PENDING" and intent.payment_type == "AUTO"
+        assert datetime.fromisoformat(
+            intent.authorization["request"]["received_at"]
+        ) == datetime.fromisoformat(payload["received_at"])
+        assert not list(await session.scalars(select(OpsQueue)))
+    from app.services.payment_worker import process_one
+
+    assert await process_one(factory, client)
+    assert not await process_one(factory, client)
+    async with factory() as session:
+        intent = await session.scalar(select(PaymentIntent))
+        assert intent.status == "SUCCEEDED" and intent.provider_payout_id
 
 
 async def test_deadline_ack_is_durable_and_resumes(agent_setup, monkeypatch):

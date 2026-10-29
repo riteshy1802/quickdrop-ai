@@ -59,14 +59,17 @@ async def transaction_limits(session):
 
 def check_payload(message, rider_id, payload):
     if (
-        rider_id != payload.rider_id
+        (payload.conversation_id is not None and message.conversation_id != payload.conversation_id)
+        or rider_id != payload.rider_id
         or message.content != payload.text
         or message.received_at != payload.received_at
     ):
         raise HTTPException(status_code=409, detail="Message ID reused with conflicting payload")
 
 
-async def claim(factory, payload: IncomingMessage, *, from_worker=False) -> Claim | str:
+async def claim(
+    factory, payload: IncomingMessage, *, from_worker=False, interactive_demo=False
+) -> Claim | str:
     async with factory() as session, session.begin():
         await transaction_limits(session)
         owned = await session.scalar(
@@ -101,7 +104,16 @@ async def claim(factory, payload: IncomingMessage, *, from_worker=False) -> Clai
             # Expired/failed/received work is recoverable. No duplicate input trace.
             conversation = await session.get(Conversation, message.conversation_id)
         else:
-            conversation = await conversation_service.find_or_create(session, payload.rider_id)
+            if payload.conversation_id is not None:
+                conversation = await session.get(Conversation, payload.conversation_id)
+                if (
+                    conversation is None
+                    or conversation.rider_id != payload.rider_id
+                    or conversation.status == "RESOLVED"
+                ):
+                    raise HTTPException(409, "Select an active conversation for this rider")
+            else:
+                conversation = await conversation_service.find_or_create(session, payload.rider_id)
             identifier = uuid4()
             inserted = await session.scalar(
                 insert(Message)
@@ -131,7 +143,25 @@ async def claim(factory, payload: IncomingMessage, *, from_worker=False) -> Clai
                 input=payload.model_dump(mode="json"),
                 at=now,
             )
-        message.agent_state = message.agent_state or {"version": 1}
+        if message.agent_state is None:
+            from app.core.clock import reference_time
+
+            effective = reference_time(
+                received_at=payload.received_at, interactive_demo=interactive_demo
+            )
+            message.agent_state = {"version": 1, "reference_time": effective.isoformat()}
+            if interactive_demo:
+                trace_service.record(
+                    session,
+                    conversation.id,
+                    "decision",
+                    "business_reference_clock",
+                    output={
+                        "received_at": payload.received_at,
+                        "reference_time": effective,
+                        "interactive_demo": True,
+                    },
+                )
         message.agent_attempts += 1
         message.next_processing_at = None
         token = uuid4()
@@ -260,6 +290,9 @@ async def wait_for_turn(factory, claimed):
 
 
 async def execute(factory, claimed, *, worker=False):
+    from app.realtime.publisher import Run, current_run
+
+    current_run.set(Run(claimed.token, claimed.conversation_id, claimed.rider_id))
     seconds = (
         get_settings().agent_job_seconds if worker else get_settings().agent_foreground_seconds
     )
@@ -313,12 +346,12 @@ async def defer(factory, claimed):
         return PENDING_REPLY
 
 
-async def process(factory, payload: IncomingMessage) -> str:
+async def process(factory, payload: IncomingMessage, *, interactive_demo=False) -> str:
     try:
         async with asyncio.timeout(WEBHOOK_TIMEOUT_SECONDS):
             while True:
                 try:
-                    claimed = await claim(factory, payload)
+                    claimed = await claim(factory, payload, interactive_demo=interactive_demo)
                     if isinstance(claimed, str):
                         return claimed
                     try:

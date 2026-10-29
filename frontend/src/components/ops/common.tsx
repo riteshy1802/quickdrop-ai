@@ -94,7 +94,7 @@ export function OpsData({
   if (query.isError)
     return (
       <div className="ops-empty" role="alert">
-        <h2>Unable to load sample records.</h2>
+        <h2>Unable to load records.</h2>
         <p>{query.error.message}</p>
         <Button variant="outline" onClick={() => void query.refetch()}>
           <RotateCcw size={14} />

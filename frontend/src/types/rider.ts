@@ -9,15 +9,13 @@ export type ConversationStatus =
   | "OPEN"
   | "RESOLVED"
   | "HUMAN_HANDLING"
+  | "ESCALATED"
+  | "AWAITING_INFORMATION"
   | "AWAITING_APPROVAL"
-  | "PAYMENT_PENDING";
+  | "PAYMENT_PENDING"
+  | "PAYMENT_VERIFICATION_REQUIRED";
 export type Scenario =
-  | "surge"
-  | "incentive"
-  | "large"
-  | "correct"
-  | "human"
-  | "pending";
+  "surge" | "incentive" | "large" | "correct" | "human" | "pending";
 export type PaymentStatus =
   | "NOT_INITIATED"
   | "AWAITING_APPROVAL"
@@ -29,9 +27,11 @@ export type PaymentStatus =
   | "UNKNOWN"
   | "NEEDS_REVIEW";
 export type PolicyStatus =
+  | "VERIFIED"
   | "AUTO_ELIGIBLE"
   | "OPS_APPROVAL"
   | "OUTSIDE_WINDOW"
+  | "SUPPORT_REVIEW"
   | "AWAITING_INFORMATION";
 export interface Conversation {
   id: string;
@@ -52,6 +52,8 @@ export interface Message {
   text: string;
   created_at: string;
   delivery?: "DELIVERED";
+  pending?: boolean;
+  client_message_id?: string | null;
   system_notice?: boolean;
   visibility?: "RIDER" | "INTERNAL";
 }
@@ -60,6 +62,8 @@ export interface DisputeItem {
   type: "SURGE" | "INCENTIVE" | "PAYOUT";
   trip_id: string | null;
   description: string;
+  expected_rupees?: number;
+  historical_rupees?: number;
   difference_rupees: number;
 }
 export interface PaymentIntent {
@@ -77,9 +81,9 @@ export interface Dispute {
   status: string;
   policy: PolicyStatus;
   explanation: string;
-  expected_rupees: number;
-  historical_rupees: number;
-  verified_difference_rupees: number;
+  expected_rupees: number | null;
+  historical_rupees: number | null;
+  verified_difference_rupees: number | null;
   approved_adjustment_rupees: number | null;
   items: DisputeItem[];
   payment: PaymentIntent | null;
@@ -95,29 +99,3 @@ export interface PostMessageRequest {
 export interface PostMessageResponse {
   reply: string;
 }
-
-// Proposed internal UI contracts, not implemented backend endpoints.
-export interface RiderUiContracts {
-  "GET /ui/riders": { response: Rider[] };
-  "GET /ui/riders/{rider_id}/conversations": { response: Conversation[] };
-  "GET /ui/conversations/{conversation_id}": { response: Conversation };
-  "GET /ui/conversations/{conversation_id}/messages": { response: Message[] };
-  "GET /ui/conversations/{conversation_id}/disputes": { response: Dispute[] };
-  "GET /ui/conversations/{conversation_id}/events": {
-    response: ConversationEvent;
-  };
-}
-export type ProcessingStep =
-  | "Message received"
-  | "Checking trip records"
-  | "Verifying payout details"
-  | "Reviewing payment eligibility"
-  | "Preparing response";
-export type ConversationEvent =
-  | { type: "processing"; conversation_id: string; step: ProcessingStep }
-  | { type: "message"; conversation_id: string; message: Message }
-  | {
-      type: "conversation.updated";
-      conversation_id: string;
-      status: ConversationStatus;
-    };

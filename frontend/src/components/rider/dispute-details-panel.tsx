@@ -35,9 +35,9 @@ export function DisputeDetailsPanel({
         <div className="rider-details-demo">
           <Info size={13} />
           <span>
-            Illustrative sample data.
+            Saved dispute records.
             <br />
-            Not a live payout record.
+            Payment status follows provider confirmation.
           </span>
         </div>
         {loading ? (
@@ -50,8 +50,7 @@ export function DisputeDetailsPanel({
             <FileCheck2 size={27} />
             <h3>A little context first.</h3>
             <p>
-              Dispute and payout details appear here when a sample scenario is
-              selected. Your new messages stay in this conversation.
+              Dispute and payout details appear as your concern is investigated.
             </p>
           </div>
         ) : (
@@ -74,7 +73,7 @@ export function DisputeDetailsPanel({
                   </dd>
                 </div>
                 <div>
-                  <dt>Relevant date</dt>
+                  <dt>Opened on</dt>
                   <dd>{date(dispute.relevant_date)}</dd>
                 </div>
                 <div>

@@ -10,11 +10,12 @@ UV ?= uv
 NPM ?= npm
 BACKEND_HOST ?= 127.0.0.1
 BACKEND_PORT ?= 8000
+BACKEND_SHUTDOWN_TIMEOUT ?= 5
 FRONTEND_PORT ?= 3000
 
 .PHONY: help install install-backend install-frontend infra-up infra-down status \
 	migrate migrations migration-current migration-check seed seed-admin backend frontend \
-	worker workers worker-docker worker-stop lint typecheck test test-unit build
+	worker workers worker-docker worker-stop lint typecheck test test-unit build replay
 
 help: ## List available commands
 	@awk 'BEGIN {FS = ":.*## "; printf "QuickDrop commands (run from the repository root):\n\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-20s %s\n", $$1, $$2}' "$(ROOT_DIR)/Makefile"
@@ -53,13 +54,16 @@ seed: ## Import CSV data using the existing idempotent seed script
 seed-admin: ## Seed Ops admin from OPS_ADMIN_EMAIL and OPS_ADMIN_PASSWORD
 	cd "$(BACKEND_DIR)" && $(UV) run python -m app.scripts.seed_admin
 
+replay: ## Replay historical scenarios locally in a disposable database with mocked payments
+	cd "$(BACKEND_DIR)" && $(UV) run python -m app.scripts.replay --local-test-mode
+
 backend: ## Run FastAPI with auto-reload in the foreground
-	cd "$(BACKEND_DIR)" && $(UV) run uvicorn app.main:app --reload --host "$(BACKEND_HOST)" --port "$(BACKEND_PORT)"
+	cd "$(BACKEND_DIR)" && $(UV) run uvicorn app.main:app --reload --timeout-graceful-shutdown "$(BACKEND_SHUTDOWN_TIMEOUT)" --host "$(BACKEND_HOST)" --port "$(BACKEND_PORT)"
 
 frontend: ## Run Next.js development server in the foreground
 	cd "$(FRONTEND_DIR)" && $(NPM) run dev -- --port "$(FRONTEND_PORT)"
 
-worker: ## Run the shared agent/payment worker in the foreground
+worker: infra-up ## Wait for infrastructure, then run the shared worker in the foreground
 	cd "$(BACKEND_DIR)" && $(UV) run python -m app.workers.main
 
 workers: worker ## Alias for worker (one shared worker entry point)
