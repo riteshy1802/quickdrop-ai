@@ -9,5 +9,6 @@ COPY app ./app
 COPY alembic ./alembic
 COPY alembic.ini ./alembic.ini
 ENV PATH="/app/backend/.venv/bin:$PATH"
+RUN chown -R 10001:10001 /app
 USER 10001:10001
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

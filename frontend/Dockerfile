@@ -6,7 +6,7 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 ARG BACKEND_URL=http://api:8000
 ENV BACKEND_URL=$BACKEND_URL
-RUN npm run build
+RUN npm run build && chown -R node:node /app
 USER node
 EXPOSE 3000
 CMD ["npm", "run", "start", "--", "--hostname", "0.0.0.0"]

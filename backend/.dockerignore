@@ -9,3 +9,24 @@
 !alembic/**
 **/__pycache__
 **/*.pyc
+# Never send runtime credentials or generated artifacts to the builder.
+**/.env
+**/.env.*
+!**/.env.example
+**/.aws
+**/.ssh
+**/*.pem
+**/*.key
+**/*credentials*
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/coverage
+**/test-results
+**/playwright-report
+.git
+**/.npmrc
+**/.pypirc
+**/.netrc
+**/.git-credentials

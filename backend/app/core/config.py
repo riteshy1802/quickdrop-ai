@@ -17,6 +17,7 @@ class Settings(BaseSettings):
         env_file=(BACKEND_DIR.parent / ".env", BACKEND_DIR / ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
+        hide_input_in_errors=True,
     )
     redis_url: SecretStr = SecretStr("redis://localhost:6379/0")
     demo_session_secret: SecretStr = Field(

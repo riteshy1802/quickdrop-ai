@@ -1,0 +1,191 @@
+{
+  "project": "quickdrop-verify-2193366",
+  "checks": {
+    "compose_services": "PASS",
+    "backend_frontend_provider_build": "PASS",
+    "complete_compose_startup": "PASS",
+    "imports_and_nonroot": "PASS",
+    "health_frontend_proxy_provider": "PASS",
+    "migrations": "PASS",
+    "idempotent_seed": "PASS",
+    "ops_admin_idempotence_and_login": "PASS",
+    "authenticated_sse_direct_and_proxy": "PASS",
+    "official_message_trace_pending_persistence": "PASS",
+    "worker_redis_pubsub_and_provider": "PASS",
+    "restart_persistence_session_sse_and_proxy": "PASS",
+    "actual_application_events_through_proxy": "PASS",
+    "rebuild_shared_image_and_secret_canary_exclusion": "PASS",
+    "configured_provider_generic_greeting": "PASS",
+    "final_backend_image_rebuild": "PASS",
+    "shared_backend_image_identity": "PASS",
+    "cleanup_isolated_resources_and_development_containers_untouched": "PASS",
+    "frontend_cache_writable_as_nonroot": "PASS"
+  },
+  "counts_after_two_seeds": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "conversations": 0,
+    "messages": 0,
+    "payment_intents": 0
+  },
+  "conversation_id": "89f34529-e4e4-4509-a444-ef6ccbadaceb",
+  "counts_before_restart": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "conversations": 1,
+    "messages": 2,
+    "payment_intents": 0
+  },
+  "counts_after_restart": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "conversations": 1,
+    "messages": 2,
+    "payment_intents": 0
+  },
+  "status": "PASS",
+  "sse_event_types": [
+    "agent.completed",
+    "agent.message.completed",
+    "agent.message.delta",
+    "agent.started",
+    "agent.status",
+    "conversation.updated",
+    "message.created"
+  ],
+  "services": [
+    {
+      "Service": "api",
+      "State": "running",
+      "Health": "healthy",
+      "Image": "quickdrop-verify-2193366-backend:local",
+      "ExitCode": 0
+    },
+    {
+      "Service": "frontend",
+      "State": "running",
+      "Health": "",
+      "Image": "quickdrop-verify-2193366-frontend",
+      "ExitCode": 0
+    },
+    {
+      "Service": "migrate",
+      "State": "exited",
+      "Health": "",
+      "Image": "quickdrop-verify-2193366-backend:local",
+      "ExitCode": 0
+    },
+    {
+      "Service": "payswift",
+      "State": "running",
+      "Health": "",
+      "Image": "quickdrop-verify-2193366-payswift",
+      "ExitCode": 0
+    },
+    {
+      "Service": "postgres",
+      "State": "running",
+      "Health": "healthy",
+      "Image": "postgres:16-alpine",
+      "ExitCode": 0
+    },
+    {
+      "Service": "provider-ready",
+      "State": "exited",
+      "Health": "",
+      "Image": "quickdrop-verify-2193366-backend:local",
+      "ExitCode": 0
+    },
+    {
+      "Service": "redis",
+      "State": "running",
+      "Health": "healthy",
+      "Image": "redis:7-alpine",
+      "ExitCode": 0
+    },
+    {
+      "Service": "worker",
+      "State": "running",
+      "Health": "",
+      "Image": "quickdrop-verify-2193366-backend:local",
+      "ExitCode": 0
+    }
+  ],
+  "local_configuration": {
+    "exit_code": 1,
+    "statuses": {
+      "AGENT_FOREGROUND_SECONDS": "Missing",
+      "AGENT_JOB_SECONDS": "Missing",
+      "AGENT_MAX_ATTEMPTS": "Missing",
+      "APP_ENV": "Missing",
+      "APP_REFERENCE_TIME": "Configured",
+      "AWS_ACCESS_KEY_ID": "Configured",
+      "AWS_REGION": "Configured",
+      "AWS_SECRET_ACCESS_KEY": "Configured",
+      "AWS_SESSION_TOKEN": "Missing",
+      "BEDROCK_MODEL_ID": "Configured",
+      "BEDROCK_TIMEOUT_SECONDS": "Configured",
+      "CORS_ORIGINS": "Missing",
+      "DATABASE_URL": "Missing",
+      "DB_MAX_OVERFLOW": "Missing",
+      "DB_POOL_SIZE": "Missing",
+      "DEMO_SESSION_SECRET": "Missing",
+      "ENABLE_DEMO_WORKSPACE": "Missing",
+      "ENABLE_LOCAL_INTERNAL_READS": "Missing",
+      "GROQ_API_KEY": "Configured",
+      "GROQ_MODEL": "Missing",
+      "GROQ_TIMEOUT_SECONDS": "Missing",
+      "LLM_PROVIDER": "Configured",
+      "OPS_ADMIN_EMAIL": "Configured",
+      "OPS_ADMIN_PASSWORD": "Configured",
+      "OPS_COOKIE_SECURE": "Missing",
+      "OPS_LOGIN_ATTEMPTS": "Missing",
+      "OPS_LOGIN_WINDOW_SECONDS": "Missing",
+      "OPS_SESSION_SECONDS": "Missing",
+      "PAYMENT_MAX_ATTEMPTS": "Configured",
+      "PAYMENT_POLL_SECONDS": "Configured",
+      "PAYSWIFT_BASE_URL": "Configured",
+      "POSTGRES_DB": "Configured",
+      "POSTGRES_HOST": "Configured",
+      "POSTGRES_PASSWORD": "Configured",
+      "POSTGRES_PORT": "Configured",
+      "POSTGRES_USER": "Configured",
+      "REDIS_URL": "Configured"
+    }
+  },
+  "counts_final": {
+    "riders": 40,
+    "trips": 3304,
+    "payout_lines": 3222,
+    "conversations": 1,
+    "messages": 4,
+    "payment_intents": 0
+  },
+  "source_hashes": {
+    "data/riders.csv": "ee002124052a9d37bfb6b2f103395e46b7e99457a15c026829f56beb8c5c1bcf",
+    "data/trips.csv": "439b4f4699fd5eda51ac00c0ee66d1debd75c09c172141bd5e22fbb0d0743a87",
+    "data/payout_lines.csv": "68b800753001218e779c6add65169c4ef51fa28bd6cee6a7cdd262efd7c752f4",
+    "payswift/server.pyc": "7e7277a36caaacb50b05eaa031f40490d2247edd3df7dc04ef88fa6deab7e0d9"
+  },
+  "starting_commit": "34b0573c761dae2882131ded3623b0eff09b56b2",
+  "shared_backend_image_id": "sha256:a51c2c7d1b4d4017b702735558d65d3d0040cee85f624b25f6e71811aaed61f5",
+  "tests": {
+    "backend_focused_passed": 20,
+    "frontend_passed": 43,
+    "ruff": "PASS",
+    "frontend_lint": "PASS",
+    "frontend_typecheck": "PASS",
+    "docker_next_production_build": "PASS"
+  },
+  "scope": {
+    "financial_payout_execution": "NOT TESTED",
+    "all_24_scenarios": "NOT TESTED",
+    "browser_end_to_end": "NOT TESTED",
+    "reason": "Deployment smoke test only; no financial obligations or browser sessions were created."
+  },
+  "observed_at": "2026-10-30 Asia/Kolkata",
+  "validator_image_id": "sha256:c3e6b4c38f7dda746f8ef355acdbab8a6a8093eca20d7ff10549fa99be079278"
+}

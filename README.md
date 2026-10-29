@@ -9,10 +9,30 @@ move money. [Policy](docs/policy.md) · [Agent design](backend/docs/agent.md).
 (or Groq key), and `OPS_ADMIN_EMAIL`/`OPS_ADMIN_PASSWORD`. Run:
 
 ```sh
+docker compose build api frontend
+docker compose run --rm --no-deps api python -m app.scripts.check_env
 docker compose up --build -d
 docker compose run --rm seed
 docker compose run --rm api python -m app.scripts.seed_admin
+docker compose ps
+docker compose logs --tail=100 api
+docker compose logs --tail=100 worker
 ```
+
+Examples contain placeholders, not credentials. Never commit `.env`. Compose loads
+root `.env`, then optional `backend/.env`; the latter overrides duplicate values.
+Container database, Redis and PaySwift destinations are explicitly set by Compose.
+Set a shared 32+ character `DEMO_SESSION_SECRET` so Rider cookies survive API restarts. Missing
+optional variables are reported without failing validation; the selected model,
+database and administrator settings must be configured. AWS credentials need Bedrock
+InvokeModel access to the configured inference profile. Temporary credentials also
+need `AWS_SESSION_TOKEN`. Alternatively select Groq and set `GROQ_API_KEY`.
+For independent local projects, set `COMPOSE_PROJECT_NAME` and the five `*_HOST_PORT`
+variables; database and Redis volumes then belong to that project. Ports bind to
+loopback; public access requires an explicitly configured reverse proxy.
+`BACKEND_URL` is baked into Next.js rewrites during image build; Compose uses
+`http://api:8000`. Rebuild if changing that destination. Server keys must never use
+a `NEXT_PUBLIC_` prefix. [Docker verification](docs/DOCKER_VERIFICATION.md).
 
 Open http://localhost:3000/rider or http://localhost:3000/ops. API health is
 http://localhost:8000/health. Compose starts Postgres, Redis, unchanged PaySwift,
