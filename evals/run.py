@@ -13,7 +13,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 
@@ -316,7 +316,7 @@ def evaluate(base, scenario, provider=None, wait=35, allow_existing=False):
             "provider_paid": str(paid) if paid is not None else None,
             "escalated": escalated,
         }
-    except (EvaluationError, ValueError, TypeError, KeyError) as exc:
+    except (EvaluationError, ValueError, TypeError, KeyError, InvalidOperation) as exc:
         result["errors"].append(str(exc))
     result["status"] = (
         "PASS"

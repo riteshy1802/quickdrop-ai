@@ -131,6 +131,23 @@ class EvaluatorTests(unittest.TestCase):
             self.assertEqual(value["status"], "PASS", value)
             self.assertEqual(state["posts"], 2)
             self.assertEqual(len(value["provider_ledger"]), 1)
+            # Equal amounts are separate authorizations, not a set: never hide a duplicate.
+            state["posted"] = False
+            trace[0]["output"]["outcomes"].append({"kind": "authorized", "amount": "34"})
+            duplicated = run.evaluate(
+                base,
+                {
+                    "rider_id": "R007",
+                    "scenario": "duplicate authorization",
+                    "expected": {"payout": 34, "approval": None, "escalation": "no"},
+                    "turns": [turn],
+                },
+                provider=base,
+                wait=0,
+            )
+            self.assertEqual(duplicated["authorization"], "FAIL")
+            self.assertEqual(duplicated["provider_payment"], "PASS")
+            self.assertEqual(duplicated["status"], "FAIL")
         finally:
             server.shutdown()
             server.server_close()
