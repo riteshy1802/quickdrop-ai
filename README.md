@@ -52,10 +52,12 @@ require explicit `--allow-nonlocal`. Never run on production or shared developme
 Use `--scenario N` with a fresh deployment to isolate a single scenario.
 
 **Verified remediation:** 494 backend tests passed (1 skipped), 33 frontend tests
-passed; lint, types and production build passed. Real Nova: 24/24 decisions and
+passed; lint, types and production build passed. Isolated real Nova: 24/24 decisions and
 provider outcomes passed; 11 auto payouts totaling ₹664, plus an Ops-approved ₹425
 payout. Original webhook final delivery: 28/30 requests (22/24 scenarios); two
-acknowledgments completed later. There is no supplied outbound transport to deliver
-those delayed answers to the vendor. [Full evidence and remaining limitations](evals/reports/final-remediation/REMEDIATION_REPORT.md).
+acknowledgments completed later. A separate full Compose HTTP run passed 24/24
+decisions and delivered 30/30 final replies, but provider verification failed for
+three scenarios (two unresolved payments after PaySwift 503s). There is no supplied
+outbound transport for delayed vendor replies; readiness remains partial. [Full evidence and remaining limitations](evals/reports/final-remediation/REMEDIATION_REPORT.md).
 [Authentic redacted AI sessions](ai-logs/README.md) are included; original audit evidence
 is preserved separately. No deployment or real-money payment is performed by CI.
